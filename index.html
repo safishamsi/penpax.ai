@@ -262,6 +262,19 @@
       width: 100%;
       height: 100%;
     }
+
+  .fade-right {
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
   </style>
 </head>
 <body class="text-gray-100 font-sans antialiased overflow-x-hidden">
@@ -600,7 +613,7 @@
       </div>
 
       <!-- Tab row -->
-      <div class="fade-in mb-10 overflow-x-auto pt-4 pb-2">
+      <div class="fade-in mb-10 overflow-x-auto pt-4 pb-2 no-scrollbar fade-right">
         <div id="uc-tabs" class="flex gap-2 min-w-max mx-auto" style="width:fit-content;">
           <button onclick="showUC(0)" class="uc-tab uc-tab-active" data-idx="0">Business</button>
           <button onclick="showUC(1)" class="uc-tab" data-idx="1">Creative</button>
@@ -1360,6 +1373,26 @@
         document.getElementById('form-msg').classList.remove('hidden');
       }
     }
+
+
+    const tabContainer = document.querySelector('.overflow-x-auto');
+
+    function updateFade() {
+      const isAtEnd = tabContainer.scrollLeft + tabContainer.clientWidth >= tabContainer.scrollWidth - 10;
+      
+    if (isAtEnd) {
+        tabContainer.classList.remove('fade-right');
+      } else {
+        tabContainer.classList.add('fade-right');
+      }
+    }
+
+    tabContainer.addEventListener('scroll', updateFade);
+
+    window.addEventListener('resize', updateFade);
+    updateFade();
+
+
   </script>
 </body>
 </html>
