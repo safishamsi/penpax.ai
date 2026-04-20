@@ -1744,8 +1744,16 @@ def create_session(user):
         .to(ov, { opacity:0, duration:.42, ease:'power2.out' },'-=.32');
     })();
 
-    // Hash clear (without forced scroll-to-top which caused unexpected jumps)
-    if (window.location.hash) { history.replaceState(null,'',window.location.pathname); }
+    // Intercept all #hash anchor clicks — smooth scroll without writing to URL
+    document.addEventListener('click', function(e) {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      e.preventDefault();
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 
     function showAll() {
       document.querySelectorAll('.gsap-reveal').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
