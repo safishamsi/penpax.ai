@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graphify — Any input. One graph. Every answer.</title>
-  <meta name="description" content="A knowledge graph of your entire working life. Browser history, meetings, files, code, emails — connected, queryable, private. Runs entirely on your device. #1 on MemoryBench." />
+  <title>Graphify — Any input. One graph. Complete recall.</title>
+  <meta name="description" content="The open-source knowledge graph engine. Turn code, docs, papers, meetings and images into a traversable graph. #1 on MemoryBench. 30k GitHub stars." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            display: ['Fraunces', 'Georgia', 'serif'],
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Fraunces','Georgia','serif'],
+            sans: ['Inter','system-ui','sans-serif'],
+            mono: ['JetBrains Mono','monospace'],
           }
         }
       }
@@ -21,747 +21,574 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
   <style>
     :root {
-      --bg: #06060f;
-      --violet: #7c3aed;
-      --indigo: #4f46e5;
-      --cyan: #06b6d4;
-      --amber: #f59e0b;
-      --rose: #f43f5e;
+      --bg:      #07091c;
+      --bg2:     #0c1133;
+      --indigo:  #6366f1;
+      --indigo2: #818cf8;
+      --cyan:    #22d3ee;
+      --emerald: #34d399;
+      --amber:   #fbbf24;
+      --orange:  #fb923c;
+      --rose:    #fb7185;
+      --border:  rgba(255,255,255,0.07);
+      --glass:   rgba(255,255,255,0.04);
     }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body { background: var(--bg); color: rgba(255,255,255,0.88); }
 
-    body { background: var(--bg); }
-
-    /* Noise overlay */
+    /* noise */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.035;
-      pointer-events: none;
-      z-index: 9999;
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
     }
 
-    /* Accent strip */
-    .accent-strip {
+    /* rainbow top strip */
+    .top-strip {
       height: 2px;
-      background: linear-gradient(90deg, #7c3aed, #f43f5e 25%, #f59e0b 50%, #06b6d4 75%, #7c3aed);
+      background: linear-gradient(90deg,#6366f1,#22d3ee 30%,#34d399 55%,#fb923c 78%,#6366f1);
       background-size: 200% 100%;
-      animation: strip-slide 4s linear infinite;
+      animation: strip 5s linear infinite;
     }
-    @keyframes strip-slide {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 200% 0%; }
-    }
+    @keyframes strip { to { background-position: -200% 0; } }
 
-    /* Mesh orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-    }
-
-    /* Display headline */
-    .display-headline {
+    /* typography */
+    .hl {
       font-family: 'Fraunces', Georgia, serif;
       font-weight: 400;
-      line-height: 0.87;
+      line-height: 0.88;
       letter-spacing: -0.045em;
     }
-
-    /* MemoryBench badge */
-    .memory-bench-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08));
-      border: 1px solid rgba(251,191,36,0.35);
-      color: #fbbf24;
+    .grad-text {
+      background: linear-gradient(135deg, #c7d2fe 0%, #818cf8 35%, #67e8f9 70%, #a5f3fc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .memory-bench-badge .trophy { font-size: 14px; }
-
-    /* Ghost outline button */
-    .ghost-btn {
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.55);
-      transition: all 0.3s ease;
-      background: transparent;
+    .grad-warm {
+      background: linear-gradient(135deg, #fde68a 0%, #fb923c 50%, #f472b6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .ghost-btn:hover {
-      border-color: rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.85);
-      transform: translateY(-1px);
+    .section-tag {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indigo2);
     }
 
-    /* Stats bar */
-    .stat-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-    }
-    .stat-pill strong { color: rgba(255,255,255,0.7); font-weight: 500; }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 35%, #67e8f9 70%, #a5f3fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* nav */
+    .nav {
+      background: rgba(7,9,28,0.72);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--border);
     }
 
-    .gradient-text-warm {
-      background: linear-gradient(135deg, #fbbf24 0%, #f87171 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* cards */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
+    .glass:hover { background: rgba(255,255,255,0.065); border-color: rgba(99,102,241,0.3); }
 
-    /* Glass card */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(124, 58, 237, 0.3);
-    }
-
-    /* Gradient border card */
     .grad-border {
       position: relative;
-      background: rgba(10, 10, 20, 0.8);
+      background: rgba(10,12,32,0.85);
       border-radius: 20px;
     }
     .grad-border::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(6,182,212,0.2), rgba(124,58,237,0.1));
+      position: absolute; inset: 0;
+      border-radius: 20px; padding: 1px;
+      background: linear-gradient(135deg,rgba(99,102,241,0.45),rgba(34,211,238,0.2),rgba(99,102,241,0.1));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
     }
 
-    /* Mockup window */
-    .mockup-window {
-      background: rgba(8, 8, 18, 0.95);
-      border: 1px solid rgba(124, 58, 237, 0.2);
-      border-radius: 18px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.03),
-        0 40px 100px rgba(0,0,0,0.7),
-        0 0 80px rgba(124,58,237,0.12),
-        0 0 160px rgba(6,182,212,0.05);
+    /* buttons */
+    .btn-primary {
+      background: linear-gradient(135deg,#6366f1,#4f46e5);
+      box-shadow: 0 0 28px rgba(99,102,241,0.38), 0 4px 20px rgba(0,0,0,0.4);
+      transition: all .28s ease;
     }
-
-    /* Nav glass */
-    .nav-glass {
-      background: rgba(6, 6, 15, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+    .btn-primary:hover {
+      background: linear-gradient(135deg,#818cf8,#6366f1);
+      box-shadow: 0 0 48px rgba(99,102,241,0.55), 0 4px 28px rgba(0,0,0,0.5);
+      transform: translateY(-2px);
     }
-
-    /* Fade in */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-    .fade-in-delay-1 { transition-delay: 0.1s; }
-    .fade-in-delay-2 { transition-delay: 0.2s; }
-    .fade-in-delay-3 { transition-delay: 0.3s; }
-
-    /* CTA button */
-    .cta-btn {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      box-shadow: 0 0 30px rgba(124,58,237,0.35), 0 4px 20px rgba(0,0,0,0.4);
-      transition: all 0.3s ease;
-    }
-    .cta-btn:hover {
-      background: linear-gradient(135deg, #6d28d9, #4338ca);
-      box-shadow: 0 0 50px rgba(124,58,237,0.5), 0 4px 30px rgba(0,0,0,0.5);
-      transform: translateY(-1px);
-    }
-
-    .secondary-btn {
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.3s ease;
-    }
-    .secondary-btn:hover {
-      border-color: rgba(124,58,237,0.4);
-      background: rgba(124,58,237,0.08);
-      transform: translateY(-1px);
-    }
-
-    /* Typing cursor */
-    .typing-cursor::after {
-      content: '|';
-      animation: blink 1s step-end infinite;
-      color: #7c3aed;
-    }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-    /* Result lines */
-    .result-line {
-      opacity: 0;
-      transform: translateX(-10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .result-line.show { opacity: 1; transform: translateX(0); }
-
-    /* Section label */
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #7c3aed;
-    }
-
-    /* Use case tabs */
-    .uc-tab {
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.13);
       color: rgba(255,255,255,0.5);
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      cursor: pointer;
-      font-size: 13px;
-      padding: 10px 20px;
-      border-radius: 999px;
-      transition: all 0.2s;
-      white-space: nowrap;
+      transition: all .28s ease;
     }
-    .uc-tab:hover {
-      color: rgba(255,255,255,0.9);
-      border-color: rgba(124,58,237,0.5);
-      background: rgba(124,58,237,0.1);
-      transform: translateY(-1px);
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.85);
+      transform: translateY(-2px);
     }
-    .uc-tab-active {
-      color: #fff !important;
-      background: rgba(124,58,237,0.25) !important;
-      border-color: rgba(124,58,237,0.6) !important;
-      box-shadow: 0 0 16px rgba(124,58,237,0.25);
-    }
-    .uc-panel { animation: fadeInUp 0.35s ease; }
 
-    /* Feature icon */
+    /* badge */
+    .badge-bench {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 16px; border-radius: 999px;
+      font-size: 12px; font-weight: 600; letter-spacing: .02em;
+      background: linear-gradient(135deg,rgba(251,191,36,.18),rgba(251,191,36,.07));
+      border: 1px solid rgba(251,191,36,.4); color: #fbbf24;
+    }
+    .badge-live {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 12px; font-weight: 500;
+      background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.28);
+      color: #818cf8;
+    }
+
+    /* stat pills */
+    .stat { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,.35); }
+    .stat strong { color: rgba(255,255,255,.7); font-weight: 500; }
+
+    /* hero orbs */
+    .orb { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
+
+    /* brain canvas wrapper */
+    .brain-wrap {
+      position: relative; width: 100%; aspect-ratio: 1;
+      max-width: 520px; margin: 0 auto;
+    }
+    .brain-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .brain-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 1px solid rgba(99,102,241,.12);
+      animation: spin-slow 22s linear infinite;
+    }
+    .brain-ring-2 {
+      position: absolute; inset: 8%; border-radius: 50%;
+      border: 1px dashed rgba(34,211,238,.1);
+      animation: spin-slow 35s linear infinite reverse;
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    /* floating labels on brain */
+    .brain-label {
+      position: absolute; font-size: 10px; font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.28); pointer-events: none; white-space: nowrap;
+      animation: float-label 6s ease-in-out infinite;
+    }
+    @keyframes float-label {
+      0%,100% { transform: translateY(0); opacity: .28; }
+      50%      { transform: translateY(-6px); opacity: .5; }
+    }
+
+    /* fade-in scroll */
+    .fi { opacity: 0; transform: translateY(30px); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+    .fi.on { opacity: 1; transform: translateY(0); }
+    .fi-d1 { transition-delay: .1s; }
+    .fi-d2 { transition-delay: .2s; }
+    .fi-d3 { transition-delay: .3s; }
+    .fi-d4 { transition-delay: .4s; }
+
+    /* stats strip */
+    .stats-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.018);
+    }
+    .stats-strip-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 20px 32px;
+    }
+    .stats-strip-num {
+      font-family: 'Fraunces', serif; font-size: 28px;
+      font-weight: 400; letter-spacing: -.03em;
+    }
+    .stats-strip-label { font-size: 11px; color: rgba(255,255,255,.35); letter-spacing: .06em; text-transform: uppercase; }
+
+    /* dual track */
+    .track-card {
+      border-radius: 24px; padding: 36px;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .track-card:hover { transform: translateY(-4px); }
+    .track-os {
+      background: linear-gradient(135deg,rgba(99,102,241,.1),rgba(34,211,238,.06));
+      border: 1px solid rgba(99,102,241,.25);
+    }
+    .track-enterprise {
+      background: linear-gradient(135deg,rgba(251,191,36,.08),rgba(251,113,133,.06));
+      border: 1px solid rgba(251,191,36,.22);
+    }
+    .track-feature {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .track-feature:last-child { border-bottom: none; }
+    .track-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+    /* how it works */
+    .step-num {
+      width: 44px; height: 44px; border-radius: 14px; display: flex;
+      align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .step-connector {
+      position: absolute; top: 22px; left: calc(50% + 22px);
+      width: calc(100% - 44px); height: 1px;
+      background: linear-gradient(90deg, rgba(99,102,241,.3), rgba(34,211,238,.15));
+    }
+
+    /* features */
     .feat-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
-      border: 1px solid rgba(124,58,237,0.2);
-      margin-bottom: 18px;
+      width: 44px; height: 44px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg,rgba(99,102,241,.15),rgba(34,211,238,.08));
+      border: 1px solid rgba(99,102,241,.2); margin-bottom: 18px;
     }
 
-    /* Comparison table */
-    .check-yes { color: #34d399; font-size: 15px; }
-    .check-no { color: rgba(255,255,255,0.15); font-size: 13px; }
-
-    /* Grid bg subtle */
+    /* grid bg */
     .grid-bg {
       background-image:
-        linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
-      background-size: 56px 56px;
+        linear-gradient(rgba(99,102,241,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
 
-    /* Source dot */
-    .src-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    /* use-case tabs */
+    .uc-tab {
+      color: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.03); cursor: pointer;
+      font-size: 13px; padding: 9px 20px; border-radius: 999px;
+      transition: all .2s; white-space: nowrap;
+    }
+    .uc-tab:hover { color: rgba(255,255,255,.85); border-color: rgba(99,102,241,.45); background: rgba(99,102,241,.1); }
+    .uc-tab-active { color:#fff !important; background: rgba(99,102,241,.22) !important; border-color: rgba(99,102,241,.55) !important; box-shadow: 0 0 16px rgba(99,102,241,.22); }
+    .uc-panel { animation: fadeUp .3s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* comparison */
+    .check-y { color: #34d399; }
+    .check-n { color: rgba(255,255,255,.18); }
+
+    /* typing */
+    .cursor::after { content:'|'; animation: blink 1s step-end infinite; color: var(--indigo2); }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* result lines */
+    .rl { opacity:0; transform:translateX(-8px); transition: opacity .45s, transform .45s; }
+    .rl.show { opacity:1; transform:translateX(0); }
+
+    /* mockup window */
+    .mockup {
+      background: rgba(8,10,28,.95);
+      border: 1px solid rgba(99,102,241,.2); border-radius: 18px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03), 0 40px 90px rgba(0,0,0,.7), 0 0 70px rgba(99,102,241,.1);
     }
 
-    #graph-canvas, #mini-graph {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
+    /* src dot */
+    .sd { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* cta bottom */
+    .cta-section { background: linear-gradient(135deg, rgba(99,102,241,.08) 0%, rgba(34,211,238,.04) 100%); }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(99,102,241,.4); border-radius: 3px; }
   </style>
 </head>
-<body class="text-gray-100 font-sans antialiased overflow-x-hidden">
+<body class="font-sans antialiased overflow-x-hidden">
 
-  <!-- Accent strip -->
-  <div class="accent-strip fixed top-0 inset-x-0 z-[60]"></div>
+  <div class="top-strip fixed top-0 inset-x-0 z-[60]"></div>
 
-  <!-- Nav -->
-  <nav class="nav-glass fixed top-[2px] inset-x-0 z-50">
+  <!-- NAV -->
+  <nav class="nav fixed top-[2px] inset-x-0 z-50">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" fill="#7c3aed"/>
-          <circle cx="4" cy="6" r="2" fill="#818cf8" opacity="0.6"/>
-          <circle cx="20" cy="6" r="2" fill="#06b6d4" opacity="0.6"/>
-          <circle cx="4" cy="18" r="2" fill="#818cf8" opacity="0.6"/>
-          <circle cx="20" cy="18" r="2" fill="#06b6d4" opacity="0.6"/>
-          <line x1="4" y1="6" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.5"/>
-          <line x1="20" y1="6" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.5"/>
-          <line x1="4" y1="18" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.5"/>
-          <line x1="20" y1="18" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="12" cy="12" r="3" fill="#6366f1"/>
+          <circle cx="4"  cy="6"  r="2" fill="#818cf8" opacity=".6"/>
+          <circle cx="20" cy="6"  r="2" fill="#22d3ee" opacity=".6"/>
+          <circle cx="4"  cy="18" r="2" fill="#818cf8" opacity=".6"/>
+          <circle cx="20" cy="18" r="2" fill="#22d3ee" opacity=".6"/>
+          <line x1="4"  y1="6"  x2="12" y2="12" stroke="#6366f1" stroke-width="1.5" opacity=".5"/>
+          <line x1="20" y1="6"  x2="12" y2="12" stroke="#22d3ee" stroke-width="1.5" opacity=".5"/>
+          <line x1="4"  y1="18" x2="12" y2="12" stroke="#6366f1" stroke-width="1.5" opacity=".5"/>
+          <line x1="20" y1="18" x2="12" y2="12" stroke="#22d3ee" stroke-width="1.5" opacity=".5"/>
         </svg>
-        <span class="font-display text-2xl gradient-text" style="font-weight:400;letter-spacing:-0.04em;">Graphify</span>
+        <span class="font-display text-2xl grad-text" style="font-weight:400;letter-spacing:-.04em;">Graphify</span>
       </div>
-      <div class="hidden md:flex items-center gap-8 text-sm text-gray-500">
-        <a href="#how" class="hover:text-white transition-colors duration-200">How it works</a>
-        <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
-        <a href="#privacy" class="hover:text-white transition-colors duration-200">Privacy</a>
+      <div class="hidden md:flex items-center gap-8 text-sm" style="color:rgba(255,255,255,.45);">
+        <a href="#how" class="hover:text-white transition-colors">How it works</a>
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#usecases" class="hover:text-white transition-colors">Use cases</a>
+        <a href="#privacy" class="hover:text-white transition-colors">Privacy</a>
       </div>
-      <a href="#waitlist" class="cta-btn text-sm text-white px-5 py-2.5 rounded-xl font-medium">
-        Start Building
-      </a>
+      <a href="#waitlist" class="btn-primary text-white text-sm px-5 py-2.5 rounded-xl font-medium">Start Building</a>
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="relative min-h-screen flex items-center pt-16 overflow-hidden grid-bg">
+    <div class="orb w-[650px] h-[650px]" style="background:rgba(99,102,241,.14);top:-20%;left:-18%;"></div>
+    <div class="orb w-[450px] h-[450px]" style="background:rgba(34,211,238,.09);bottom:-10%;right:-8%;"></div>
+    <div class="orb w-[280px] h-[280px]" style="background:rgba(251,191,36,.06);top:45%;right:22%;"></div>
 
-    <!-- Background canvas -->
-    <canvas id="graph-canvas"></canvas>
+    <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-    <!-- Orbs -->
-    <div class="orb w-[700px] h-[700px] bg-violet-700/20" style="top:-20%;left:-15%;"></div>
-    <div class="orb w-[500px] h-[500px] bg-cyan-500/10" style="bottom:-10%;right:-10%;"></div>
-    <div class="orb w-[300px] h-[300px] bg-rose-500/8" style="top:40%;right:20%;"></div>
-
-    <div class="relative max-w-6xl mx-auto px-6 py-28 w-full">
-      <div class="grid lg:grid-cols-2 gap-14 items-center">
-
-        <!-- Copy -->
+        <!-- copy -->
         <div>
-          <div class="flex flex-wrap items-center gap-3 mb-10">
-            <div class="memory-bench-badge">
-              <span class="trophy">🏆</span>
-              #1 MemoryBench &mdash; beats all commercial tools
-            </div>
-            <div class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full"
-              style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;">
-              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#7c3aed;"></span>
+          <div class="flex flex-wrap gap-3 mb-10">
+            <div class="badge-bench">🏆 #1 MemoryBench &mdash; beats all commercial tools</div>
+            <div class="badge-live">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#6366f1;"></span>
               1,500+ on the list
             </div>
           </div>
 
-          <h1 class="display-headline text-[64px] md:text-[78px] text-white mb-8">
+          <h1 class="hl text-[62px] md:text-[76px] text-white mb-8">
             Any input.<br/>
             One graph.<br/>
-            <em class="gradient-text not-italic">Every answer.</em>
+            <em class="grad-text not-italic">Complete recall.</em>
           </h1>
 
-          <p class="text-lg text-gray-400 mb-10 max-w-md font-light" style="line-height:1.65;">
-            A knowledge graph of everything you do. Browser history, meetings, files, code &mdash; connected and queryable. Running entirely on your machine.
+          <p class="text-lg mb-10 max-w-md font-light" style="color:rgba(255,255,255,.5);line-height:1.65;">
+            The open-source knowledge graph engine. Feed it code, docs, papers, meetings or images &mdash; it maps the connections. Query anything. On your machine, forever.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-3 mb-8">
-            <a href="#waitlist" class="cta-btn text-white px-8 py-4 rounded-2xl font-medium text-center text-sm">
+          <div class="flex flex-col sm:flex-row gap-3 mb-10">
+            <a href="#waitlist" class="btn-primary text-white px-8 py-4 rounded-2xl font-medium text-center text-sm">
               Start Building &rarr;
             </a>
-            <a href="mailto:safishamsi98@gmail.com" class="ghost-btn px-8 py-4 rounded-2xl font-medium text-center text-sm">
+            <a href="mailto:safishamsi98@gmail.com" class="btn-ghost px-8 py-4 rounded-2xl font-medium text-center text-sm">
               Talk to Founder
             </a>
           </div>
 
-          <div class="flex flex-wrap items-center gap-5">
-            <span class="stat-pill">⭐ <strong>30,000</strong> GitHub stars</span>
-            <span class="stat-pill" style="color:rgba(255,255,255,0.15);">·</span>
-            <span class="stat-pill">⬇ <strong>215,000+</strong> downloads</span>
-            <span class="stat-pill" style="color:rgba(255,255,255,0.15);">·</span>
-            <span class="stat-pill">🔒 <strong>On-device</strong>, no cloud</span>
+          <div class="flex flex-wrap gap-5">
+            <span class="stat">⭐ <strong>30,000</strong> GitHub stars</span>
+            <span class="stat" style="color:rgba(255,255,255,.12);">·</span>
+            <span class="stat">⬇ <strong>215,000+</strong> downloads</span>
+            <span class="stat" style="color:rgba(255,255,255,.12);">·</span>
+            <span class="stat">🔒 <strong>On-device</strong>, no cloud</span>
           </div>
         </div>
 
-        <!-- Mockup -->
-        <div class="mockup-window overflow-hidden">
-          <!-- Title bar -->
-          <div class="flex items-center gap-2 px-4 py-3 border-b" style="border-color:rgba(255,255,255,0.05);">
-            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
-            <span class="ml-3 text-xs font-mono" style="color:rgba(255,255,255,0.2);">graphify — knowledge graph</span>
-          </div>
+        <!-- brain visual -->
+        <div class="brain-wrap">
+          <div class="brain-ring"></div>
+          <div class="brain-ring-2"></div>
+          <canvas id="brain-canvas"></canvas>
 
-          <div class="flex" style="height:430px;">
+          <!-- floating node labels -->
+          <span class="brain-label" style="top:12%;left:18%;animation-delay:.3s;">meeting.mp4</span>
+          <span class="brain-label" style="top:8%;right:15%;animation-delay:1.2s;">auth.py</span>
+          <span class="brain-label" style="bottom:18%;left:10%;animation-delay:.7s;">RFC-14.pdf</span>
+          <span class="brain-label" style="bottom:14%;right:12%;animation-delay:1.8s;">Q3-call</span>
+          <span class="brain-label" style="top:48%;left:4%;animation-delay:2.1s;">browser history</span>
+          <span class="brain-label" style="top:44%;right:2%;animation-delay:.9s;">competitor.pdf</span>
+        </div>
 
-            <!-- Sidebar -->
-            <div class="border-r flex-shrink-0 p-3 overflow-hidden" style="width:160px;border-color:rgba(255,255,255,0.05);">
-              <p class="px-2 mb-3" style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Sources</p>
-              <div class="space-y-0.5">
-                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs" style="background:rgba(124,58,237,0.15);color:#a78bfa;">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 1C6 1 4 3.5 4 6s2 5 2 5" stroke="currentColor" stroke-width="1"/><path d="M1 6h10" stroke="currentColor" stroke-width="1"/></svg>
-                  Browser
-                </div>
-                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs cursor-pointer" style="color:rgba(255,255,255,0.25);">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 5h4M4 7h2" stroke="currentColor" stroke-width="1"/></svg>
-                  Meetings
-                </div>
-                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs cursor-pointer" style="color:rgba(255,255,255,0.25);">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="2" y="1" width="8" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M4 4h4M4 6h4M4 8h2" stroke="currentColor" stroke-width="1"/></svg>
-                  Files
-                </div>
-                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs cursor-pointer" style="color:rgba(255,255,255,0.25);">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 4l2 2-2 2M7 8h2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  Code
-                </div>
-                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs cursor-pointer" style="color:rgba(255,255,255,0.25);">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M1 5h10" stroke="currentColor" stroke-width="1"/><circle cx="3.5" cy="3.5" r="0.5" fill="currentColor"/></svg>
-                  Email
-                </div>
-              </div>
+      </div>
+    </div>
+  </section>
 
-              <div class="mt-5 pt-4" style="border-top:1px solid rgba(255,255,255,0.05);">
-                <p class="px-2 mb-3" style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Recent</p>
-                <div class="space-y-2.5 px-2">
-                  <div class="flex items-center gap-1.5 text-xs" style="color:rgba(255,255,255,0.25);">
-                    <span class="src-dot" style="background:#7c3aed;"></span>
-                    <span class="truncate">pricing strategy</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs" style="color:rgba(255,255,255,0.25);">
-                    <span class="src-dot" style="background:#a855f7;"></span>
-                    <span class="truncate">Q3 roadmap call</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs" style="color:rgba(255,255,255,0.25);">
-                    <span class="src-dot" style="background:#22c55e;"></span>
-                    <span class="truncate">auth refactor</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs" style="color:rgba(255,255,255,0.25);">
-                    <span class="src-dot" style="background:#f59e0b;"></span>
-                    <span class="truncate">competitor.pdf</span>
-                  </div>
-                </div>
-              </div>
+  <!-- STATS STRIP -->
+  <div class="stats-strip fi">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex flex-wrap justify-center divide-x" style="divide-color:rgba(255,255,255,.06);">
+        <div class="stats-strip-item">
+          <span class="stats-strip-num grad-text" data-count="30000">0</span>
+          <span class="stats-strip-label">GitHub Stars</span>
+        </div>
+        <div class="stats-strip-item">
+          <span class="stats-strip-num" style="color:#22d3ee;" data-count="215000">0</span>
+          <span class="stats-strip-label">Downloads</span>
+        </div>
+        <div class="stats-strip-item">
+          <span class="stats-strip-num" style="color:#fbbf24;">#1</span>
+          <span class="stats-strip-label">MemoryBench 2025</span>
+        </div>
+        <div class="stats-strip-item">
+          <span class="stats-strip-num" style="color:#34d399;" data-count="20">0</span>
+          <span class="stats-strip-label">Languages Supported</span>
+        </div>
+        <div class="stats-strip-item">
+          <span class="stats-strip-num" style="color:#f472b6;" data-count="1500">0</span>
+          <span class="stats-strip-label">On Waitlist</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT IS GRAPHIFY -->
+  <section class="py-28 border-t" style="border-color:rgba(255,255,255,.05);">
+    <div class="max-w-4xl mx-auto px-6 text-center fi">
+      <p class="section-tag mb-5">What is Graphify</p>
+      <h2 class="hl text-5xl md:text-6xl text-white mb-8">
+        AI tools forget.<br/>
+        <em class="grad-warm not-italic">Graphify remembers everything.</em>
+      </h2>
+      <p class="text-lg font-light max-w-2xl mx-auto" style="color:rgba(255,255,255,.45);line-height:1.7;">
+        You paste the same context into every session. Your knowledge is scattered across 12 apps and none of them talk to each other. Graphify builds a persistent, queryable knowledge graph from every artifact of your working life &mdash; and keeps it on your machine.
+      </p>
+    </div>
+  </section>
+
+  <!-- OS + ENTERPRISE DUAL TRACK -->
+  <section class="py-20 border-t" style="border-color:rgba(255,255,255,.05);background:rgba(255,255,255,.012);">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14 fi">
+        <p class="section-tag mb-4">Two ways to use Graphify</p>
+        <h2 class="hl text-4xl text-white">Open source to enterprise-grade</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- OS track -->
+        <div class="track-card track-os fi fi-d1">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);">
+              <svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
             </div>
-
-            <!-- Main -->
-            <div class="flex-1 flex flex-col min-w-0">
-
-              <!-- Query bar -->
-              <div class="p-3" style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <div class="flex items-center gap-2 px-3 py-2 rounded-lg" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style="color:rgba(255,255,255,0.2);flex-shrink:0;">
-                    <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M9.5 9.5l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                  <span id="query-text" class="text-xs font-mono typing-cursor" style="color:rgba(255,255,255,0.45);"></span>
-                </div>
-              </div>
-
-              <!-- Graph -->
-              <div class="relative overflow-hidden" style="height:200px;">
-                <canvas id="mini-graph"></canvas>
-              </div>
-
-              <!-- Results -->
-              <div class="p-4 border-t" style="border-color:rgba(255,255,255,0.06);background:rgba(6,6,14,0.95);">
-                <div id="results" class="space-y-2">
-                  <div class="result-line flex items-start gap-2">
-                    <span class="src-dot mt-1 flex-shrink-0" style="background:#a855f7;"></span>
-                    <span class="text-xs" style="color:rgba(255,255,255,0.45);">Q3 call mentioned auth refactor as the blocker</span>
-                  </div>
-                  <div class="result-line flex items-start gap-2">
-                    <span class="src-dot mt-1 flex-shrink-0" style="background:#22c55e;"></span>
-                    <span class="text-xs" style="color:rgba(255,255,255,0.45);">auth module modified 3 days after that meeting</span>
-                  </div>
-                  <div class="result-line flex items-start gap-2">
-                    <span class="src-dot mt-1 flex-shrink-0" style="background:#7c3aed;"></span>
-                    <span class="text-xs" style="color:rgba(255,255,255,0.45);">you read 4 articles on JWT vs session tokens that week</span>
-                  </div>
-                  <div class="result-line flex items-start gap-2">
-                    <span class="src-dot mt-1 flex-shrink-0" style="background:#f59e0b;"></span>
-                    <span class="text-xs" style="color:rgba(255,255,255,0.45);">competitor analysis flags auth as their weak point</span>
-                  </div>
-                </div>
-              </div>
-
+            <div>
+              <p class="font-semibold text-white">Open Source</p>
+              <p class="text-xs" style="color:rgba(255,255,255,.35);">MIT License &mdash; free forever</p>
             </div>
           </div>
+          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.4);color:#34d399;border:1px solid rgba(52,211,153,.15);">
+            pip install graphifyy &amp;&amp; graphify .
+          </div>
+          <div class="space-y-0">
+            <div class="track-feature"><div class="track-dot" style="background:#818cf8;"></div><div><p class="text-sm text-white">AST extraction across 20 languages</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Python, JS, Go, Rust, Java and more</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#22d3ee;"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Markdown, PDF, HTML, MDX, images via vision</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#34d399;"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">HTML export, community clustering, god-nodes</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#818cf8;"></div><div><p class="text-sm text-white">30,000 ⭐ on GitHub</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">215,000+ downloads, active community</p></div></div>
+          </div>
+          <div class="mt-6">
+            <a href="https://github.com/safishamsi/graphify" class="text-sm font-medium" style="color:#818cf8;">View on GitHub &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Enterprise track -->
+        <div class="track-card track-enterprise fi fi-d2">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);">
+              <svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white">Enterprise</p>
+              <p class="text-xs" style="color:rgba(255,255,255,.35);">Coming soon &mdash; join waitlist</p>
+            </div>
+          </div>
+          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.4);color:#fbbf24;border:1px solid rgba(251,191,36,.15);">
+            graphify enterprise --air-gapped --team
+          </div>
+          <div class="space-y-0">
+            <div class="track-feature"><div class="track-dot" style="background:#fbbf24;"></div><div><p class="text-sm text-white">Air-gapped deployment</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Runs entirely on-prem, zero external calls</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#fb923c;"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Shared graph across your org, role-based access</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#f472b6;"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">SOC 2 ready, 99.9% uptime SLA</p></div></div>
+            <div class="track-feature"><div class="track-dot" style="background:#fbbf24;"></div><div><p class="text-sm text-white">Priority support</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Dedicated Slack, onboarding &amp; custom integrations</p></div></div>
+          </div>
+          <div class="mt-6">
+            <a href="mailto:safishamsi98@gmail.com" class="text-sm font-medium" style="color:#fbbf24;">Talk to us about enterprise &rarr;</a>
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- What you'll ask it -->
-  <section class="py-24 border-t" style="border-color:rgba(255,255,255,0.05);">
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-28 border-t grid-bg" style="border-color:rgba(255,255,255,.05);">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="fade-in text-center mb-14">
-        <p class="section-label mb-4">What you'll ask it</p>
-        <h2 class="display-headline text-5xl text-white">Questions you couldn't answer before</h2>
+      <div class="text-center mb-20 fi">
+        <p class="section-tag mb-4">How it works</p>
+        <h2 class="hl text-5xl text-white">Three steps to your knowledge graph</h2>
       </div>
-      <div class="grid md:grid-cols-2 gap-4 fade-in">
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(124,58,237,0.8);">› Why did we delay the Q3 launch?</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Traces back through meeting transcripts, emails, and Slack exports. Shows you the exact moment the decision was made and what prompted it.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(6,182,212,0.8);">› What was that article I read about embeddings two weeks ago?</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Pulls it from your browser history, connects it to the notes you made that same day, surfaces related papers you had open at the time.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(245,158,11,0.8);">› Show me everything connected to the Acme deal</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Every call, email, proposal draft, legal comment, and Slack thread — mapped into one graph. Nothing buried, nothing forgotten.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(244,63,94,0.8);">› When did the auth refactor get discussed and what came out of it?</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Links the meeting where it came up, the code commits that followed, the Stack Overflow tabs you had open, and the PR that closed it.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(168,85,247,0.8);">› What context did I have going into last week's board call?</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Reconstructs what you read, wrote, and discussed in the 48 hours before. Walk into the follow-up with the same clarity you had in the room.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-          <p class="text-xs font-mono mb-3" style="color:rgba(34,197,94,0.8);">› What do I keep coming back to but never finishing?</p>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.4);">Spots the tabs you reopen, the notes you revisit, the ideas that surface in meetings but never ship. Your real priorities, revealed by your behaviour.</p>
-        </div>
-
-      </div>
-      <div class="text-center mt-10 fade-in">
-        <a href="#waitlist" class="cta-btn text-white px-8 py-4 rounded-2xl font-medium text-sm inline-block">Get early access — free</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Professions -->
-  <section class="py-20 border-t" style="border-color:rgba(255,255,255,0.05);">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="fade-in text-center mb-12">
-        <p class="section-label mb-4">Who it's for</p>
-        <h2 class="display-headline text-5xl text-white">Built for people whose<br/><em class="gradient-text not-italic">work lives in their head</em></h2>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 fade-in">
-
-        <div class="glass-card rounded-2xl p-5 hover:border-violet-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">⚖️</div>
-          <h3 class="font-medium text-white text-sm mb-2">Lawyers</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Trace a clause back to the negotiation call that prompted it. Every contract, email, and precedent — connected.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-cyan-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">📊</div>
-          <h3 class="font-medium text-white text-sm mb-2">Consultants</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Walk into every client meeting with full context — past deliverables, open questions, relationship history, all in one query.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-amber-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🏦</div>
-          <h3 class="font-medium text-white text-sm mb-2">Finance &amp; Banking</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Connect deal memos, earnings calls, and market research. Reconstruct the reasoning behind any position instantly.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-rose-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🏥</div>
-          <h3 class="font-medium text-white text-sm mb-2">Doctors &amp; Clinicians</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Link patient notes, literature, and referrals across time. Spot patterns across cases without searching through folders.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-violet-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🎯</div>
-          <h3 class="font-medium text-white text-sm mb-2">Executives &amp; Founders</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Know what led to every decision. Board calls, strategy docs, and one-on-ones — the full context, always at hand.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-cyan-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🔬</div>
-          <h3 class="font-medium text-white text-sm mb-2">Researchers &amp; Academics</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Papers, notes, and citations cross-linked automatically. Find the connection between ideas you read six months apart.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-amber-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🤝</div>
-          <h3 class="font-medium text-white text-sm mb-2">Sales &amp; Account Managers</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Every call, email, and proposal for every account — mapped. Walk into renewals knowing more than the CRM ever did.</p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-5 hover:border-rose-500/30 transition-all duration-300">
-          <div class="text-2xl mb-3">🛡️</div>
-          <h3 class="font-medium text-white text-sm mb-2">Policy &amp; Government</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Legislative history, briefings, stakeholder calls — connected into one searchable record. Brief anyone in minutes.</p>
-        </div>
-
-      </div>
-      <div class="text-center mt-10 fade-in">
-        <a href="#waitlist" class="cta-btn text-white px-8 py-4 rounded-2xl font-medium text-sm inline-block">Get early access — free</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Problem -->
-  <section class="py-28 border-t" style="border-color:rgba(255,255,255,0.05);">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <div class="fade-in">
-        <h2 class="display-headline text-5xl md:text-6xl text-white mb-6">
-          AI tools forget everything<br/>
-          <span class="gradient-text-warm">the moment the chat ends.</span>
-        </h2>
-        <p class="text-lg font-light mb-20 max-w-2xl mx-auto" style="color:rgba(255,255,255,0.35);line-height:1.7;">
-          You paste the same context into every session. Your knowledge is scattered across 12 apps and none of them talk to each other.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-5">
-        <div class="grad-border p-7 text-left fade-in fade-in-delay-1">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;">
-              <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M12.5 12.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M8 5v3l2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="font-medium text-white mb-2 text-base">Cannot find what you have seen</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">That article from last Tuesday. That Slack thread from two weeks ago. Gone from every tool you use.</p>
-        </div>
-        <div class="grad-border p-7 text-left fade-in fade-in-delay-2">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;">
-              <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3 class="font-medium text-white mb-2 text-base">Constant re-explaining</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Every AI session starts blank. You paste the same background into every conversation, every time.</p>
-        </div>
-        <div class="grad-border p-7 text-left fade-in fade-in-delay-3">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;">
-              <circle cx="5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <circle cx="15" cy="5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <circle cx="15" cy="15" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M7.5 9l5-3M7.5 11l5 3" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <h3 class="font-medium text-white mb-2 text-base">Connections stay invisible</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">The meeting, the doc, and the code are all related. No tool shows you how they connect.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section id="how" class="py-28 border-t grid-bg" style="border-color:rgba(255,255,255,0.05);">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-20 fade-in">
-        <p class="section-label mb-4">How it works</p>
-        <h2 class="display-headline text-5xl text-white">Three steps to your knowledge graph</h2>
-      </div>
-
       <div class="grid md:grid-cols-3 gap-10">
-        <div class="fade-in fade-in-delay-1">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-mono font-semibold mb-7" style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;">01</div>
-          <h3 class="text-lg font-medium text-white mb-3">Captures everything</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Browser history from Chrome and Safari. Meeting transcripts. Files, emails, code, PDFs, images. Every artifact of your working day, continuously.</p>
+        <div class="relative fi fi-d1">
+          <div class="step-num" style="background:rgba(99,102,241,.14);border:1px solid rgba(99,102,241,.28);color:#818cf8;">01</div>
+          <div class="hidden md:block step-connector"></div>
+          <h3 class="text-lg font-medium text-white mb-3">Feed it everything</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Code repos, PDFs, Markdown docs, research papers, images, meeting transcripts. Any artifact of your working life, continuously captured.</p>
         </div>
-        <div class="fade-in fade-in-delay-2">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-mono font-semibold mb-7" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);color:#67e8f9;">02</div>
-          <h3 class="text-lg font-medium text-white mb-3">Builds the graph</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Every piece of information becomes a node. Relationships -- calls, citations, concepts -- become edges. A live map of your knowledge that grows with you.</p>
+        <div class="relative fi fi-d2">
+          <div class="step-num" style="background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);color:#22d3ee;">02</div>
+          <div class="hidden md:block step-connector"></div>
+          <h3 class="text-lg font-medium text-white mb-3">Graph is built</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Every entity becomes a node. Every relationship &mdash; function calls, citations, shared concepts, temporal co-occurrence &mdash; becomes an edge. Leiden clustering finds communities automatically.</p>
         </div>
-        <div class="fade-in fade-in-delay-3">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-mono font-semibold mb-7" style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.2);color:#fb7185;">03</div>
-          <h3 class="text-lg font-medium text-white mb-3">You query it</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Ask anything. "What connects this meeting to that codebase?" "What did I read about pricing last month?" Answers in seconds, with sources.</p>
+        <div class="fi fi-d3">
+          <div class="step-num" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.22);color:#fbbf24;">03</div>
+          <h3 class="text-lg font-medium text-white mb-3">Query anything</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">"What connects this meeting to that codebase?" "What did I read about pricing last month?" Answers in seconds, with sources, paths, and confidence scores.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section id="features" class="py-28 border-t" style="border-color:rgba(255,255,255,0.05);">
+  <!-- FEATURES -->
+  <section id="features" class="py-28 border-t" style="border-color:rgba(255,255,255,.05);">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-20 fade-in">
-        <p class="section-label mb-4">Features</p>
-        <h2 class="display-headline text-5xl text-white mb-5">Everything you touch,<br/><span class="gradient-text">connected.</span></h2>
-        <p class="text-base font-light max-w-xl mx-auto" style="color:rgba(255,255,255,0.35);">Not just meetings. Not just code. Your entire working context -- captured, structured, and queryable.</p>
+      <div class="text-center mb-20 fi">
+        <p class="section-tag mb-4">Features</p>
+        <h2 class="hl text-5xl text-white mb-5">Everything you touch,<br/><span class="grad-text">connected.</span></h2>
+        <p class="text-base font-light max-w-xl mx-auto" style="color:rgba(255,255,255,.38);">Not just meetings. Not just code. Your entire working context &mdash; captured, structured, and queryable.</p>
       </div>
-
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5S7.5 5.5 7.5 10s2.5 7.5 2.5 7.5" stroke="currentColor" stroke-width="1"/><path d="M2.5 10h15" stroke="currentColor" stroke-width="1"/></svg>
-          </div>
+
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5S7.5 5.5 7.5 10s2.5 7.5 2.5 7.5" stroke="currentColor" stroke-width="1"/><path d="M2.5 10h15" stroke="currentColor" stroke-width="1"/></svg></div>
           <h3 class="font-medium text-white mb-2">Browser history</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Chrome, Safari, Firefox. Every page becomes a node. Search patterns reveal what you were thinking and when.</p>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Chrome, Safari, Firefox. Every page becomes a node. Search patterns reveal what you were thinking and when.</p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in fade-in-delay-1">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5H11l-3 3v-3H4.5A1.5 1.5 0 013 12.5v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M7 7.5h6M7 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-          </div>
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d1">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#22d3ee;"><path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5H11l-3 3v-3H4.5A1.5 1.5 0 013 12.5v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M7 7.5h6M7 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
           <h3 class="font-medium text-white mb-2">Meetings</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Automatic transcription and extraction. Decisions, action items, concepts -- all connected to your wider context.</p>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Automatic transcription and extraction. Decisions, action items, concepts &mdash; all connected to your wider context.</p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in fade-in-delay-2">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3 class="font-medium text-white mb-2">Code</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">AST-level extraction across 20 languages. Functions, classes, call graphs -- your codebase becomes part of the twin.</p>
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d2">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#34d399;"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="font-medium text-white mb-2">Code &amp; AST</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">AST-level extraction across 20 languages. Functions, classes, call graphs &mdash; your codebase becomes part of the graph.</p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><path d="M4 2h9l4 4v12a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M13 2v4h4M7 9h6M7 12h6M7 15h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-          </div>
-          <h3 class="font-medium text-white mb-2">Docs and files</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">PDFs, Word docs, Markdown, spreadsheets. Papers you have read, specs you have written -- all in the graph.</p>
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#fb923c;"><path d="M4 2h9l4 4v12a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M13 2v4h4M7 9h6M7 12h6M7 15h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+          <h3 class="font-medium text-white mb-2">Docs &amp; papers</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">PDFs, Markdown, HTML, MDX, Word docs. Papers you have read, specs you have written &mdash; all in the graph.</p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in fade-in-delay-1">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><rect x="2" y="3" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="2" stroke="currentColor" stroke-width="1"/><path d="M2 14l4-3 3 2.5 3-3 6 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3 class="font-medium text-white mb-2">Images and diagrams</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">Whiteboards, screenshots, architecture diagrams. Vision extraction connects images regardless of language.</p>
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d1">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#f472b6;"><rect x="2" y="3" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="2" stroke="currentColor" stroke-width="1"/><path d="M2 14l4-3 3 2.5 3-3 6 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="font-medium text-white mb-2">Images &amp; diagrams</h3>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Whiteboards, screenshots, architecture diagrams. Vision extraction connects images regardless of language.</p>
         </div>
 
-        <div class="glass-card rounded-2xl p-7 transition-all duration-300 fade-in fade-in-delay-2">
-          <div class="feat-icon">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#a78bfa;"><circle cx="5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="15" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 9l5-3M7.5 11l5 3" stroke="currentColor" stroke-width="1.5"/></svg>
-          </div>
+        <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d2">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><circle cx="5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="15" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 9l5-3M7.5 11l5 3" stroke="currentColor" stroke-width="1.5"/></svg></div>
           <h3 class="font-medium text-white mb-2">Surprising connections</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,0.35);">The graph surfaces relationships you did not know existed -- across browser sessions, meetings, and files from months apart.</p>
+          <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Leiden clustering surfaces communities and god-nodes you didn't know existed &mdash; across months of work.</p>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Use Cases -->
-  <section id="usecases" class="py-28 border-t" style="border-color:rgba(255,255,255,0.05);">
+  <!-- USE CASES -->
+  <section id="usecases" class="py-28 border-t" style="border-color:rgba(255,255,255,.05);">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-16 fade-in">
-        <p class="section-label mb-4">Use cases</p>
-        <h2 class="display-headline text-5xl text-white mb-5">Built for everyone<br><em>who works with knowledge</em></h2>
-        <p class="text-base font-light max-w-xl mx-auto" style="color:rgba(255,255,255,0.35);">If your work involves reading, writing, deciding, or advising -- your context belongs to you.</p>
+      <div class="text-center mb-16 fi">
+        <p class="section-tag mb-4">Use cases</p>
+        <h2 class="hl text-5xl text-white mb-5">Built for everyone<br><em class="grad-text not-italic">who works with knowledge</em></h2>
+        <p class="text-base font-light max-w-xl mx-auto" style="color:rgba(255,255,255,.38);">If your work involves reading, writing, deciding, or advising &mdash; your context belongs to you.</p>
       </div>
 
-      <!-- Tab row -->
-      <div class="fade-in mb-10 overflow-x-auto pb-2">
+      <div class="fi mb-10 overflow-x-auto pb-2">
         <div id="uc-tabs" class="flex gap-2 min-w-max mx-auto" style="width:fit-content;">
           <button onclick="showUC(0)" class="uc-tab uc-tab-active" data-idx="0">Business</button>
           <button onclick="showUC(1)" class="uc-tab" data-idx="1">Creative</button>
@@ -775,764 +602,562 @@
         </div>
       </div>
 
-      <!-- Tab panels -->
-      <div id="uc-panels" class="fade-in">
+      <div id="uc-panels" class="fi">
 
-        <!-- 0: Business Leadership -->
         <div class="uc-panel" data-idx="0">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.25);">
-                  <svg width="18" height="18" fill="none" stroke="#7c3aed" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Business Leadership</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Founders, executives, board members, managers</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);"><svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div><p class="text-base font-medium text-white">Business Leadership</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Founders, executives, board members, managers</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Graphify connects all of it into a living graph so you always know what led to what — and why.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Graphify connects all of it into a living graph so you always know what led to what &mdash; and why.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5">
-                  <div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#7c3aed;"></div>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.4);">Understand which meeting influenced a pricing change months later</p>
-                </div>
-                <div class="flex items-start gap-2.5">
-                  <div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#7c3aed;"></div>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.4);">Walk into board reviews with full context, not a search session</p>
-                </div>
-                <div class="flex items-start gap-2.5">
-                  <div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#7c3aed;"></div>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect team commitments across scattered documents and calls</p>
-                </div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#6366f1;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Understand which meeting influenced a pricing change months later</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#6366f1;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Walk into board reviews with full context, not a search session</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#6366f1;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect team commitments across scattered documents and calls</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
-              <p class="text-sm font-mono mb-5" style="color:#a78bfa;">"What discussions led to the Series B pricing decision?"</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
+              <p class="text-sm font-mono mb-5" style="color:#818cf8;">"What discussions led to the Series B pricing decision?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#7c3aed;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Investor call (Feb 12) flagged $18/seat as ceiling for SMB</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Sales deck revised to $15 four days later</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Competitor benchmarks tab was open 11 times that week</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">CFO email: "hold at 15 until pipeline clears"</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#6366f1;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Investor call (Feb 12) flagged $18/seat as ceiling for SMB</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Sales deck revised to $15 four days later</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Competitor benchmarks tab was open 11 times that week</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">CFO email: "hold at 15 until pipeline clears"</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 1: Creative -->
         <div class="uc-panel hidden" data-idx="1">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#06b6d4" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Creative Professionals</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Marketers, designers, writers, content leads</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.2);"><svg width="18" height="18" fill="none" stroke="#22d3ee" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+                <div><p class="text-base font-medium text-white">Creative Professionals</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Marketers, designers, writers, content leads</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Good creative work rarely happens in a vacuum. A brief connects to a reference deck, a Figma comment connects to a client email, a rejected concept quietly reappears in the final version. Graphify gives you the thread between ideas you didn't know were related.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Good creative work rarely happens in a vacuum. A brief connects to a reference deck, a Figma comment connects to a client email, a rejected concept quietly reappears in the final version. Graphify gives you the thread between ideas you didn't know were related.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#06b6d4;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Trace which brief led to which concept iteration</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#06b6d4;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Find the reference image that inspired a campaign direction</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#06b6d4;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect client feedback across three channels into one view</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22d3ee;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Trace which brief led to which concept iteration</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22d3ee;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Find the reference image that inspired a campaign direction</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22d3ee;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect client feedback across three channels into one view</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
-              <p class="text-sm font-mono mb-5" style="color:#06b6d4;">"What client feedback shaped the brand refresh direction?"</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
+              <p class="text-sm font-mono mb-5" style="color:#22d3ee;">"What client feedback shaped the brand refresh direction?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Kickoff call: "feels too corporate, needs warmth"</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">3 Figma comments flagging the previous palette as cold</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Moodboard saved: warm beige and terracotta references</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#22c55e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Final deck approved, palette shifted 3 days after feedback</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Kickoff call: "feels too corporate, needs warmth"</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">3 Figma comments flagging the previous palette as cold</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Moodboard saved: warm beige and terracotta references</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Final deck approved, palette shifted 3 days after feedback</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 2: Client-facing -->
         <div class="uc-panel hidden" data-idx="2">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#f59e0b" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Client-facing Professionals</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Sales, consultants, account managers, advisors</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.2);"><svg width="18" height="18" fill="none" stroke="#fb923c" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div><p class="text-base font-medium text-white">Client-facing Professionals</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Sales, consultants, account managers, advisors</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Walking into a renewal or upsell without the full picture is a risk. Graphify maps every touchpoint so you always know where things stand — before you open the meeting.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Walking into a renewal or upsell without the full picture is a risk. Graphify maps every touchpoint so you always know where things stand &mdash; before you open the meeting.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f59e0b;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Recall every promise made across a multi-month deal</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f59e0b;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Surface objections raised on past calls before the next one</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f59e0b;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">See which contacts are tied to which decisions across accounts</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fb923c;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Recall every promise made across a multi-month deal</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fb923c;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Surface objections raised on past calls before the next one</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fb923c;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">See which contacts are tied to which decisions across accounts</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
-              <p class="text-sm font-mono mb-5" style="color:#f59e0b;">"What did Acme flag as blockers in Q4?"</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
+              <p class="text-sm font-mono mb-5" style="color:#fb923c;">"What did Acme flag as blockers in Q4?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Oct 3 call: procurement needs SSO before sign-off</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Nov email: legal reviewing data residency clause</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#22c55e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">SSO shipped Dec 1 -- not mentioned in follow-up yet</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Budget freeze email from CFO alias, Jan 9</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fb923c;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Oct 3 call: procurement needs SSO before sign-off</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Nov email: legal reviewing data residency clause</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">SSO shipped Dec 1 &mdash; not mentioned in follow-up yet</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Budget freeze email from CFO alias, Jan 9</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 3: Legal -->
         <div class="uc-panel hidden" data-idx="3">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#f43f5e" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Legal & Professional Services</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Solicitors, barristers, compliance officers, auditors</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(244,114,182,.12);border:1px solid rgba(244,114,182,.2);"><svg width="18" height="18" fill="none" stroke="#f472b6" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                <div><p class="text-base font-medium text-white">Legal &amp; Professional Services</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Solicitors, barristers, compliance officers, auditors</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Cases and matters span years of correspondence, precedents, filings, and instructions. Finding what influenced a clause -- or what a client was told three months ago -- shouldn't require a manual document trawl. Graphify builds the graph across all of it, privately on your machine.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Cases and matters span years of correspondence, precedents, filings, and instructions. Finding what influenced a clause &mdash; or what a client was told three months ago &mdash; shouldn't require a manual document trawl. Graphify builds the graph across all of it, privately on your machine.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f43f5e;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Trace a contract clause back to the email that prompted it</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f43f5e;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Surface related precedents across matters without manual search</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f43f5e;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect client instructions across months of correspondence</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f472b6;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Trace a contract clause back to the email that prompted it</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f472b6;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Surface related precedents across matters without manual search</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f472b6;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect client instructions across months of correspondence</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
-              <p class="text-sm font-mono mb-5" style="color:#f43f5e;">"What led to the indemnity cap revision in the SPA?"</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
+              <p class="text-sm font-mono mb-5" style="color:#f472b6;">"What led to the indemnity cap revision in the SPA?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f43f5e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Client email (Mar 4): "cap feels too low given IP exposure"</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Counsel note references precedent in Henderson v. Argyle</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Revised SPA draft uploaded Mar 11 -- cap increased 2x</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Counter-party accepted without further negotiation</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#f472b6;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Client email (Mar 4): "cap feels too low given IP exposure"</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Counsel note references precedent in Henderson v. Argyle</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Revised SPA draft uploaded Mar 11 &mdash; cap increased 2x</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Counter-party accepted without further negotiation</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 4: Health -->
         <div class="uc-panel hidden" data-idx="4">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Health Professionals</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Doctors, therapists, clinicians, researchers</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.2);"><svg width="18" height="18" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+                <div><p class="text-base font-medium text-white">Health Professionals</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Doctors, therapists, clinicians, researchers</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Patient care involves connecting observations across appointments, test results, referrals, and research notes. Graphify builds that picture locally — no patient data uploaded, no cloud dependency — so you can surface patterns without compromising confidentiality.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Patient care involves connecting observations across appointments, test results, referrals, and research notes. Graphify builds that picture locally &mdash; no patient data uploaded, no cloud dependency &mdash; so you can surface patterns without compromising confidentiality.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect symptoms across multiple appointments over time</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Link research notes to relevant cases without manual tagging</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Stays fully on-device -- no data leaves your machine</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect symptoms across multiple appointments over time</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Link research notes to relevant cases without manual tagging</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Stays fully on-device &mdash; no data leaves your machine</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
               <p class="text-sm font-mono mb-5" style="color:#34d399;">"When did fatigue first appear in this patient's notes?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Session notes (Aug): "low energy, attributed to stress"</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Blood panel (Sep): ferritin borderline, not flagged</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Oct referral letter mentions fatigue as presenting complaint</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Research tab: iron deficiency anaemia symptoms -- same week</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Session notes (Aug): "low energy, attributed to stress"</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Blood panel (Sep): ferritin borderline, not flagged</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Oct referral letter mentions fatigue as presenting complaint</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Research tab: iron deficiency anaemia symptoms &mdash; same week</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 5: Technical -->
         <div class="uc-panel hidden" data-idx="5">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(79,70,229,0.15);border:1px solid rgba(79,70,229,0.25);">
-                  <svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Technical & Product</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Developers, engineers, product managers, architects</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.25);"><svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                <div><p class="text-base font-medium text-white">Technical &amp; Product</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Developers, engineers, product managers, architects</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Six months after a decision, the Slack thread is buried and the RFC is stale. Graphify connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them — without asking someone who might have left.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Six months after a decision, the Slack thread is buried and the RFC is stale. Graphify connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them &mdash; without asking someone who might have left.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Understand why a library was chosen six months ago</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect a bug to the spec change that introduced it</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Onboard to a codebase by querying its decisions, not just its code</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Understand why a library was chosen six months ago</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect a bug to the spec change that introduced it</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Onboard to a codebase by querying its decisions, not just its code</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
               <p class="text-sm font-mono mb-5" style="color:#818cf8;">"Why did we move from REST to gRPC on the data pipeline?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">RFC-14: latency benchmarks show 3x improvement with gRPC</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Design meeting notes: REST payload size flagged as bottleneck</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#22c55e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">pipeline.go rewritten -- commit refs RFC-14</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">4 gRPC articles bookmarked in the two weeks prior</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">RFC-14: latency benchmarks show 3x improvement with gRPC</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Design meeting notes: REST payload size flagged as bottleneck</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">pipeline.go rewritten &mdash; commit refs RFC-14</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">4 gRPC articles bookmarked in the two weeks prior</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 6: Research -->
         <div class="uc-panel hidden" data-idx="6">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Knowledge & Education</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Researchers, academics, analysts, students</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);"><svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+                <div><p class="text-base font-medium text-white">Knowledge &amp; Education</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Researchers, academics, analysts, students</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">The most useful insight is often the one connecting two sources you read three months apart. Graphify builds a living map of your reading — papers, notes, articles, annotations — so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">The most useful insight is often the one connecting two sources you read three months apart. Graphify builds a living map of your reading &mdash; papers, notes, articles, annotations &mdash; so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Find conceptual links across papers read months apart</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">See which sources cluster around a research question</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Identify gaps -- what you haven't read that you should</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Find conceptual links across papers read months apart</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">See which sources cluster around a research question</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Identify gaps &mdash; what you haven't read that you should</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
               <p class="text-sm font-mono mb-5" style="color:#fbbf24;">"What connects attention mechanisms to my notes on memory?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Vaswani et al. -- attention as soft memory retrieval</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Your note (Nov): "query-key-value mirrors associative recall"</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Hopfield Networks paper -- saved same week, not linked yet</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#22c55e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Draft chapter 3 references both without citing connection</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Vaswani et al. &mdash; attention as soft memory retrieval</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Your note (Nov): "query-key-value mirrors associative recall"</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Hopfield Networks paper &mdash; saved same week, not linked yet</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Draft chapter 3 references both without citing connection</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 7: Defence -->
         <div class="uc-panel hidden" data-idx="7">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.18);">
-                  <svg width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Defence & Intelligence</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Analysts, officers, policy advisors, planners</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.18);"><svg width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div><p class="text-base font-medium text-white">Defence &amp; Intelligence</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Analysts, officers, policy advisors, planners</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Air-gapped by design. Graphify processes everything locally — no cloud, no telemetry, no external API calls during analysis. Build structured intelligence graphs from documents, briefings, and signals without anything leaving the machine.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Air-gapped by design. Graphify processes everything locally &mdash; no cloud, no telemetry, no external API calls during analysis. Build structured intelligence graphs from documents, briefings, and signals without anything leaving the machine.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Build entity graphs from documents without network exposure</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect signals and sources across classified briefings</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Fully offline -- runs on your hardware, stays on your hardware</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Build entity graphs from documents without network exposure</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect signals and sources across classified briefings</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Fully offline &mdash; runs on your hardware, stays on your hardware</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
               <p class="text-sm font-mono mb-5" style="color:#94a3b8;">"What sources connect to the logistics corridor assessment?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#94a3b8;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Briefing (Oct): corridor capacity flagged as constrained</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a855f7;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Imagery report references same route, different framing</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">OSINT note: infrastructure works started Nov 14</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">3 analyst notes -- none cross-referenced before this query</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#94a3b8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Briefing (Oct): corridor capacity flagged as constrained</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Imagery report references same route, different framing</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">OSINT note: infrastructure works started Nov 14</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">3 analyst notes &mdash; none cross-referenced before this query</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 8: Personal -->
         <div class="uc-panel hidden" data-idx="8">
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.2);">
-                  <svg width="18" height="18" fill="none" stroke="#a78bfa" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </div>
-                <div>
-                  <p class="text-base font-medium text-white">Personal & Household</p>
-                  <p class="text-xs" style="color:rgba(255,255,255,0.3);">Individuals, household managers, caretakers</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.2);"><svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                <div><p class="text-base font-medium text-white">Personal &amp; Household</p><p class="text-xs" style="color:rgba(255,255,255,.3);">Individuals, household managers, caretakers</p></div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your life generates more information than any tool tracks. Medical appointments, financial decisions, school correspondence, care plans -- scattered across apps, browsers, and paper. Graphify connects all of it into one private, searchable graph on your device.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,.55);">Your life generates more information than any tool tracks. Medical appointments, financial decisions, school correspondence, care plans &mdash; scattered across apps, browsers, and paper. Graphify connects all of it into one private, searchable graph on your device.</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#a78bfa;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Track medical history, prescriptions, and appointment notes</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#a78bfa;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect financial decisions, warranties, and contracts over time</p></div>
-                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#a78bfa;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Manage care plans and school records for multiple people</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Track medical history, prescriptions, and appointment notes</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Connect financial decisions, warranties, and contracts over time</p></div>
+                <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,.4);">Manage care plans and school records for multiple people</p></div>
               </div>
             </div>
-            <div class="grad-border p-5 rounded-xl" style="background:rgba(8,8,18,0.6);">
-              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,0.2);">Example query</p>
-              <p class="text-sm font-mono mb-5" style="color:#a78bfa;">"What was said at the last GP appointment about the prescription?"</p>
+            <div class="grad-border p-5" style="background:rgba(8,10,28,.6);">
+              <p class="text-xs font-mono mb-4" style="color:rgba(255,255,255,.2);">Example query</p>
+              <p class="text-sm font-mono mb-5" style="color:#818cf8;">"What was said at the last GP appointment about the prescription?"</p>
               <div class="space-y-2.5">
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#a78bfa;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Notes (Sep 2): dose adjusted, review in 6 weeks</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#22c55e;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Pharmacy email: repeat prescription issued Oct 4</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#06b6d4;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Browser: side effects page visited twice that week</span></div>
-                <div class="flex items-start gap-2"><span class="src-dot mt-1.5 flex-shrink-0" style="background:#f59e0b;"></span><span class="text-xs" style="color:rgba(255,255,255,0.45);">Reminder set for follow-up -- not yet booked</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#818cf8;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Notes (Sep 2): dose adjusted, review in 6 weeks</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#34d399;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Pharmacy email: repeat prescription issued Oct 4</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22d3ee;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Browser: side effects page visited twice that week</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#fbbf24;"></span><span class="text-xs" style="color:rgba(255,255,255,.45);">Reminder set for follow-up &mdash; not yet booked</span></div>
               </div>
             </div>
           </div>
         </div>
 
-      </div><!-- /panels -->
+      </div>
     </div>
   </section>
 
-  <!-- vs -->
-  <section class="py-28 border-t" style="border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.01);">
-    <div class="max-w-3xl mx-auto px-6 fade-in">
+  <!-- COMPARISON -->
+  <section class="py-28 border-t" style="border-color:rgba(255,255,255,.05);background:rgba(255,255,255,.01);">
+    <div class="max-w-3xl mx-auto px-6 fi">
       <div class="text-center mb-14">
-        <h2 class="display-headline text-5xl text-white mb-4">Recall vs relationships</h2>
-        <p class="text-base font-light" style="color:rgba(255,255,255,0.35);">Other tools help you find things. We help you understand how they connect.</p>
+        <h2 class="hl text-5xl text-white mb-4">Recall vs relationships</h2>
+        <p class="text-base font-light" style="color:rgba(255,255,255,.35);">Other tools help you find things. We help you understand how they connect.</p>
       </div>
-
       <div class="grad-border overflow-hidden">
         <table class="w-full text-sm">
           <thead>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
-              <th class="text-left py-4 px-7 font-normal w-1/2" style="color:rgba(255,255,255,0.2);"></th>
-              <th class="py-4 px-5 text-center font-normal" style="color:rgba(255,255,255,0.3);">Others</th>
-              <th class="py-4 px-5 text-center font-medium gradient-text">Graphify</th>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+              <th class="text-left py-4 px-7 font-normal w-1/2" style="color:rgba(255,255,255,.2);"></th>
+              <th class="py-4 px-5 text-center font-normal" style="color:rgba(255,255,255,.3);">Others</th>
+              <th class="py-4 px-5 text-center font-medium grad-text">Graphify</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Find past information</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Meeting transcription</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Browser history awareness</td>
-              <td class="py-3.5 px-5 text-center check-no">No</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Code and AST understanding</td>
-              <td class="py-3.5 px-5 text-center check-no">No</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Relationship graph, not just search</td>
-              <td class="py-3.5 px-5 text-center check-no">No</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">Runs entirely on-device</td>
-              <td class="py-3.5 px-5 text-center check-no">No</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
-            <tr>
-              <td class="py-3.5 px-7" style="color:rgba(255,255,255,0.4);">No cloud, no training on your data</td>
-              <td class="py-3.5 px-5 text-center check-no">No</td>
-              <td class="py-3.5 px-5 text-center check-yes">Yes</td>
-            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Find past information</td><td class="py-3.5 px-5 text-center check-y">✓</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Meeting transcription</td><td class="py-3.5 px-5 text-center check-y">✓</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Browser history awareness</td><td class="py-3.5 px-5 text-center check-n">—</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Code &amp; AST understanding</td><td class="py-3.5 px-5 text-center check-n">—</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Relationship graph, not just search</td><td class="py-3.5 px-5 text-center check-n">—</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">Runs entirely on-device</td><td class="py-3.5 px-5 text-center check-n">—</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
+            <tr><td class="py-3.5 px-7" style="color:rgba(255,255,255,.4);">No cloud, no training on your data</td><td class="py-3.5 px-5 text-center check-n">—</td><td class="py-3.5 px-5 text-center check-y">✓</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <!-- Privacy -->
-  <section id="privacy" class="py-28 border-t" style="border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);">
+  <!-- PRIVACY -->
+  <section id="privacy" class="py-28 border-t" style="border-color:rgba(255,255,255,.05);background:rgba(255,255,255,.018);">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-16 fade-in">
-        <p class="section-label mb-4">Privacy</p>
-        <h2 class="display-headline text-5xl text-white mb-5">Your graph lives on<br/><em>your machine.</em></h2>
-        <p class="text-base font-light max-w-lg mx-auto" style="color:rgba(255,255,255,0.55);">We do not see your data. We cannot. It never leaves your device.</p>
+      <div class="text-center mb-16 fi">
+        <p class="section-tag mb-4">Privacy</p>
+        <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><em class="grad-text not-italic">your machine.</em></h2>
+        <p class="text-base font-light max-w-lg mx-auto" style="color:rgba(255,255,255,.45);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
-
-      <!-- 3 trust badges -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 fade-in">
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(52,211,153,0.15);">
-            <svg width="26" height="26" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <div>
-            <p class="text-base font-semibold text-white mb-1">On-device only</p>
-            <p class="text-sm" style="color:rgba(255,255,255,0.5);">Runs entirely on your hardware. Nothing leaves.</p>
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 fi">
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(52,211,153,.14);"><svg width="26" height="26" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">On-device only</p><p class="text-sm" style="color:rgba(255,255,255,.45);">Runs entirely on your hardware. Nothing leaves.</p></div>
         </div>
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.25);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(6,182,212,0.15);">
-            <svg width="26" height="26" fill="none" stroke="#06b6d4" stroke-width="1.8" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-          </div>
-          <div>
-            <p class="text-base font-semibold text-white mb-1">No cloud</p>
-            <p class="text-sm" style="color:rgba(255,255,255,0.5);">No servers, no sync, no third-party exposure.</p>
-          </div>
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.2);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(34,211,238,.14);"><svg width="26" height="26" fill="none" stroke="#22d3ee" stroke-width="1.8" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">No cloud</p><p class="text-sm" style="color:rgba(255,255,255,.45);">No servers, no sync, no third-party exposure.</p></div>
         </div>
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.25);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(124,58,237,0.15);">
-            <svg width="26" height="26" fill="none" stroke="#a78bfa" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div>
-            <p class="text-base font-semibold text-white mb-1">Never trained on</p>
-            <p class="text-sm" style="color:rgba(255,255,255,0.5);">Your data is yours. We never touch it.</p>
-          </div>
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(99,102,241,.14);"><svg width="26" height="26" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">Never trained on</p><p class="text-sm" style="color:rgba(255,255,255,.45);">Your data is yours. We never touch it.</p></div>
         </div>
       </div>
-
-      <div class="grid md:grid-cols-2 gap-5 fade-in">
-        <div class="p-8 rounded-2xl" style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);">
-          <div class="flex items-center gap-3 mb-7">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(52,211,153,0.15);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <h3 class="text-base font-semibold text-white">What stays on your machine</h3>
-          </div>
-          <ul class="space-y-4">
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-sm">All your captured data</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-sm">Your knowledge graph</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-sm">Browser history and meeting transcripts</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-sm">Query results and insights</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="text-sm font-medium">Everything. Always.</span>
-            </li>
+      <div class="grid md:grid-cols-2 gap-5 fi">
+        <div class="p-8 rounded-2xl" style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);">
+          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(52,211,153,.14);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><h3 class="text-base font-semibold text-white">What stays on your machine</h3></div>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">All your captured data</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Your knowledge graph</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Browser history &amp; meeting transcripts</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Query results and insights</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm font-medium">Everything. Always.</span></li>
           </ul>
         </div>
-        <div class="p-8 rounded-2xl" style="background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.2);">
-          <div class="flex items-center gap-3 mb-7">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(244,63,94,0.15);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            </div>
-            <h3 class="text-base font-semibold text-white">What we never do</h3>
-          </div>
-          <ul class="space-y-4">
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              <span class="text-sm">Store your data on our servers</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              <span class="text-sm">Train models on your content</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              <span class="text-sm">Sell or share your information</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              <span class="text-sm">Require internet to function</span>
-            </li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,0.85);">
-              <svg width="16" height="16" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              <span class="text-sm font-medium">Phone home. Ever.</span>
-            </li>
+        <div class="p-8 rounded-2xl" style="background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);">
+          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(251,113,133,.14);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><h3 class="text-base font-semibold text-white">What we never do</h3></div>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Store your data on our servers</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Train models on your content</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Sell or share your information</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Require internet to function</span></li>
+            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm font-medium">Phone home. Ever.</span></li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Waitlist -->
-  <section id="waitlist" class="py-28 border-t grid-bg" style="border-color:rgba(255,255,255,0.05);">
-    <div class="max-w-xl mx-auto px-6 text-center fade-in">
-      <div class="w-16 h-16 rounded-2xl mx-auto mb-8 flex items-center justify-center" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.1));border:1px solid rgba(124,58,237,0.25);">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="color:#a78bfa;">
-          <circle cx="14" cy="14" r="4" fill="currentColor" opacity="0.8"/>
-          <circle cx="5" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <circle cx="23" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <circle cx="5" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <circle cx="23" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <line x1="5" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="23" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="5" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="23" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+  <!-- WAITLIST -->
+  <section id="waitlist" class="py-28 border-t grid-bg" style="border-color:rgba(255,255,255,.05);">
+    <div class="max-w-xl mx-auto px-6 text-center fi">
+      <div class="w-16 h-16 rounded-2xl mx-auto mb-8 flex items-center justify-center" style="background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(34,211,238,.1));border:1px solid rgba(99,102,241,.25);">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="color:#818cf8;">
+          <circle cx="14" cy="14" r="4" fill="currentColor" opacity=".8"/>
+          <circle cx="5"  cy="8"  r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <circle cx="23" cy="8"  r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <circle cx="5"  cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <circle cx="23" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <line x1="5"  y1="8"  x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+          <line x1="23" y1="8"  x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+          <line x1="5"  y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+          <line x1="23" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
         </svg>
       </div>
-
-      <h2 class="display-headline text-5xl text-white mb-4">Try it free when we launch.</h2>
-      <p class="text-base font-light mb-3" style="color:rgba(255,255,255,0.35);">Free trial is launching soon. Drop your email and you'll be first through the door.</p>
-
-      <!-- Social proof -->
+      <h2 class="hl text-5xl text-white mb-4">Try it free when we launch.</h2>
+      <p class="text-base font-light mb-3" style="color:rgba(255,255,255,.35);">Free trial launching soon. Drop your email and you'll be first through the door.</p>
       <div class="flex items-center justify-center gap-2 mb-8">
         <div class="flex -space-x-2">
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#06060f;background:linear-gradient(135deg,#7c3aed,#4f46e5);">S</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#06060f;background:linear-gradient(135deg,#06b6d4,#4f46e5);">A</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#06060f;background:linear-gradient(135deg,#f43f5e,#f59e0b);">M</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#06060f;background:linear-gradient(135deg,#a855f7,#06b6d4);">J</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#06060f;background:linear-gradient(135deg,#22c55e,#4f46e5);">R</div>
+          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#07091c;background:linear-gradient(135deg,#6366f1,#4f46e5);">S</div>
+          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#07091c;background:linear-gradient(135deg,#22d3ee,#4f46e5);">A</div>
+          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#07091c;background:linear-gradient(135deg,#fb923c,#fbbf24);">M</div>
+          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#07091c;background:linear-gradient(135deg,#818cf8,#22d3ee);">J</div>
+          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium" style="border-color:#07091c;background:linear-gradient(135deg,#34d399,#4f46e5);">R</div>
         </div>
-        <p class="text-sm font-light" style="color:rgba(255,255,255,0.35);"><span style="color:rgba(255,255,255,0.65);">1,500+ people</span> already waiting</p>
+        <p class="text-sm font-light" style="color:rgba(255,255,255,.35);"><span style="color:rgba(255,255,255,.65);">1,500+ people</span> already waiting</p>
       </div>
-
       <form action="https://formspree.io/f/xqegoayo" method="POST" class="flex flex-col sm:flex-row gap-3" onsubmit="handleSubmit(event)">
         <input type="hidden" name="_subject" value="New Graphify waitlist signup" />
-        <input
-          type="email"
-          name="email"
-          placeholder="you@company.com"
-          required
+        <input type="email" name="email" placeholder="you@company.com" required
           class="flex-1 text-sm px-5 py-4 rounded-2xl text-white placeholder-gray-700 focus:outline-none transition-colors"
-          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);"/>
-        <button type="submit" class="cta-btn text-white px-8 py-4 rounded-2xl font-medium text-sm whitespace-nowrap">
+          style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);" />
+        <button type="submit" class="btn-primary text-white px-8 py-4 rounded-2xl font-medium text-sm whitespace-nowrap">
           Get early access
         </button>
       </form>
-      <p id="form-msg" class="mt-4 text-sm hidden" style="color:#34d399;">You are on the list — free trial access coming your way.</p>
-      <p class="mt-4 text-xs" style="color:rgba(255,255,255,0.12);">No spam. Unsubscribe anytime. Free trial, no card required.</p>
+      <p id="form-msg" class="mt-4 text-sm hidden" style="color:#34d399;">You are on the list &mdash; free trial access coming your way.</p>
+      <p class="mt-4 text-xs" style="color:rgba(255,255,255,.12);">No spam. Unsubscribe anytime. Free trial, no card required.</p>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="border-t py-10" style="border-color:rgba(255,255,255,0.05);">
+  <!-- FOOTER -->
+  <footer class="border-t py-10" style="border-color:rgba(255,255,255,.05);">
     <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" fill="#7c3aed"/>
-          <circle cx="4" cy="6" r="2" fill="#818cf8" opacity="0.5"/>
-          <circle cx="20" cy="6" r="2" fill="#06b6d4" opacity="0.5"/>
-          <circle cx="4" cy="18" r="2" fill="#818cf8" opacity="0.5"/>
-          <circle cx="20" cy="18" r="2" fill="#06b6d4" opacity="0.5"/>
-          <line x1="4" y1="6" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.35"/>
-          <line x1="20" y1="6" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.35"/>
-          <line x1="4" y1="18" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.35"/>
-          <line x1="20" y1="18" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.35"/>
+          <circle cx="12" cy="12" r="3" fill="#6366f1"/>
+          <circle cx="4"  cy="6"  r="2" fill="#818cf8" opacity=".5"/>
+          <circle cx="20" cy="6"  r="2" fill="#22d3ee" opacity=".5"/>
+          <circle cx="4"  cy="18" r="2" fill="#818cf8" opacity=".5"/>
+          <circle cx="20" cy="18" r="2" fill="#22d3ee" opacity=".5"/>
+          <line x1="4"  y1="6"  x2="12" y2="12" stroke="#6366f1" stroke-width="1.5" opacity=".35"/>
+          <line x1="20" y1="6"  x2="12" y2="12" stroke="#22d3ee" stroke-width="1.5" opacity=".35"/>
+          <line x1="4"  y1="18" x2="12" y2="12" stroke="#6366f1" stroke-width="1.5" opacity=".35"/>
+          <line x1="20" y1="18" x2="12" y2="12" stroke="#22d3ee" stroke-width="1.5" opacity=".35"/>
         </svg>
-        <span class="text-xs" style="color:rgba(255,255,255,0.55);">Graphify Labs &mdash; Your knowledge graph, on your machine.</span>
+        <span class="text-xs" style="color:rgba(255,255,255,.45);">Graphify Labs &mdash; Your knowledge graph, on your machine.</span>
       </div>
-      <span class="text-xs" style="color:rgba(255,255,255,0.45);">Built on <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.45);">graphify</a></span>
+      <div class="flex items-center gap-6 text-xs" style="color:rgba(255,255,255,.3);">
+        <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors">GitHub</a>
+        <a href="mailto:safishamsi98@gmail.com" class="hover:text-white transition-colors">Contact</a>
+        <span>MIT License</span>
+      </div>
     </div>
   </footer>
 
   <script>
-    // Scroll fade-in
-    // Clear hash on load so refresh doesn't jump to a section
-    if (window.location.hash) {
-      history.replaceState(null, '', window.location.pathname);
-      window.scrollTo(0, 0);
-    }
+    // Hash clear on load
+    if (window.location.hash) { history.replaceState(null,'',window.location.pathname); window.scrollTo(0,0); }
 
+    // Scroll fade-in
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+    // Animated counters
+    function animateCount(el) {
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1800;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(target * ease);
+        el.textContent = val >= 1000 ? (val >= 10000 ? Math.round(val/1000)+'k+' : val.toLocaleString()) : val+'+';
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target >= 10000 ? Math.round(target/1000)+'k+' : target >= 1000 ? target.toLocaleString()+'+' : target+'+';
+      }
+      requestAnimationFrame(step);
+    }
+    const cntObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.target.dataset.count) { animateCount(e.target); cntObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => cntObs.observe(el));
 
     // Use case tabs
     function showUC(idx) {
       document.querySelectorAll('.uc-tab').forEach(t => t.classList.remove('uc-tab-active'));
       document.querySelectorAll('.uc-panel').forEach(p => p.classList.add('hidden'));
-      document.querySelector('.uc-tab[data-idx="' + idx + '"]').classList.add('uc-tab-active');
-      document.querySelector('.uc-panel[data-idx="' + idx + '"]').classList.remove('hidden');
+      document.querySelector('.uc-tab[data-idx="'+idx+'"]').classList.add('uc-tab-active');
+      document.querySelector('.uc-panel[data-idx="'+idx+'"]').classList.remove('hidden');
     }
 
-    // Hero background graph
-    (function () {
-      const canvas = document.getElementById('graph-canvas');
-      const ctx = canvas.getContext('2d');
-      let W, H, nodes;
-
-      function resize() {
-        W = canvas.width = canvas.offsetWidth;
-        H = canvas.height = canvas.offsetHeight;
-      }
-
-      function init() {
-        nodes = Array.from({ length: 55 }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          r: Math.random() * 2 + 1,
-          hue: Math.random() > 0.5 ? 262 : 190, // violet or cyan
-        }));
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const dx = nodes[i].x - nodes[j].x;
-            const dy = nodes[i].y - nodes[j].y;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 150) {
-              const alpha = 0.09 * (1 - d / 150);
-              ctx.beginPath();
-              ctx.moveTo(nodes[i].x, nodes[i].y);
-              ctx.lineTo(nodes[j].x, nodes[j].y);
-              ctx.strokeStyle = `hsla(${nodes[i].hue}, 70%, 65%, ${alpha})`;
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
-            }
-          }
-        }
-        nodes.forEach(n => {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(${n.hue}, 70%, 70%, 0.4)`;
-          ctx.fill();
-          n.x += n.vx; n.y += n.vy;
-          if (n.x < 0 || n.x > W) n.vx *= -1;
-          if (n.y < 0 || n.y > H) n.vy *= -1;
-        });
-        requestAnimationFrame(draw);
-      }
-
-      resize(); init(); draw();
-      window.addEventListener('resize', () => { resize(); init(); });
-    })();
-
-    // Mini graph in mockup
-    (function () {
-      const canvas = document.getElementById('mini-graph');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let W, H;
-      const NODES = [
-        { label: 'Q3 call', color: '#a855f7', size: 8 },
-        { label: 'auth module', color: '#22c55e', size: 7 },
-        { label: 'JWT article', color: '#7c3aed', size: 5 },
-        { label: 'competitor.pdf', color: '#f59e0b', size: 5 },
-        { label: 'pricing mtg', color: '#a855f7', size: 6 },
-        { label: 'session tokens', color: '#06b6d4', size: 4 },
-        { label: 'login.ts', color: '#22c55e', size: 4 },
-      ];
-      const EDGES = [[0,1],[0,4],[1,2],[1,6],[2,5],[3,4],[5,6]];
-      let pos = [];
-      let t = 0;
-
-      function resize() {
-        W = canvas.width = canvas.offsetWidth;
-        H = canvas.height = canvas.offsetHeight;
-        pos = NODES.map((_, i) => ({
-          x: W / 2 + Math.cos(i * Math.PI * 2 / NODES.length) * Math.min(W, H) * 0.3,
-          y: H / 2 + Math.sin(i * Math.PI * 2 / NODES.length) * Math.min(W, H) * 0.25,
-        }));
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        t += 0.008;
-        EDGES.forEach(([a, b]) => {
-          const grad = ctx.createLinearGradient(pos[a].x, pos[a].y, pos[b].x, pos[b].y);
-          grad.addColorStop(0, NODES[a].color + '40');
-          grad.addColorStop(1, NODES[b].color + '40');
-          ctx.beginPath();
-          ctx.moveTo(pos[a].x, pos[a].y);
-          ctx.lineTo(pos[b].x, pos[b].y);
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        });
-        NODES.forEach((n, i) => {
-          const px = pos[i].x + Math.sin(t + i * 0.7) * 3;
-          const py = pos[i].y + Math.cos(t + i * 0.5) * 2;
-          // glow
-          const glow = ctx.createRadialGradient(px, py, 0, px, py, n.size * 3);
-          glow.addColorStop(0, n.color + '30');
-          glow.addColorStop(1, 'transparent');
-          ctx.beginPath();
-          ctx.arc(px, py, n.size * 3, 0, Math.PI * 2);
-          ctx.fillStyle = glow;
-          ctx.fill();
-          // node
-          ctx.beginPath();
-          ctx.arc(px, py, n.size, 0, Math.PI * 2);
-          ctx.fillStyle = n.color + 'bb';
-          ctx.fill();
-          ctx.strokeStyle = n.color;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          // label
-          ctx.fillStyle = 'rgba(255,255,255,0.35)';
-          ctx.font = '8px Inter, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText(n.label, px, py - n.size - 5);
-        });
-        requestAnimationFrame(draw);
-      }
-
-      resize(); draw();
-      window.addEventListener('resize', resize);
-    })();
-
-    // Typing animation
-    const QUERIES = [
-      'What connects the Q3 meeting to auth?',
-      'What did I read about JWT last month?',
-      'Show everything related to pricing strategy',
-      'Why was the auth refactor prioritized?',
-    ];
-    let qi = 0, ci = 0, deleting = false;
-    const qEl = document.getElementById('query-text');
-
-    function typeLoop() {
-      const q = QUERIES[qi];
-      if (!deleting) {
-        qEl.textContent = q.slice(0, ci++);
-        if (ci > q.length) { deleting = true; setTimeout(typeLoop, 2200); return; }
-        setTimeout(typeLoop, 42);
-      } else {
-        qEl.textContent = q.slice(0, ci--);
-        if (ci < 0) { deleting = false; qi = (qi + 1) % QUERIES.length; ci = 0; setTimeout(typeLoop, 350); return; }
-        setTimeout(typeLoop, 20);
-      }
-    }
-    typeLoop();
-
-    // Results animation
-    const lines = document.querySelectorAll('.result-line');
-    let shown = 0;
-    function showLine() {
-      if (shown < lines.length) {
-        lines[shown].classList.add('show');
-        shown++;
-        setTimeout(showLine, 750);
-      } else {
-        setTimeout(() => {
-          lines.forEach(l => l.classList.remove('show'));
-          shown = 0;
-          setTimeout(showLine, 500);
-        }, 3200);
-      }
-    }
-    setTimeout(showLine, 1800);
-
+    // Form
     async function handleSubmit(e) {
       e.preventDefault();
       const form = e.target;
-      const data = new FormData(form);
-      const res = await fetch('https://formspree.io/f/xqegoayo', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        document.getElementById('form-msg').classList.remove('hidden');
-        form.reset();
-      } else {
-        document.getElementById('form-msg').textContent = 'Something went wrong. Please try again.';
-        document.getElementById('form-msg').classList.remove('hidden');
-      }
+      const res = await fetch('https://formspree.io/f/xqegoayo', { method:'POST', body: new FormData(form), headers:{'Accept':'application/json'} });
+      const msg = document.getElementById('form-msg');
+      if (res.ok) { msg.classList.remove('hidden'); form.reset(); }
+      else { msg.textContent = 'Something went wrong. Please try again.'; msg.classList.remove('hidden'); }
     }
+
+    // ── BRAIN CANVAS ──
+    (function() {
+      const canvas = document.getElementById('brain-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H;
+
+      // Node positions (0–1 fractions of canvas size)
+      const NP = [
+        // left lobe
+        [.30,.22],[.20,.32],[.17,.46],[.22,.60],[.32,.56],[.36,.42],[.38,.28],[.28,.35],
+        // bridge / corpus callosum
+        [.48,.36],[.50,.50],[.49,.62],
+        // right lobe
+        [.62,.22],[.72,.30],[.78,.44],[.75,.58],[.64,.60],[.58,.46],[.66,.34],
+        // outer "axon" endpoints
+        [.10,.44],[.88,.44],[.44,.12],[.56,.12],[.32,.80],[.68,.80],
+      ];
+
+      // Connections
+      const CONN = [
+        [0,1],[0,7],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[5,7],[1,5],[2,5],[3,5],
+        [7,8],[5,8],[8,9],[9,10],[4,10],[10,16],[8,11],[9,16],
+        [11,12],[11,17],[12,13],[13,14],[14,15],[15,16],[16,17],[12,17],[13,17],
+        [1,18],[13,19],[0,20],[11,21],[3,22],[14,23],
+      ];
+
+      const COLORS = ['#818cf8','#22d3ee','#34d399','#fb923c','#f472b6'];
+      let pulses = [];
+      const activation = new Float32Array(NP.length);
+      let raf;
+
+      function px(i) { return { x: NP[i][0]*W, y: NP[i][1]*H }; }
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth  * devicePixelRatio;
+        H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+        canvas.style.width  = canvas.offsetWidth  + 'px';
+        canvas.style.height = canvas.offsetHeight + 'px';
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+        W = canvas.offsetWidth; H = canvas.offsetHeight;
+      }
+
+      function spawnPulse() {
+        pulses.push({
+          ci: Math.floor(Math.random() * CONN.length),
+          t: 0,
+          speed: .005 + Math.random() * .007,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          rev: Math.random() > .5,
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // connections
+        CONN.forEach(([a,b]) => {
+          const A = px(a), B = px(b);
+          ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y);
+          ctx.strokeStyle = 'rgba(129,140,248,0.1)'; ctx.lineWidth = 1; ctx.stroke();
+        });
+
+        // pulses
+        pulses = pulses.filter(p => {
+          p.t += p.speed;
+          if (p.t >= 1) { activation[p.rev ? CONN[p.ci][0] : CONN[p.ci][1]] = 1.0; return false; }
+          const [a,b] = CONN[p.ci];
+          const A = px(a), B = px(b), f = p.rev ? 1-p.t : p.t;
+          const x = A.x + (B.x-A.x)*f, y = A.y + (B.y-A.y)*f;
+          ctx.shadowBlur = 12; ctx.shadowColor = p.color;
+          ctx.beginPath(); ctx.arc(x,y,2.5,0,Math.PI*2);
+          ctx.fillStyle = p.color; ctx.fill();
+          ctx.shadowBlur = 0;
+          return true;
+        });
+
+        // nodes
+        NP.forEach((_,i) => {
+          activation[i] = Math.max(0, activation[i] - .018);
+          const {x,y} = px(i);
+          const act = activation[i];
+          const isOuter = i >= 18;
+          const baseR = isOuter ? 2.5 : 4.5;
+          const r = baseR + act*5;
+
+          if (act > .05) {
+            const g = ctx.createRadialGradient(x,y,0,x,y,r*6);
+            g.addColorStop(0, `rgba(129,140,248,${act*.25})`);
+            g.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(x,y,r*6,0,Math.PI*2);
+            ctx.fillStyle = g; ctx.fill();
+          }
+
+          const alpha = isOuter ? .25 + act*.4 : .45 + act*.45;
+          ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+          ctx.fillStyle = `rgba(129,140,248,${alpha})`; ctx.fill();
+
+          if (!isOuter) {
+            ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+            ctx.strokeStyle = `rgba(129,140,248,${.4+act*.5})`; ctx.lineWidth = .8; ctx.stroke();
+          }
+        });
+
+        if (Math.random() < .07 && pulses.length < 18) spawnPulse();
+        raf = requestAnimationFrame(draw);
+      }
+
+      resize();
+      for (let i=0;i<6;i++) setTimeout(spawnPulse, i*300);
+      draw();
+      window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); draw(); });
+    })();
   </script>
 </body>
 </html>
