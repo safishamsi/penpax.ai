@@ -272,9 +272,109 @@
 
     /* cmp packet pulse */
     @keyframes cmp-dot-move{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
+
+    /* ── INTRO OVERLAY ── */
+    #intro-overlay{position:fixed;inset:0;z-index:100000;background:#010302;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    #intro-svg{width:min(92vw,640px);height:auto;position:relative;z-index:2;overflow:visible;will-change:transform;}
+    #intro-label{position:absolute;bottom:22%;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(74,222,128,.45);letter-spacing:.25em;text-transform:uppercase;opacity:0;white-space:nowrap;pointer-events:none;}
+    #intro-skip{position:absolute;bottom:22px;right:22px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(74,222,128,.3);background:none;border:1px solid rgba(34,197,94,.15);padding:5px 14px;border-radius:3px;cursor:pointer;letter-spacing:.1em;transition:color .2s,border-color .2s;}
+    #intro-skip:hover{color:rgba(74,222,128,.75);border-color:rgba(34,197,94,.4);}
   </style>
 </head>
 <body>
+
+  <!-- ── INTRO: EYE → BRAIN ANIMATION ── -->
+  <div id="intro-overlay">
+    <svg id="intro-svg" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ig-igrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#040f06"/>
+          <stop offset="48%"  stop-color="#0d2814"/>
+          <stop offset="82%"  stop-color="#185224"/>
+          <stop offset="100%" stop-color="#22c55e" stop-opacity=".65"/>
+        </radialGradient>
+        <radialGradient id="ig-glow-grad" cx="50%" cy="50%" r="50%">
+          <stop offset="55%"  stop-color="#22c55e" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#22c55e" stop-opacity=".22"/>
+        </radialGradient>
+        <filter id="ig-gf" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="ig-soft"><feGaussianBlur stdDeviation="2.5"/></filter>
+        <clipPath id="ig-clip"><circle cx="300" cy="180" r="88"/></clipPath>
+      </defs>
+
+      <!-- outer glow halo -->
+      <circle id="ig-glow"  cx="300" cy="180" r="115" fill="url(#ig-glow-grad)" opacity="0"/>
+
+      <!-- iris fill -->
+      <circle id="ig-iris"  cx="300" cy="180" r="0"   fill="url(#ig-igrad)" stroke="#22c55e" stroke-width="1.5" stroke-opacity=".6"/>
+
+      <!-- iris texture rings -->
+      <g id="ig-rings" opacity="0">
+        <circle cx="300" cy="180" r="72" fill="none" stroke="#4ade80" stroke-width=".35" stroke-opacity=".18" stroke-dasharray="4 5"/>
+        <circle cx="300" cy="180" r="52" fill="none" stroke="#22c55e" stroke-width=".25" stroke-opacity=".12" stroke-dasharray="2 6"/>
+      </g>
+
+      <!-- graph network clipped to iris -->
+      <g id="ig-graph" clip-path="url(#ig-clip)" opacity="0">
+        <!-- hub → satellite edges -->
+        <line class="ig-e" x1="300" y1="180" x2="255" y2="140" stroke="#4ade80" stroke-width=".9" stroke-opacity=".55" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="180" x2="342" y2="144" stroke="#4ade80" stroke-width=".9" stroke-opacity=".55" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="180" x2="354" y2="212" stroke="#4ade80" stroke-width=".9" stroke-opacity=".55" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="180" x2="250" y2="214" stroke="#4ade80" stroke-width=".9" stroke-opacity=".55" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="180" x2="300" y2="120" stroke="#4ade80" stroke-width=".9" stroke-opacity=".55" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <!-- amber accent edge -->
+        <line class="ig-e" x1="300" y1="180" x2="336" y2="230" stroke="#f59e0b" stroke-width=".8" stroke-opacity=".45" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <!-- perimeter edges -->
+        <line class="ig-e" x1="255" y1="140" x2="342" y2="144" stroke="#22c55e" stroke-width=".45" stroke-opacity=".22" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="342" y1="144" x2="354" y2="212" stroke="#22c55e" stroke-width=".45" stroke-opacity=".22" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="354" y1="212" x2="250" y2="214" stroke="#22c55e" stroke-width=".45" stroke-opacity=".22" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="250" y1="214" x2="255" y2="140" stroke="#22c55e" stroke-width=".45" stroke-opacity=".22" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="120" x2="255" y2="140" stroke="#22c55e" stroke-width=".4" stroke-opacity=".18" stroke-dasharray="200" stroke-dashoffset="200"/>
+        <line class="ig-e" x1="300" y1="120" x2="342" y2="144" stroke="#22c55e" stroke-width=".4" stroke-opacity=".18" stroke-dasharray="200" stroke-dashoffset="200"/>
+
+        <!-- satellite nodes — outer ring -->
+        <circle class="ig-no" cx="255" cy="140" r="0" fill="#040f06" stroke="#22c55e" stroke-width="1.1"/>
+        <circle class="ig-nc" cx="255" cy="140" r="0" fill="#22c55e"/>
+        <circle class="ig-no" cx="342" cy="144" r="0" fill="#040f06" stroke="#22c55e" stroke-width="1.1"/>
+        <circle class="ig-nc" cx="342" cy="144" r="0" fill="#22c55e"/>
+        <circle class="ig-no" cx="354" cy="212" r="0" fill="#040f06" stroke="#22c55e" stroke-width="1.1"/>
+        <circle class="ig-nc" cx="354" cy="212" r="0" fill="#22c55e"/>
+        <circle class="ig-no" cx="250" cy="214" r="0" fill="#040f06" stroke="#22c55e" stroke-width="1.1"/>
+        <circle class="ig-nc" cx="250" cy="214" r="0" fill="#22c55e"/>
+        <circle class="ig-no" cx="300" cy="120" r="0" fill="#040f06" stroke="#22c55e" stroke-width="1.1"/>
+        <circle class="ig-nc" cx="300" cy="120" r="0" fill="#22c55e"/>
+        <!-- amber node -->
+        <circle class="ig-no" cx="336" cy="230" r="0" fill="#040f06" stroke="#f59e0b" stroke-width="1.1"/>
+        <circle class="ig-nc ig-nc-a" cx="336" cy="230" r="0" fill="#f59e0b"/>
+      </g>
+
+      <!-- pupil (dark center, above graph) -->
+      <circle id="ig-pupil"   cx="300" cy="180" r="0"  fill="#010302"/>
+      <circle id="ig-reflect" cx="286" cy="168" r="0"  fill="rgba(255,255,255,.07)"/>
+
+      <!-- hub god-node (visible inside/above pupil) -->
+      <circle id="ig-hub"      cx="300" cy="180" r="0" fill="#0c2012" stroke="#4ade80" stroke-width="1.4" opacity="0"/>
+      <circle id="ig-hub-core" cx="300" cy="180" r="0" fill="#4ade80" opacity="0"/>
+
+      <!-- eyelids (cover content when closed — start at y=0) -->
+      <path id="ig-lid-top" d="M-60,-40 L660,-40 L660,182 Q300,167 -60,182 Z"  fill="#010302"/>
+      <path id="ig-lid-bot" d="M-60,178 Q300,193  660,178 L660,400 L-60,400 Z" fill="#010302"/>
+
+      <!-- eyelid glow lines -->
+      <path id="ig-lash-top" d="M60,182 Q300,167 540,182" fill="none" stroke="#22c55e" stroke-width="1.3" stroke-opacity="0" stroke-linecap="round"/>
+      <path id="ig-lash-bot" d="M60,178 Q300,193 540,178" fill="none" stroke="#22c55e" stroke-width="1.3" stroke-opacity="0" stroke-linecap="round"/>
+
+      <!-- closed-eye slit glow -->
+      <line id="ig-slit" x1="80" y1="180" x2="520" y2="180" stroke="#22c55e" stroke-width="1.1" stroke-opacity="0" stroke-linecap="round" filter="url(#ig-gf)"/>
+    </svg>
+
+    <div id="intro-label">mapping your knowledge</div>
+    <button id="intro-skip" onclick="skipIntro()">SKIP</button>
+  </div>
+
   <div class="top-strip fixed top-0 inset-x-0 z-[9999]" style="transform:translateZ(0)"></div>
 
   <!-- NAV -->
@@ -1576,8 +1676,76 @@ def create_session(user):
   </footer>
 
   <script>
-    // Hash clear
-    if (window.location.hash){history.replaceState(null,'',window.location.pathname);window.scrollTo(0,0)}
+    // ── INTRO: EYE → BRAIN ANIMATION ──
+    (function() {
+      const ov = document.getElementById('intro-overlay');
+      if (!ov) return;
+      if (sessionStorage.getItem('ig-seen')) { ov.remove(); return; }
+
+      document.body.style.overflow = 'hidden';
+      let tl;
+
+      function endIntro() {
+        sessionStorage.setItem('ig-seen','1');
+        ov.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      window.skipIntro = function() {
+        if (tl) tl.kill();
+        sessionStorage.setItem('ig-seen','1');
+        gsap.to(ov, { opacity:0, duration:.35,
+          onComplete: () => { ov.style.display='none'; document.body.style.overflow=''; }
+        });
+      };
+
+      tl = gsap.timeline({ delay:.25, onComplete: endIntro });
+
+      // Phase 1: closed-eye slit glows on
+      tl.to('#ig-slit',                   { attr:{'stroke-opacity':.65}, duration:.5, ease:'power2.out' })
+        .to(['#ig-lash-top','#ig-lash-bot'],{ attr:{'stroke-opacity':.28}, duration:.4 },'<+=.1')
+
+      // Phase 2: eyelids slide apart
+        .to('#ig-lid-top', { y:-295, duration:1.15, ease:'power2.inOut' })
+        .to('#ig-lid-bot', { y: 295, duration:1.15, ease:'power2.inOut' },'<')
+        .to('#ig-slit',    { attr:{'stroke-opacity':0}, duration:.25 },'<')
+        .to(['#ig-lash-top','#ig-lash-bot'],{ attr:{'stroke-opacity':.52}, duration:.65 },'<+=.25')
+
+      // Phase 3: iris blooms open
+        .to('#ig-iris', { attr:{r:88}, duration:.78, ease:'back.out(1.3)' },'-=.65')
+        .to('#ig-glow', { opacity:.65, duration:.7 },'<')
+        .to('#ig-rings',{ opacity:1,   duration:.5  },'-=.38')
+
+      // Phase 4: pupil appears
+        .to('#ig-pupil',   { attr:{r:30}, duration:.38, ease:'power2.out' },'-=.28')
+        .to('#ig-reflect', { attr:{r: 8}, duration:.22 },'-=.16')
+
+      // Phase 5: graph network draws in
+        .to('#ig-graph', { opacity:1, duration:.12 })
+        .to('.ig-e',     { strokeDashoffset:0, stagger:.045, duration:.28, ease:'none' })
+        .to('.ig-no',    { attr:{r:5.5}, stagger:.065, duration:.26, ease:'back.out(2.3)' },'-=.22')
+        .to('.ig-nc',    { attr:{r:2.2}, stagger:.065, duration:.18 },'<+=.04')
+
+      // Phase 6: hub god-node pulses in
+        .to('#ig-hub',      { attr:{r:8},   opacity:1, duration:.32, ease:'back.out(2)' },'-=.15')
+        .to('#ig-hub-core', { attr:{r:3.2}, opacity:1, duration:.22 },'-=.14')
+
+      // Phase 7: label
+        .to('#intro-label', { opacity:1, duration:.42 },'-=.18')
+
+      // Phase 8: hold
+        .to({}, { duration:.9 })
+
+      // Phase 9: iris expands to fill screen, fades to page
+        .to('#intro-label',{ opacity:0, duration:.28 })
+        .to(['#ig-lid-top','#ig-lid-bot'],{ opacity:0, duration:.3 })
+        .to(['#ig-lash-top','#ig-lash-bot'],{ attr:{'stroke-opacity':0}, duration:.3 },'<')
+        .to('#intro-svg', { scale:16, transformOrigin:'50% 50%', duration:.88, ease:'power3.in' },'<+=.08')
+        .to(ov, { opacity:0, duration:.42, ease:'power2.out' },'-=.32');
+    })();
+
+    // Hash clear (without forced scroll-to-top which caused unexpected jumps)
+    if (window.location.hash) { history.replaceState(null,'',window.location.pathname); }
 
     function showAll() {
       document.querySelectorAll('.gsap-reveal').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
