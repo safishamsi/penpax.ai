@@ -130,7 +130,7 @@
 
     /* uc tabs */
     .uc-tab{color:var(--t3);border:1px solid var(--border);background:rgba(34,197,94,0.03);cursor:pointer;
-      font-family:'JetBrains Mono',monospace;font-size:12px;padding:8px 18px;border-radius:4px;
+      font-family:'JetBrains Mono',monospace;font-size:11px;padding:7px 13px;border-radius:4px;
       transition:all .2s;white-space:nowrap}
     .uc-tab:hover{color:var(--green2);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.07)}
     .uc-tab-active{color:#4ade80!important;background:rgba(34,197,94,0.12)!important;border-color:rgba(34,197,94,0.45)!important;box-shadow:0 0 12px rgba(34,197,94,0.15)}
@@ -278,7 +278,7 @@
   </nav>
 
   <!-- Scroll-driven graph accretion (desktop only) -->
-  <div id="scroll-graph-wrap" class="hidden lg:block">
+  <div id="scroll-graph-wrap" class="hidden sm:block">
     <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(34,197,94,.3);margin-bottom:4px;text-align:center;letter-spacing:.08em;">// graph.growing</div>
     <svg id="scroll-graph-svg" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:110px;height:110px;">
       <!-- hub always present -->
@@ -688,7 +688,7 @@
           <button class="deploy-btn" id="btn-cloud" onclick="setDeploy('cloud')">[ managed cloud ]</button>
         </div>
         <!-- Deploy diagram -->
-        <div id="deploy-diagram" class="mx-auto" style="max-width:320px;height:64px;">
+        <div id="deploy-diagram" class="mx-auto w-full" style="max-width:300px;height:64px;">
           <svg id="deploy-svg-local" viewBox="0 0 320 64" fill="none" style="width:100%;height:100%;">
             <rect x="20" y="16" width="80" height="32" rx="6" stroke="rgba(34,197,94,.35)" stroke-width="1" fill="rgba(34,197,94,.04)"/>
             <text x="60" y="36" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity=".7" text-anchor="middle">your machine</text>
@@ -1107,7 +1107,8 @@
         <p class="text-sm font-light" style="color:var(--t2);">Other tools find things. Graphify understands how they connect.</p>
       </div>
 
-      <div id="cmp-table" style="border-radius:16px;border:1px solid rgba(34,197,94,.15);background:rgba(4,10,6,.95);overflow:hidden;">
+      <div class="overflow-x-auto" style="border-radius:16px;border:1px solid rgba(34,197,94,.15);">
+      <div id="cmp-table" style="min-width:360px;background:rgba(4,10,6,.95);overflow:clip;">
 
         <!-- Header row -->
         <div style="display:grid;grid-template-columns:1fr 100px 120px;background:rgba(34,197,94,.04);border-bottom:1px solid rgba(34,197,94,.15);">
@@ -1179,6 +1180,7 @@
         </div>
 
       </div>
+      </div><!-- end overflow-x-auto wrapper -->
 
       <div class="greek-key mt-10 mx-auto" style="max-width:360px;"></div>
     </div>
