@@ -184,6 +184,11 @@
     @keyframes grow-graph{0%,30%{opacity:0;transform:scale(.85)}35%,90%{opacity:1;transform:scale(1)}95%,100%{opacity:0;transform:scale(.85)}}
     .svg-node{transform-box:fill-box;transform-origin:center}
 
+    /* comparison table rows */
+    .cmp-row{transition:background .18s}
+    .cmp-row:hover{background:rgba(34,197,94,.04)!important}
+    .cmp-unique:hover{background:rgba(34,197,94,.055)!important}
+
     /* grow section */
     .grow-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:28px 24px;transition:border-color .25s}
     .grow-card:hover{border-color:rgba(34,197,94,.28)}
@@ -943,26 +948,83 @@
       <div class="text-center mb-14">
         <p class="section-tag mb-4">// benchmark.compare</p>
         <h2 class="hl text-5xl text-white mb-4">Recall vs <span class="grad-green">relationships</span></h2>
-        <p class="text-sm font-light mono" style="color:var(--t2);">Other tools find things. Graphify understands how they connect.</p>
+        <p class="text-sm font-light" style="color:var(--t2);">Other tools find things. Graphify understands how they connect.</p>
       </div>
-      <div class="code-border" style="overflow:clip;border-radius:16px;">
-        <table class="w-full text-sm">
-          <thead><tr style="border-bottom:1px solid var(--border);">
-            <th class="text-left py-4 px-7 font-normal w-1/2 mono text-xs" style="color:var(--t3);">// capability</th>
-            <th class="py-4 px-5 text-center font-normal mono text-xs" style="color:var(--t3);">others</th>
-            <th class="py-4 px-5 text-center font-medium mono text-xs grad-green">graphify</th>
-          </tr></thead>
-          <tbody>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">find_past_information()</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">meeting_transcription()</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">browser_history_aware()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">parse_ast_20_langs()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">relationship_graph()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">runs_on_device()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">zero_cloud_training()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-          </tbody>
-        </table>
+
+      <div style="border-radius:16px;border:1px solid rgba(34,197,94,.15);background:rgba(4,10,6,.95);overflow:hidden;">
+
+        <!-- Header row -->
+        <div style="display:grid;grid-template-columns:1fr 100px 120px;background:rgba(34,197,94,.04);border-bottom:1px solid rgba(34,197,94,.15);">
+          <div style="padding:13px 24px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:rgba(220,255,220,.28);">// capability</div>
+          <div style="padding:13px 8px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(220,255,220,.28);">others</div>
+          <div style="padding:13px 8px;text-align:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.12);">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#4ade80;font-weight:500;">graphify</span>
+          </div>
+        </div>
+
+        <!-- Category: MEMORY -->
+        <div style="padding:9px 24px 5px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:rgba(34,197,94,.28);border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.015);">MEMORY</div>
+        <div class="cmp-row" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);">
+          <div style="padding:12px 24px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.6);display:block;">find_past_information()</span><span style="font-size:10px;color:rgba(220,255,220,.28);display:block;margin-top:2px;font-family:'Inter',sans-serif;">retrieve any past work by query</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(74,222,128,.45);">✓</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.04);border-left:1px solid rgba(34,197,94,.1);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;">✓</div>
+        </div>
+        <div class="cmp-row" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);">
+          <div style="padding:12px 24px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.6);display:block;">meeting_transcription()</span><span style="font-size:10px;color:rgba(220,255,220,.28);display:block;margin-top:2px;font-family:'Inter',sans-serif;">extract decisions and action items</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(74,222,128,.45);">✓</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.04);border-left:1px solid rgba(34,197,94,.1);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;">✓</div>
+        </div>
+
+        <!-- Category: CONTEXT -->
+        <div style="padding:9px 24px 5px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:rgba(34,197,94,.28);border-bottom:1px solid rgba(34,197,94,.06);border-top:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.015);">CONTEXT</div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">browser_history_aware()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">browser tabs become graph nodes</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">incremental_update()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">patch graph on change, no rebuild</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+
+        <!-- Category: CODE -->
+        <div style="padding:9px 24px 5px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:rgba(34,197,94,.28);border-bottom:1px solid rgba(34,197,94,.06);border-top:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.015);">CODE</div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">parse_ast_20_langs()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">deep AST extraction across 20 languages</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+
+        <!-- Category: GRAPH INTELLIGENCE -->
+        <div style="padding:9px 24px 5px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:rgba(34,197,94,.28);border-bottom:1px solid rgba(34,197,94,.06);border-top:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.015);">GRAPH INTELLIGENCE</div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">relationship_graph()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">map how every item connects to every other</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">leiden_clustering()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">surface hidden communities and god-nodes</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+
+        <!-- Category: PRIVACY -->
+        <div style="padding:9px 24px 5px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:rgba(34,197,94,.28);border-bottom:1px solid rgba(34,197,94,.06);border-top:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.015);">PRIVACY</div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;border-bottom:1px solid rgba(34,197,94,.06);background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">runs_on_device()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">zero data leaves your machine</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+        <div class="cmp-row cmp-unique" style="display:grid;grid-template-columns:1fr 100px 120px;background:rgba(34,197,94,.025);border-left:2px solid rgba(34,197,94,.3);">
+          <div style="padding:12px 22px;"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(220,255,220,.7);display:block;">zero_cloud_training()</span><span style="font-size:10px;color:rgba(220,255,220,.3);display:block;margin-top:2px;font-family:'Inter',sans-serif;">your data never trains any model</span></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(34,197,94,.2);">✕</div>
+          <div style="display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.07);border-left:1px solid rgba(34,197,94,.14);font-family:'JetBrains Mono',monospace;font-size:14px;color:#4ade80;font-weight:600;">✓</div>
+        </div>
+
       </div>
+
+      <div class="greek-key mt-10 mx-auto" style="max-width:360px;"></div>
     </div>
   </section>
 
