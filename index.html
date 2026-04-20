@@ -300,8 +300,8 @@
     #intro-overlay{position:fixed;inset:0;z-index:100000;background:#010302;display:flex;align-items:center;justify-content:center;overflow:hidden;}
     #intro-svg{width:min(92vw,640px);height:auto;position:relative;z-index:2;overflow:visible;will-change:transform;}
     #intro-label{position:absolute;bottom:22%;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(74,222,128,.45);letter-spacing:.25em;text-transform:uppercase;opacity:0;white-space:nowrap;pointer-events:none;}
-    #intro-skip{position:absolute;bottom:22px;right:22px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(74,222,128,.3);background:none;border:1px solid rgba(34,197,94,.15);padding:5px 14px;border-radius:3px;cursor:pointer;letter-spacing:.1em;transition:color .2s,border-color .2s;}
-    #intro-skip:hover{color:rgba(74,222,128,.75);border-color:rgba(34,197,94,.4);}
+    #intro-skip{position:absolute;top:18px;right:18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(74,222,128,.65);background:none;border:1px solid rgba(34,197,94,.3);padding:5px 14px;border-radius:3px;cursor:pointer;letter-spacing:.1em;transition:color .2s,border-color .2s;}
+    #intro-skip:hover{color:#4ade80;border-color:rgba(34,197,94,.6);}
   </style>
 </head>
 <body>
@@ -500,14 +500,14 @@
             </div>
           </div>
 
-          <h1 class="hl text-[58px] md:text-[70px] text-white mb-5" id="hero-h1">
+          <h1 class="hl text-[38px] sm:text-[52px] md:text-[70px] text-white mb-5" id="hero-h1">
             Any input.<br/>
             One graph.<br/>
             <span class="grad-amber">Complete recall.</span>
           </h1>
 
           <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
-            The knowledge graph engine for large corpora and enterprise codebases. Feed it everything once. Every change grows the graph incrementally. No rebuilds. On-device or cloud.
+            The on-device knowledge graph engine for codebases and enterprise corpora. Every file, meeting, paper, and browser tab becomes a traversable node. Feed it once — it grows on every change. No rebuilds. No cloud required.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-3 mb-10">
@@ -1233,8 +1233,15 @@ def create_session(user):
         <h2 class="hl text-5xl text-white mb-5">Built for everyone<br/><span class="grad-amber">who works with knowledge</span></h2>
         <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">If your work involves reading, writing, deciding, or advising. Your context belongs to you..</p>
       </div>
-      <div class="gsap-reveal mb-10 overflow-x-auto pb-2">
-        <div id="uc-tabs" class="flex gap-2 min-w-max mx-auto" style="width:fit-content;">
+      <div class="gsap-reveal mb-10">
+        <!-- mobile: select dropdown -->
+        <select onchange="showUC(parseInt(this.value))" class="sm:hidden w-full mono text-xs px-4 py-3 rounded-md" style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);color:#4ade80;outline:none;">
+          <option value="0">business</option><option value="1">creative</option><option value="2">client-facing</option>
+          <option value="3">legal</option><option value="4">health</option><option value="5">technical</option>
+          <option value="6">research</option><option value="7">defence</option><option value="8">personal</option>
+        </select>
+        <!-- desktop: tab row -->
+        <div id="uc-tabs" class="hidden sm:flex gap-2 flex-wrap justify-center">
           <button onclick="showUC(0)" class="uc-tab uc-tab-active" data-idx="0">business</button>
           <button onclick="showUC(1)" class="uc-tab" data-idx="1">creative</button>
           <button onclick="showUC(2)" class="uc-tab" data-idx="2">client-facing</button>
@@ -1587,14 +1594,22 @@ def create_session(user):
           <span class="mono text-xs" style="color:rgba(245,158,11,.5);">// surprising_connection.this_week</span>
           <span class="mono text-xs px-2 py-0.5 rounded" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">leiden.cross_cluster</span>
         </div>
-        <div id="surp-display" style="min-height:56px;">
+        <div id="surp-display" style="min-height:64px;">
           <p class="mono text-sm mb-2" id="surp-edge" style="color:#fbbf24;"></p>
           <p class="text-xs font-light" id="surp-desc" style="color:var(--t2);line-height:1.6;"></p>
         </div>
-        <div class="flex gap-1.5 mt-4">
-          <span id="surp-d0" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.6);transition:background .3s;"></span>
-          <span id="surp-d1" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
-          <span id="surp-d2" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+        <div class="flex items-center justify-between mt-4">
+          <div class="flex gap-1.5">
+            <span id="surp-d0" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.6);transition:background .3s;"></span>
+            <span id="surp-d1" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+            <span id="surp-d2" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+            <span id="surp-d3" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+            <span id="surp-d4" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="surpNav(-1)" class="mono text-xs px-2 py-0.5 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.5);cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(251,191,36,.9)'" onmouseout="this.style.color='rgba(251,191,36,.5)'">←</button>
+            <button onclick="surpNav(1)"  class="mono text-xs px-2 py-0.5 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.5);cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(251,191,36,.9)'" onmouseout="this.style.color='rgba(251,191,36,.5)'">→</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1644,26 +1659,30 @@ def create_session(user):
         </div>
       </div>
       <p class="section-tag mb-4">// access.request</p>
-      <h2 class="hl text-5xl text-white mb-4">Try it free when we launch.</h2>
-      <p class="text-sm font-light mb-3 mono" style="color:var(--t2);">Free trial launching soon. Drop your email and you'll be first through the door.</p>
-      <div class="flex items-center justify-center gap-2 mb-8">
-        <div class="flex -space-x-2">
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium mono" style="border-color:var(--bg);background:linear-gradient(135deg,#16a34a,#15803d);">S</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium mono" style="border-color:var(--bg);background:linear-gradient(135deg,#22c55e,#16a34a);">A</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium mono" style="border-color:var(--bg);background:linear-gradient(135deg,#f59e0b,#d97706);">M</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium mono" style="border-color:var(--bg);background:linear-gradient(135deg,#4ade80,#22c55e);">J</div>
-          <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-medium mono" style="border-color:var(--bg);background:linear-gradient(135deg,#fbbf24,#f59e0b);">R</div>
+      <h2 class="hl text-5xl text-white mb-3">The OSS is live.<br/><span class="grad-green">Start building now.</span></h2>
+      <p class="text-sm font-light mb-8 max-w-sm mx-auto" style="color:var(--t2);line-height:1.7;">Open-source and free forever. Drop your email for <span style="color:rgba(74,222,128,.8);">enterprise access</span> — cloud deployment, SSO, audit logs, and million-file corpus support.</p>
+
+      <!-- OSS path -->
+      <div class="mb-6 code-border p-4 text-left max-w-sm mx-auto">
+        <p class="mono text-xs mb-2" style="color:var(--t3);">// install now</p>
+        <div class="flex items-center justify-between gap-3">
+          <code class="mono text-sm" style="color:#4ade80;">pip install graphifyy</code>
+          <button onclick="navigator.clipboard.writeText('pip install graphifyy')" class="mono text-xs px-3 py-1 rounded" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:rgba(74,222,128,.6);cursor:pointer;transition:all .2s;" onmouseover="this.style.color='#4ade80'" onmouseout="this.style.color='rgba(74,222,128,.6)'">copy</button>
         </div>
-        <p class="text-xs mono" style="color:var(--t2);"><span style="color:rgba(74,222,128,.8);">1,600+</span> already in queue</p>
+      </div>
+
+      <!-- Enterprise path -->
+      <div class="flex items-center justify-center gap-2 mb-5">
+        <p class="text-xs mono" style="color:var(--t2);"><span style="color:rgba(74,222,128,.8);">1,600+</span> in enterprise queue</p>
       </div>
       <form action="https://formspree.io/f/xqegoayo" method="POST" class="flex flex-col sm:flex-row gap-3" onsubmit="handleSubmit(event)">
         <input type="hidden" name="_subject" value="New Graphify waitlist signup" />
         <input type="email" name="email" placeholder="you@company.com" required
           class="flex-1 text-sm px-5 py-4 rounded-md text-white placeholder-gray-700 focus:outline-none transition-colors mono"
           style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);"/>
-        <button type="submit" class="btn-primary text-white px-8 py-4 rounded-md font-medium text-sm whitespace-nowrap mono">$ join_waitlist</button>
+        <button type="submit" class="btn-primary text-white px-8 py-4 rounded-md font-medium text-sm whitespace-nowrap mono">$ get_enterprise_access</button>
       </form>
-      <p id="form-msg" class="mt-4 text-xs mono hidden" style="color:#4ade80;">[ ACCESS GRANTED ] Free trial coming your way.</p>
+      <p id="form-msg" class="mt-4 text-xs mono hidden" style="color:#4ade80;">[ ACCESS GRANTED ] Enterprise access coming your way.</p>
       <p class="mt-4 text-xs mono" style="color:var(--t3);">no_spam=true | unsubscribe=anytime | card_required=false</p>
     </div>
   </section>
@@ -1709,6 +1728,7 @@ def create_session(user):
       const ov = document.getElementById('intro-overlay');
       if (!ov) return;
       if (sessionStorage.getItem('ig-seen')) { ov.remove(); return; }
+      if (location.hash) { ov.remove(); return; }
 
       // iOS Safari ignores overflow:hidden — use position:fixed instead
       const _sy = window.scrollY;
@@ -1730,6 +1750,7 @@ def create_session(user):
         if (window.ScrollTrigger) ScrollTrigger.refresh();
       }
 
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape') skipIntro(); });
       window.skipIntro = function() {
         if (tl) tl.kill();
         sessionStorage.setItem('ig-seen','1');
@@ -1751,8 +1772,8 @@ def create_session(user):
         .to(['#ig-lash-top','#ig-lash-bot'],{ attr:{'stroke-opacity':.28}, duration:.4 },'<+=.1')
 
       // Phase 2: eyelids slide apart
-        .to('#ig-lid-top', { y:-295, duration:1.15, ease:'power2.inOut' })
-        .to('#ig-lid-bot', { y: 295, duration:1.15, ease:'power2.inOut' },'<')
+        .to('#ig-lid-top', { y:-295, duration:.62, ease:'power2.inOut' })
+        .to('#ig-lid-bot', { y: 295, duration:.62, ease:'power2.inOut' },'<')
         .to('#ig-slit',    { attr:{'stroke-opacity':0}, duration:.25 },'<')
         .to(['#ig-lash-top','#ig-lash-bot'],{ attr:{'stroke-opacity':.52}, duration:.65 },'<+=.25')
 
@@ -1779,7 +1800,7 @@ def create_session(user):
         .to('#intro-label', { opacity:1, duration:.42 },'-=.18')
 
       // Phase 8: hold
-        .to({}, { duration:.9 })
+        .to({}, { duration:.35 })
 
       // Phase 9: iris expands to fill screen, fades to page
         .to('#intro-label',{ opacity:0, duration:.28 })
@@ -2228,26 +2249,31 @@ def create_session(user):
       const desc=document.getElementById('surp-desc');
       if(!edge||!desc) return;
       const connections=[
-        {e:'auth.py ↔ billing/invoice.ts',d:'Authentication logic references billing directly — suggests a hidden dependency that breaks when the billing team refactors. Graphify caught it before code review.'},
-        {e:'README.md → routing/router.py',d:'Documentation references a function that was renamed 6 months ago. Still in prod. Graphify surfaced the stale link across the doc-code boundary.'},
-        {e:'meeting_oct3.txt → pipeline.go',d:'A team call mentioned "latency issue" — Graphify linked it to the exact function that was bottlenecking, 3 weeks before the bug report.'}
+        {e:'auth.py ↔ billing/invoice.ts',d:'Authentication logic references billing directly — a hidden dependency that breaks when the billing team refactors. Graphify caught it before code review.'},
+        {e:'README.md → routing/router.py',d:'Documentation references a function renamed 6 months ago. Still in prod. Graphify surfaced the stale link across the doc-to-code boundary.'},
+        {e:'meeting_oct3.txt → pipeline.go',d:'A team call mentioned "latency issue" — Graphify linked it to the exact bottlenecking function 3 weeks before the bug report was filed.'},
+        {e:'slack_dm_oct12.json → compliance_policy_v3.pdf',d:'An engineer asked a question in Slack that was already answered in a compliance policy doc from 6 months prior. Graphify connected them instantly.'},
+        {e:'design_brief_q3.pdf → deprecated/v1/api.ts',d:'A new product brief referenced a component in the deprecated v1 API — still passing CI. Graphify traced the dead reference across file type boundaries.'}
       ];
-      let ci=0;
+      let ci=0,paused=false,timer;
+      const surpCard=document.querySelector('.surp-card');
+      if(surpCard){ surpCard.addEventListener('mouseenter',()=>paused=true); surpCard.addEventListener('mouseleave',()=>paused=false); }
       function show(i){
         edge.style.opacity='0';desc.style.opacity='0';
         setTimeout(()=>{
           edge.textContent=connections[i].e;
           desc.textContent=connections[i].d;
-          edge.style.transition='opacity .5s';desc.style.transition='opacity .5s';
+          edge.style.transition='opacity .4s';desc.style.transition='opacity .4s';
           edge.style.opacity='1';desc.style.opacity='1';
-          [0,1,2].forEach(j=>{
+          connections.forEach((_,j)=>{
             const d=document.getElementById('surp-d'+j);
             if(d) d.style.background=j===i?'rgba(245,158,11,.7)':'rgba(245,158,11,.2)';
           });
-        },300);
+        },280);
       }
+      window.surpNav=function(dir){ ci=(ci+dir+connections.length)%connections.length; show(ci); };
       show(0);
-      setInterval(()=>{ ci=(ci+1)%connections.length; show(ci); },5000);
+      timer=setInterval(()=>{ if(!paused){ ci=(ci+1)%connections.length; show(ci); } },5000);
     })();
 
     // ── CLICK/TAP GRAPH BURST ──
