@@ -914,7 +914,7 @@
         <h2 class="hl text-5xl text-white mb-4">Recall vs <span class="grad-green">relationships</span></h2>
         <p class="text-sm font-light mono" style="color:var(--t2);">Other tools find things. Graphify understands how they connect.</p>
       </div>
-      <div class="code-border overflow-hidden">
+      <div class="code-border" style="overflow:clip;border-radius:16px;">
         <table class="w-full text-sm">
           <thead><tr style="border-bottom:1px solid var(--border);">
             <th class="text-left py-4 px-7 font-normal w-1/2 mono text-xs" style="color:var(--t3);">// capability</th>
@@ -1032,21 +1032,40 @@
     // Hash clear
     if (window.location.hash){history.replaceState(null,'',window.location.pathname);window.scrollTo(0,0)}
 
+    function showAll() {
+      document.querySelectorAll('.gsap-reveal').forEach(el => {
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+      document.querySelectorAll('.gsap-stagger > *').forEach(el => {
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+    }
+
     try {
       gsap.registerPlugin(ScrollTrigger);
-      // Set initial hidden state via JS (not CSS) so content is visible if GSAP fails
-      gsap.set('.gsap-reveal', {opacity:0, y:40});
-      gsap.set('.gsap-stagger > *', {opacity:0, y:30});
+      gsap.set('.gsap-reveal', {opacity:0, y:30});
+      gsap.set('.gsap-stagger > *', {opacity:0, y:22});
 
       document.querySelectorAll('.gsap-reveal').forEach(el => {
-        gsap.to(el, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
-          y:0,opacity:1,duration:.9,ease:'power3.out'});
+        gsap.to(el, {
+          scrollTrigger:{trigger:el, start:'top 96%', toggleActions:'play none none none', once:true},
+          y:0, opacity:1, duration:.85, ease:'power3.out'
+        });
       });
       document.querySelectorAll('.gsap-stagger').forEach(el => {
-        gsap.to(el.children, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
-          y:0,opacity:1,duration:.75,stagger:.12,ease:'power2.out'});
+        gsap.to(el.children, {
+          scrollTrigger:{trigger:el, start:'top 96%', toggleActions:'play none none none', once:true},
+          y:0, opacity:1, duration:.7, stagger:.1, ease:'power2.out'
+        });
       });
-    } catch(e) { console.warn('GSAP unavailable, showing all sections', e); }
+
+      // Refresh after fonts + layout settle so trigger positions are accurate
+      window.addEventListener('load', () => { ScrollTrigger.refresh(); });
+      setTimeout(() => { ScrollTrigger.refresh(); }, 400);
+    } catch(e) {
+      console.warn('GSAP unavailable', e);
+      showAll();
+    }
 
     // Decode text effect
     const DECODE_CHARS = 'ΨΩΣ∇λπ∀∃ΔΦΘ01▓░▄▀█';
