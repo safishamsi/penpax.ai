@@ -340,9 +340,9 @@
           </div>
 
           <div class="flex flex-wrap gap-5 mb-8">
-            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">30,000</span> github.stars</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">31k+</span> github.stars</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
-            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">215k+</span> downloads</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">230k+</span> downloads</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
             <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">on-device</span> only</span>
           </div>
@@ -520,9 +520,9 @@
   <div class="stats-strip gsap-reveal">
     <div class="max-w-5xl mx-auto px-6">
       <div class="flex flex-wrap justify-center" style="divide-color:rgba(34,197,94,.08);">
-        <div class="stat-item"><span class="stat-num grad-green" data-count="30000">0</span><span class="stat-lbl">// github.stars</span></div>
+        <div class="stat-item"><span class="stat-num grad-green" data-count="31000">0</span><span class="stat-lbl">// github.stars</span></div>
         <div class="stat-item" style="border-left:1px solid rgba(34,197,94,.08);border-right:1px solid rgba(34,197,94,.08);">
-          <span class="stat-num" style="color:var(--t1);" data-count="215000">0</span><span class="stat-lbl">// total.downloads</span></div>
+          <span class="stat-num" style="color:var(--t1);" data-count="230000">0</span><span class="stat-lbl">// total.downloads</span></div>
         <div class="stat-item" style="border-right:1px solid rgba(34,197,94,.08);">
           <span class="stat-num grad-amber" id="node-ticker">∞</span>
           <span class="stat-lbl" id="node-ticker-lbl">// incremental.growth</span>
@@ -732,7 +732,7 @@
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">AST extraction, 20 languages</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Python, JS, Go, Rust, Java and more</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Markdown, PDF, HTML, MDX, vision</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">HTML export, Leiden clustering, god-nodes</p></div></div>
-            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">30,000 stars on GitHub · 215k downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
+            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">31k+ stars on GitHub · 230k downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
           </div>
           <div class="mt-6"><a href="https://github.com/safishamsi/graphify" class="mono text-xs hover:text-white transition-colors" style="color:var(--t2);">&gt; view_on_github →</a></div>
         </div>
@@ -1610,6 +1610,41 @@
       card.addEventListener('mouseenter',()=>{ timer=setTimeout(drawEgg,4000); });
       card.addEventListener('mouseleave',()=>{ clearTimeout(timer); });
       card.addEventListener('click',drawEgg);
+    })();
+
+    // ── CLICK/TAP GRAPH BURST ──
+    (function(){
+      const NS='http://www.w3.org/2000/svg';
+      const COLORS=['#22c55e','#4ade80','#4ade80','#f59e0b'];
+      function burst(x,y){
+        const svg=document.createElementNS(NS,'svg');
+        const R=38;
+        svg.setAttribute('viewBox',`-${R} -${R} ${R*2} ${R*2}`);
+        svg.style.cssText=`position:fixed;left:${x-R}px;top:${y-R}px;width:${R*2}px;height:${R*2}px;pointer-events:none;z-index:99999;overflow:visible;`;
+        const count=3+Math.floor(Math.random()*2);
+        for(let i=0;i<count;i++){
+          const angle=(Math.PI*2/count)*i+Math.random()*.5;
+          const dist=18+Math.random()*14;
+          const nx=Math.cos(angle)*dist, ny=Math.sin(angle)*dist;
+          const col=COLORS[Math.floor(Math.random()*COLORS.length)];
+          const line=document.createElementNS(NS,'line');
+          line.setAttribute('x1',0);line.setAttribute('y1',0);line.setAttribute('x2',nx);line.setAttribute('y2',ny);
+          line.setAttribute('stroke',col);line.setAttribute('stroke-width','0.8');line.setAttribute('stroke-opacity','0.6');
+          svg.appendChild(line);
+          const c=document.createElementNS(NS,'circle');
+          c.setAttribute('cx',nx);c.setAttribute('cy',ny);c.setAttribute('r','2.2');
+          c.setAttribute('fill',col);c.setAttribute('fill-opacity','0.9');
+          svg.appendChild(c);
+        }
+        const hub=document.createElementNS(NS,'circle');
+        hub.setAttribute('cx',0);hub.setAttribute('cy',0);hub.setAttribute('r','2.8');
+        hub.setAttribute('fill','#4ade80');hub.setAttribute('fill-opacity','0.9');
+        svg.appendChild(hub);
+        document.body.appendChild(svg);
+        svg.animate([{opacity:1,transform:'scale(0.4)'},{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(1.1)'}],{duration:520,easing:'ease-out',fill:'forwards'}).onfinish=()=>svg.remove();
+      }
+      document.addEventListener('click',e=>{ if(!e.target.closest('a,button,input')) burst(e.clientX,e.clientY); });
+      document.addEventListener('touchend',e=>{ const t=e.changedTouches[0]; if(t&&!e.target.closest('a,button,input')) burst(t.clientX,t.clientY); },{passive:true});
     })();
 
   </script>
