@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graphify — Any input. One graph. Complete recall.</title>
+  <title>Graphify: Any input. One graph. Complete recall.</title>
   <meta name="description" content="The open-source knowledge graph engine. Turn code, docs, papers, meetings and images into a traversable graph. Build once, grow forever. On-device or cloud." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bricolage Grotesque','Inter','system-ui','sans-serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bricolage Grotesque','Inter','system-ui','sans-serif'],myth:['Cormorant Garamond','Georgia','serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -156,6 +156,10 @@
     .gsap-reveal{}
     .gsap-stagger > *{}
 
+    /* mythology accent */
+    .myth{font-family:'Cormorant Garamond',Georgia,serif}
+    .myth-quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;line-height:1.5;letter-spacing:.01em}
+
     /* decode text */
     .decode-text{font-family:'JetBrains Mono',monospace}
 
@@ -214,7 +218,7 @@
     <div class="orb w-[600px] h-[600px]" style="background:rgba(34,197,94,.07);top:-20%;left:-18%;"></div>
     <div class="orb w-[350px] h-[350px]" style="background:rgba(245,158,11,.05);bottom:-12%;right:5%;"></div>
 
-    <!-- floating math -->
+    <!-- floating symbols: math + Greek -->
     <span class="math-float text-2xl" style="top:18%;left:6%;animation-delay:.5s;">∑</span>
     <span class="math-float text-lg" style="top:32%;left:3%;animation-delay:2s;">∀x∃y</span>
     <span class="math-float text-xl" style="top:65%;left:5%;animation-delay:1s;">∇²ψ</span>
@@ -222,6 +226,11 @@
     <span class="math-float text-2xl" style="top:20%;right:5%;animation-delay:1.5s;">Ω</span>
     <span class="math-float text-lg" style="top:55%;right:4%;animation-delay:.8s;">P(H|E)</span>
     <span class="math-float text-xl" style="top:70%;right:6%;animation-delay:2.5s;">∂f/∂x</span>
+    <!-- Greek letters -->
+    <span class="math-float myth text-3xl" style="top:12%;left:14%;animation-delay:1.2s;font-style:italic;">Θ</span>
+    <span class="math-float myth text-2xl" style="top:82%;right:12%;animation-delay:3.5s;font-style:italic;">Ξ</span>
+    <span class="math-float myth text-2xl" style="top:48%;left:8%;animation-delay:2.8s;font-style:italic;">Χ</span>
+    <span class="math-float myth text-3xl" style="top:88%;left:18%;animation-delay:.9s;font-style:italic;">Η</span>
 
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
@@ -232,14 +241,18 @@
             <div class="badge-live"><span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#4ade80;"></span>1,500+ QUEUED</div>
           </div>
 
-          <h1 class="hl text-[58px] md:text-[70px] text-white mb-8" id="hero-h1">
+          <h1 class="hl text-[58px] md:text-[70px] text-white mb-5" id="hero-h1">
             Any input.<br/>
             One graph.<br/>
             <span class="grad-amber">Complete recall.</span>
           </h1>
 
+          <p class="myth-quote text-base mb-8" style="color:rgba(245,158,11,.45);font-size:15px;">
+            Named after Mnemosyne, Titan goddess of memory and mother of all knowledge.
+          </p>
+
           <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
-            The knowledge graph engine for large corpora and enterprise codebases. Feed it everything once — every change grows the graph incrementally. No rebuilds. On-device or cloud.
+            The knowledge graph engine for large corpora and enterprise codebases. Feed it everything once. Every change grows the graph incrementally. No rebuilds. On-device or cloud.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-3 mb-10">
@@ -424,13 +437,16 @@
   <!-- WHAT IS -->
   <section class="py-28 border-t" style="border-color:var(--border);">
     <div class="max-w-4xl mx-auto px-6 text-center gsap-reveal">
-      <p class="section-tag mb-5">// init_sequence.graphify</p>
+      <p class="section-tag mb-5">// origin.mnemosyne</p>
       <h2 class="hl text-5xl md:text-6xl text-white mb-8">
         AI tools forget.<br/>
         <span class="grad-amber">Graphify decodes everything.</span>
       </h2>
+      <p class="myth-quote text-xl mb-6" style="color:rgba(245,158,11,.35);">
+        "Mnemosyne held the memory of all things that ever were."
+      </p>
       <p class="text-base font-light max-w-2xl mx-auto" style="color:var(--t2);line-height:1.75;">
-        Turing's Bombe read patterns from noise and broke Enigma. Graphify does the same to your working life — every document, call, commit, and browser tab decoded into a persistent, traversable knowledge graph. On your machine. No cloud. No forgetting.
+        Turing's Bombe found patterns in noise and broke Enigma. Graphify does the same: every document, call, commit, and browser tab decoded into a persistent, traversable knowledge graph. On your machine. No cloud. No forgetting.
       </p>
     </div>
   </section>
@@ -448,7 +464,7 @@
       <div class="text-center mb-16 gsap-reveal">
         <p class="section-tag mb-4">// incremental.intelligence</p>
         <h2 class="hl text-5xl text-white mb-5">Build once.<br/><span class="grad-green">Grow forever.</span></h2>
-        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);line-height:1.75;">Unlike RAG pipelines that re-embed everything on every change, Graphify maintains a living graph. When a file changes, only affected nodes and edges update. The rest of your corpus stays intact — even at millions of files.</p>
+        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);line-height:1.75;">Unlike RAG pipelines that re-embed everything on every change, Graphify maintains a living graph. When a file changes, only affected nodes and edges update. The rest of your corpus stays intact, even at millions of files.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-4 mb-14 gsap-stagger">
@@ -582,7 +598,7 @@
             </div>
             <div>
               <p class="font-semibold text-white">Open Source</p>
-              <p class="text-xs mono" style="color:var(--t3);">MIT — free forever</p>
+              <p class="text-xs mono" style="color:var(--t3);">MIT license, free forever</p>
             </div>
           </div>
           <div class="mono text-xs mb-6 px-4 py-3 rounded-md" style="background:rgba(0,0,0,.5);color:#4ade80;border:1px solid rgba(34,197,94,.15);">
@@ -611,8 +627,8 @@
             $ graphify enterprise --scale=unlimited --local-or-cloud
           </div>
           <div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Million-file corpus support</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Incremental graph — no rebuilds, no limits</p></div></div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Local or cloud deployment</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Air-gapped on-prem or managed cloud — your choice</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Million-file corpus support</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Incremental graph, no rebuilds, no limits</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Local or cloud deployment</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Air-gapped on-prem or managed cloud, your choice</p></div></div>
             <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Shared corpus, role-based access, merge strategies</p></div></div>
             <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">SOC 2 ready, 99.9% uptime, dedicated support</p></div></div>
           </div>
@@ -639,7 +655,7 @@
         <div class="relative">
           <div class="step-num">02</div>
           <h3 class="text-base font-medium text-white mb-3">Graph is decoded</h3>
-          <p class="text-sm font-light leading-relaxed" style="color:var(--t2);">Like Turing's Bombe finding patterns in cipher text — every entity becomes a node, every relationship an edge. Leiden clustering surfaces hidden communities.</p>
+          <p class="text-sm font-light leading-relaxed" style="color:var(--t2);">Like Turing's Bombe finding patterns in cipher text: every entity becomes a node, every relationship an edge. Leiden clustering surfaces hidden communities.</p>
         </div>
         <div>
           <div class="step-num">03</div>
@@ -656,7 +672,7 @@
       <div class="text-center mb-20 gsap-reveal">
         <p class="section-tag mb-4">// capability.map</p>
         <h2 class="hl text-5xl text-white mb-5">Everything you touch,<br/><span class="grad-green">connected.</span></h2>
-        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">Not just meetings. Not just code. Your entire working context — captured, structured, and queryable.</p>
+        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">Not just meetings. Not just code. Your entire working context, captured, structured, and queryable.</p>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 gsap-stagger">
 
@@ -669,19 +685,19 @@
         <div class="glass rounded-xl p-6 transition-all duration-300">
           <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="color:#4ade80;"><path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5H11l-3 3v-3H4.5A1.5 1.5 0 013 12.5v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M7 7.5h6M7 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
           <h3 class="font-medium text-white mb-2 text-sm">Meetings</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">Automatic transcription and extraction. Decisions, action items, concepts — all connected to your wider context.</p>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">Automatic transcription and extraction. Decisions, action items, concepts, all connected to your wider context.</p>
         </div>
 
         <div class="glass rounded-xl p-6 transition-all duration-300">
           <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="color:#4ade80;"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h3 class="font-medium text-white mb-2 text-sm">Code &amp; AST</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">AST-level extraction across 20 languages. Functions, classes, call graphs — your codebase becomes part of the graph.</p>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">AST-level extraction across 20 languages. Functions, classes, call graphs. Your codebase becomes part of the graph.</p>
         </div>
 
         <div class="glass rounded-xl p-6 transition-all duration-300">
           <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="color:#4ade80;"><path d="M4 2h9l4 4v12a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M13 2v4h4M7 9h6M7 12h6M7 15h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
           <h3 class="font-medium text-white mb-2 text-sm">Docs &amp; papers</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">PDFs, Markdown, HTML, MDX. Papers you have read, specs you have written — all in the graph.</p>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">PDFs, Markdown, HTML, MDX. Papers you have read, specs you have written. All in the graph..</p>
         </div>
 
         <div class="glass rounded-xl p-6 transition-all duration-300">
@@ -693,7 +709,7 @@
         <div class="glass rounded-xl p-6 transition-all duration-300">
           <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="color:#fbbf24;"><circle cx="5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="5" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="15" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 9l5-3M7.5 11l5 3" stroke="currentColor" stroke-width="1.5"/></svg></div>
           <h3 class="font-medium text-white mb-2 text-sm">Surprising connections</h3>
-          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">Leiden clustering surfaces communities and god-nodes you didn't know existed — across months of work.</p>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">Leiden clustering surfaces communities and god-nodes you didn't know existed, across months of work.</p>
         </div>
 
       </div>
@@ -706,7 +722,7 @@
       <div class="text-center mb-16 gsap-reveal">
         <p class="section-tag mb-4">// deployment.field</p>
         <h2 class="hl text-5xl text-white mb-5">Built for everyone<br/><span class="grad-amber">who works with knowledge</span></h2>
-        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">If your work involves reading, writing, deciding, or advising — your context belongs to you.</p>
+        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">If your work involves reading, writing, deciding, or advising. Your context belongs to you..</p>
       </div>
       <div class="gsap-reveal mb-10 overflow-x-auto pb-2">
         <div id="uc-tabs" class="flex gap-2 min-w-max mx-auto" style="width:fit-content;">
@@ -726,7 +742,7 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><p class="text-sm font-medium text-white">Business Leadership</p><p class="text-xs mono" style="color:var(--t3);">founders, executives, board members</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Graphify connects all of it into a living graph so you always know what led to what — and why.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Graphify connects all of it into a living graph so you always know what led to what, and why.</p>
               <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Understand which meeting influenced a pricing change months later</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Walk into board reviews with full context, not a search session</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Connect team commitments across scattered documents and calls</p></div></div>
             </div>
             <div class="code-border p-5">
@@ -764,7 +780,7 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><p class="text-sm font-medium text-white">Client-facing Professionals</p><p class="text-xs mono" style="color:var(--t3);">sales, consultants, account managers</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Graphify maps every touchpoint so you always know where things stand — before you open the meeting.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Graphify maps every touchpoint so you always know where things stand, before you open the meeting.</p>
               <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Recall every promise made across a multi-month deal</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Surface objections raised on past calls before the next one</p></div></div>
             </div>
             <div class="code-border p-5">
@@ -773,7 +789,7 @@
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22c55e;"></span><span class="text-xs mono" style="color:var(--t2);">oct3_call → procurement needs SSO before sign-off</span></div>
                 <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#4ade80;"></span><span class="text-xs mono" style="color:var(--t2);">nov_email → legal reviewing data residency clause</span></div>
-                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#f59e0b;"></span><span class="text-xs mono" style="color:var(--t2);">sso_shipped Dec 1 — not mentioned in follow-up yet</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#f59e0b;"></span><span class="text-xs mono" style="color:var(--t2);">sso_shipped Dec 1, not yet mentioned in follow-up</span></div>
               </div>
             </div>
           </div>
@@ -800,8 +816,8 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><p class="text-sm font-medium text-white">Health Professionals</p><p class="text-xs mono" style="color:var(--t3);">doctors, therapists, clinicians, researchers</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify builds the patient picture locally — no data uploaded, no cloud dependency — so you can surface patterns without compromising confidentiality.</p>
-              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Connect symptoms across multiple appointments over time</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Stays fully on-device — no data leaves your machine</p></div></div>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify builds the patient picture locally, no data uploaded, no cloud dependency, so you can surface patterns without compromising confidentiality.</p>
+              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Connect symptoms across multiple appointments over time</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Stays fully on-device. No data leaves your machine.</p></div></div>
             </div>
             <div class="code-border p-5">
               <p class="text-xs mono mb-4" style="color:var(--t3);">// query.execute</p>
@@ -809,7 +825,7 @@
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#22c55e;"></span><span class="text-xs mono" style="color:var(--t2);">session_aug → "low energy, attributed to stress"</span></div>
                 <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#4ade80;"></span><span class="text-xs mono" style="color:var(--t2);">blood_panel_sep → ferritin borderline, not flagged</span></div>
-                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#f59e0b;"></span><span class="text-xs mono" style="color:var(--t2);">research_tab → iron deficiency symptoms — same week</span></div>
+                <div class="flex items-start gap-2"><span class="sd mt-1.5" style="background:#f59e0b;"></span><span class="text-xs mono" style="color:var(--t2);">research_tab → iron deficiency symptoms, same week</span></div>
               </div>
             </div>
           </div>
@@ -818,7 +834,7 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div><p class="text-sm font-medium text-white">Technical &amp; Product</p><p class="text-xs mono" style="color:var(--t3);">developers, engineers, product managers</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them — without asking someone who might have left.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them, without asking someone who might have left.</p>
               <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Understand why a library was chosen six months ago</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Onboard to a codebase by querying its decisions, not just its code</p></div></div>
             </div>
             <div class="code-border p-5">
@@ -836,8 +852,8 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div><p class="text-sm font-medium text-white">Knowledge &amp; Research</p><p class="text-xs mono" style="color:var(--t3);">researchers, academics, analysts, students</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify builds a living map of your reading — papers, notes, articles, annotations — so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
-              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Find conceptual links across papers read months apart</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Identify gaps — what you haven't read that you should</p></div></div>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Graphify builds a living map of your reading: papers, notes, articles, annotations, so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
+              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Find conceptual links across papers read months apart</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Identify gaps: what you have not yet read but should</p></div></div>
             </div>
             <div class="code-border p-5">
               <p class="text-xs mono mb-4" style="color:var(--t3);">// query.execute</p>
@@ -854,8 +870,8 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><p class="text-sm font-medium text-white">Defence &amp; Intelligence</p><p class="text-xs mono" style="color:var(--t3);">analysts, officers, policy advisors, planners</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Air-gapped by design. Graphify processes everything locally — no cloud, no telemetry, no external API calls. Build structured intelligence graphs from documents and signals without anything leaving the machine.</p>
-              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Build entity graphs without network exposure</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Fully offline — runs on your hardware, stays on your hardware</p></div></div>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Air-gapped by design. Graphify processes everything locally: no cloud, no telemetry, no external API calls. Build structured intelligence graphs from documents and signals without anything leaving the machine.</p>
+              <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Build entity graphs without network exposure</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Fully offline. Runs on your hardware, stays on your hardware.</p></div></div>
             </div>
             <div class="code-border p-5">
               <p class="text-xs mono mb-4" style="color:var(--t3);">// query.execute</p>
@@ -872,7 +888,7 @@
           <div class="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <div class="flex items-center gap-3 mb-5"><div class="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);"><svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><p class="text-sm font-medium text-white">Personal &amp; Household</p><p class="text-xs mono" style="color:var(--t3);">individuals, household managers, caretakers</p></div></div>
-              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Medical appointments, financial decisions, school correspondence, care plans — scattered across apps. Graphify connects all of it into one private, searchable graph on your device.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:var(--t2);">Medical appointments, financial decisions, school correspondence, care plans, scattered across apps. Graphify connects all of it into one private, searchable graph on your device.</p>
               <div class="space-y-2"><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Track medical history, prescriptions, and appointment notes</p></div><div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#22c55e;"></div><p class="text-xs mono" style="color:var(--t2);">Connect financial decisions, warranties, and contracts over time</p></div></div>
             </div>
             <div class="code-border p-5">
@@ -908,11 +924,11 @@
           <tbody>
             <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">find_past_information()</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
             <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">meeting_transcription()</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">browser_history_aware()</td><td class="py-3.5 px-5 text-center check-n text-xs">—</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">parse_ast_20_langs()</td><td class="py-3.5 px-5 text-center check-n text-xs">—</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">relationship_graph()</td><td class="py-3.5 px-5 text-center check-n text-xs">—</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">runs_on_device()</td><td class="py-3.5 px-5 text-center check-n text-xs">—</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
-            <tr><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">zero_cloud_training()</td><td class="py-3.5 px-5 text-center check-n text-xs">—</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">browser_history_aware()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">parse_ast_20_langs()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">relationship_graph()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
+            <tr style="border-bottom:1px solid rgba(34,197,94,.05);"><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">runs_on_device()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
+            <tr><td class="py-3.5 px-7 mono text-xs" style="color:var(--t2);">zero_cloud_training()</td><td class="py-3.5 px-5 text-center check-n text-xs">✕</td><td class="py-3.5 px-5 text-center check-y text-xs">✓</td></tr>
           </tbody>
         </table>
       </div>
@@ -923,8 +939,9 @@
   <section id="privacy" class="py-28 border-t" style="border-color:var(--border);">
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-16 gsap-reveal">
-        <p class="section-tag mb-4">// security.protocol</p>
+        <p class="section-tag mb-4">// aegis.protocol</p>
         <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><span class="grad-green">your machine.</span></h2>
+        <p class="myth-quote text-base mb-4" style="color:rgba(245,158,11,.35);">Under the Aegis of Zeus, nothing could pass uninvited.</p>
         <p class="text-sm font-light max-w-lg mx-auto" style="color:var(--t2);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 gsap-stagger">
@@ -980,7 +997,7 @@
           style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);"/>
         <button type="submit" class="btn-primary text-white px-8 py-4 rounded-md font-medium text-sm whitespace-nowrap mono">$ join_waitlist</button>
       </form>
-      <p id="form-msg" class="mt-4 text-xs mono hidden" style="color:#4ade80;">[ ACCESS GRANTED ] — free trial coming your way.</p>
+      <p id="form-msg" class="mt-4 text-xs mono hidden" style="color:#4ade80;">[ ACCESS GRANTED ] Free trial coming your way.</p>
       <p class="mt-4 text-xs mono" style="color:var(--t3);">no_spam=true | unsubscribe=anytime | card_required=false</p>
     </div>
   </section>
@@ -1001,6 +1018,7 @@
           <line x1="20" y1="18" x2="12" y2="12" stroke="#f59e0b" stroke-width="1.5" opacity=".35"/>
         </svg>
         <span class="text-xs mono" style="color:var(--t2);">graphify.labs // persistent memory engine</span>
+        <span class="myth text-xs italic ml-3" style="color:rgba(245,158,11,.3);">per Mnemosynen</span>
       </div>
       <div class="flex items-center gap-6 text-xs mono" style="color:var(--t3);">
         <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors">/github</a>
@@ -1087,7 +1105,7 @@
       const res = await fetch('https://formspree.io/f/xqegoayo',{method:'POST',body:new FormData(e.target),headers:{'Accept':'application/json'}});
       const msg = document.getElementById('form-msg');
       msg.classList.remove('hidden');
-      if (!res.ok) msg.textContent = '[ ERROR ] — please try again.';
+      if (!res.ok) msg.textContent = '[ ERROR ] Please try again.';
     }
 
     // ── MATRIX RAIN ──
