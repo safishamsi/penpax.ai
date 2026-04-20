@@ -6,9 +6,9 @@
   <title>Graphify — Any input. One graph. Complete recall.</title>
   <meta name="description" content="The open-source knowledge graph engine. Turn code, docs, papers, meetings and images into a traversable graph. #1 on MemoryBench. 30k GitHub stars." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','Georgia','serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bricolage Grotesque','Inter','system-ui','sans-serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -51,7 +51,7 @@
     .nav{background:rgba(4,8,6,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 
     /* typography */
-    .hl{font-family:'Fraunces',Georgia,serif;font-weight:400;line-height:0.87;letter-spacing:-0.05em}
+    .hl{font-family:'Bricolage Grotesque','Inter',sans-serif;font-weight:600;line-height:0.9;letter-spacing:-0.045em}
     .mono{font-family:'JetBrains Mono',monospace}
 
     .grad-green{background:linear-gradient(135deg,#86efac 0%,#4ade80 40%,#22c55e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -183,7 +183,7 @@
           <line x1="4"  y1="18" x2="12" y2="12" stroke="#22c55e" stroke-width="1.5" opacity=".5"/>
           <line x1="20" y1="18" x2="12" y2="12" stroke="#f59e0b" stroke-width="1.5" opacity=".5"/>
         </svg>
-        <span class="font-display text-xl grad-green" style="font-weight:400;letter-spacing:-.04em;">Graphify</span>
+        <span class="font-display text-xl grad-green" style="font-weight:600;letter-spacing:-.04em;">Graphify</span>
       </div>
       <div class="hidden md:flex items-center gap-8 text-sm mono" style="color:var(--t2);">
         <a href="#how" class="hover:text-white transition-colors">/process</a>
@@ -216,14 +216,13 @@
         <!-- copy -->
         <div>
           <div class="flex flex-wrap gap-3 mb-10">
-            <div class="badge-bench">[ #1 MEMORYBENCH — EXCEEDS ALL COMMERCIAL ]</div>
             <div class="badge-live"><span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#4ade80;"></span>1,500+ QUEUED</div>
           </div>
 
-          <h1 class="hl text-[62px] md:text-[74px] text-white mb-8" id="hero-h1">
+          <h1 class="hl text-[58px] md:text-[70px] text-white mb-8" id="hero-h1">
             Any input.<br/>
             One graph.<br/>
-            <em class="grad-amber not-italic">Complete recall.</em>
+            <span class="grad-amber">Complete recall.</span>
           </h1>
 
           <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
@@ -240,11 +239,11 @@
           </div>
 
           <div class="flex flex-wrap gap-5">
-            <span class="mono text-xs" style="color:var(--t3);">⭐ <span style="color:var(--t2);">30,000</span> github.stars</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">30,000</span> github.stars</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
-            <span class="mono text-xs" style="color:var(--t3);">⬇ <span style="color:var(--t2);">215k+</span> downloads</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">215k+</span> downloads</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
-            <span class="mono text-xs" style="color:var(--t3);">🔒 <span style="color:var(--t2);">on-device</span> only</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">on-device</span> only</span>
           </div>
         </div>
 
@@ -287,7 +286,7 @@
       <p class="section-tag mb-5">// init_sequence.graphify</p>
       <h2 class="hl text-5xl md:text-6xl text-white mb-8">
         AI tools forget.<br/>
-        <em class="grad-amber not-italic">Graphify decodes everything.</em>
+        <span class="grad-amber">Graphify decodes everything.</span>
       </h2>
       <p class="text-base font-light max-w-2xl mx-auto" style="color:var(--t2);line-height:1.75;">
         Turing's Bombe read patterns from noise and broke Enigma. Graphify does the same to your working life — every document, call, commit, and browser tab decoded into a persistent, traversable knowledge graph. On your machine. No cloud. No forgetting.
@@ -307,7 +306,7 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-14 gsap-reveal">
         <p class="section-tag mb-4">// deployment.modes</p>
-        <h2 class="hl text-4xl text-white">Open source to <em class="grad-amber not-italic">enterprise-grade</em></h2>
+        <h2 class="hl text-4xl text-white">Open source to <span class="grad-amber">enterprise-grade</span></h2>
       </div>
       <div class="grid md:grid-cols-2 gap-6 gsap-stagger">
 
@@ -328,7 +327,7 @@
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">AST extraction, 20 languages</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Python, JS, Go, Rust, Java and more</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Markdown, PDF, HTML, MDX, vision</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">HTML export, Leiden clustering, god-nodes</p></div></div>
-            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">30,000 ⭐ GitHub · 215k downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
+            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">30,000 stars on GitHub · 215k downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
           </div>
           <div class="mt-6"><a href="https://github.com/safishamsi/graphify" class="mono text-xs hover:text-white transition-colors" style="color:var(--t2);">&gt; view_on_github →</a></div>
         </div>
@@ -364,7 +363,7 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-20 gsap-reveal">
         <p class="section-tag mb-4">// process.graph</p>
-        <h2 class="hl text-5xl text-white">Three steps to your <em class="grad-green not-italic">knowledge graph</em></h2>
+        <h2 class="hl text-5xl text-white">Three steps to your <span class="grad-green">knowledge graph</span></h2>
       </div>
       <div class="grid md:grid-cols-3 gap-10 gsap-stagger">
         <div class="relative">
@@ -441,7 +440,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-16 gsap-reveal">
         <p class="section-tag mb-4">// deployment.field</p>
-        <h2 class="hl text-5xl text-white mb-5">Built for everyone<br/><em class="grad-amber not-italic">who works with knowledge</em></h2>
+        <h2 class="hl text-5xl text-white mb-5">Built for everyone<br/><span class="grad-amber">who works with knowledge</span></h2>
         <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">If your work involves reading, writing, deciding, or advising — your context belongs to you.</p>
       </div>
       <div class="gsap-reveal mb-10 overflow-x-auto pb-2">
@@ -631,7 +630,7 @@
     <div class="max-w-3xl mx-auto px-6 gsap-reveal">
       <div class="text-center mb-14">
         <p class="section-tag mb-4">// benchmark.compare</p>
-        <h2 class="hl text-5xl text-white mb-4">Recall vs <em class="grad-green not-italic">relationships</em></h2>
+        <h2 class="hl text-5xl text-white mb-4">Recall vs <span class="grad-green">relationships</span></h2>
         <p class="text-sm font-light mono" style="color:var(--t2);">Other tools find things. Graphify understands how they connect.</p>
       </div>
       <div class="code-border overflow-hidden">
@@ -660,7 +659,7 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-16 gsap-reveal">
         <p class="section-tag mb-4">// security.protocol</p>
-        <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><em class="grad-green not-italic">your machine.</em></h2>
+        <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><span class="grad-green">your machine.</span></h2>
         <p class="text-sm font-light max-w-lg mx-auto" style="color:var(--t2);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 gsap-stagger">
