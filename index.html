@@ -156,9 +156,22 @@
     .gsap-reveal{}
     .gsap-stagger > *{}
 
-    /* mythology accent */
+    /* mythology accent font (kept for decorative labels) */
     .myth{font-family:'Cormorant Garamond',Georgia,serif}
-    .myth-quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;line-height:1.5;letter-spacing:.01em}
+
+    /* Greek key (meander) border — repeating tile, fades at edges */
+    .greek-key{
+      height:10px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Cpolyline points='0,4 0,0 12,0 12,8 6,8 6,4 16,4' fill='none' stroke='%2322c55e' stroke-width='1' stroke-opacity='0.28' stroke-linejoin='miter' stroke-linecap='square'/%3E%3C/svg%3E");
+      background-size:16px 10px;
+      background-repeat:repeat-x;
+      background-position:center;
+      -webkit-mask-image:linear-gradient(90deg,transparent,black 18%,black 82%,transparent);
+      mask-image:linear-gradient(90deg,transparent,black 18%,black 82%,transparent);
+    }
+    .greek-key-amber{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Cpolyline points='0,4 0,0 12,0 12,8 6,8 6,4 16,4' fill='none' stroke='%23f59e0b' stroke-width='1' stroke-opacity='0.22' stroke-linejoin='miter' stroke-linecap='square'/%3E%3C/svg%3E");
+    }
 
     /* decode text */
     .decode-text{font-family:'JetBrains Mono',monospace}
@@ -246,10 +259,6 @@
             One graph.<br/>
             <span class="grad-amber">Complete recall.</span>
           </h1>
-
-          <p class="myth-quote text-base mb-8" style="color:rgba(245,158,11,.45);font-size:15px;">
-            Named after Mnemosyne, Titan goddess of memory and mother of all knowledge.
-          </p>
 
           <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
             The knowledge graph engine for large corpora and enterprise codebases. Feed it everything once. Every change grows the graph incrementally. No rebuilds. On-device or cloud.
@@ -418,6 +427,9 @@
     </div>
   </section>
 
+  <!-- Greek key accent above stats -->
+  <div class="greek-key"></div>
+
   <!-- STATS STRIP -->
   <div class="stats-strip gsap-reveal">
     <div class="max-w-5xl mx-auto px-6">
@@ -433,6 +445,8 @@
       </div>
     </div>
   </div>
+  <!-- Greek key accent below stats -->
+  <div class="greek-key"></div>
 
   <!-- WHAT IS -->
   <section class="py-28 border-t" style="border-color:var(--border);">
@@ -442,21 +456,14 @@
         AI tools forget.<br/>
         <span class="grad-amber">Graphify decodes everything.</span>
       </h2>
-      <p class="myth-quote text-xl mb-6" style="color:rgba(245,158,11,.35);">
-        "Mnemosyne held the memory of all things that ever were."
-      </p>
       <p class="text-base font-light max-w-2xl mx-auto" style="color:var(--t2);line-height:1.75;">
         Turing's Bombe found patterns in noise and broke Enigma. Graphify does the same: every document, call, commit, and browser tab decoded into a persistent, traversable knowledge graph. On your machine. No cloud. No forgetting.
       </p>
     </div>
   </section>
 
-  <!-- rotor divider -->
-  <div class="rotor-div mx-auto px-6" style="max-width:5xl;">
-    <div class="rotor-div-line"></div>
-    <div class="rotor-wheel"><div class="rotor-wheel-inner"></div></div>
-    <div class="rotor-div-line"></div>
-  </div>
+  <!-- Greek key divider -->
+  <div class="greek-key mx-auto" style="max-width:480px;margin-top:8px;margin-bottom:8px;"></div>
 
   <!-- BUILD ONCE GROW -->
   <section class="py-28 border-t" style="border-color:var(--border);">
@@ -643,7 +650,19 @@
   <section id="how" class="py-28 border-t grid-bg" style="border-color:var(--border);">
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-20 gsap-reveal">
-        <p class="section-tag mb-4">// process.graph</p>
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <svg viewBox="0 0 14 20" width="8" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:rgba(34,197,94,.25);">
+            <rect x="0" y="0" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+            <path d="M1,2.5 Q7,7 13,2.5" fill="currentColor"/>
+            <rect x="5" y="7" width="4" height="13" fill="currentColor" rx="0.5"/>
+          </svg>
+          <p class="section-tag">// process.graph</p>
+          <svg viewBox="0 0 14 20" width="8" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:rgba(34,197,94,.25);">
+            <rect x="0" y="0" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+            <path d="M1,2.5 Q7,7 13,2.5" fill="currentColor"/>
+            <rect x="5" y="7" width="4" height="13" fill="currentColor" rx="0.5"/>
+          </svg>
+        </div>
         <h2 class="hl text-5xl text-white">Three steps to your <span class="grad-green">knowledge graph</span></h2>
       </div>
       <div class="grid md:grid-cols-3 gap-10 gsap-stagger">
@@ -670,7 +689,19 @@
   <section id="features" class="py-28 border-t" style="border-color:var(--border);">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-20 gsap-reveal">
-        <p class="section-tag mb-4">// capability.map</p>
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <svg viewBox="0 0 14 20" width="8" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:rgba(34,197,94,.25);">
+            <rect x="0" y="0" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+            <path d="M1,2.5 Q7,7 13,2.5" fill="currentColor"/>
+            <rect x="5" y="7" width="4" height="13" fill="currentColor" rx="0.5"/>
+          </svg>
+          <p class="section-tag">// capability.map</p>
+          <svg viewBox="0 0 14 20" width="8" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:rgba(34,197,94,.25);">
+            <rect x="0" y="0" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+            <path d="M1,2.5 Q7,7 13,2.5" fill="currentColor"/>
+            <rect x="5" y="7" width="4" height="13" fill="currentColor" rx="0.5"/>
+          </svg>
+        </div>
         <h2 class="hl text-5xl text-white mb-5">Everything you touch,<br/><span class="grad-green">connected.</span></h2>
         <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);">Not just meetings. Not just code. Your entire working context, captured, structured, and queryable.</p>
       </div>
@@ -937,11 +968,11 @@
 
   <!-- PRIVACY -->
   <section id="privacy" class="py-28 border-t" style="border-color:var(--border);">
+    <div class="greek-key greek-key-amber mb-8 mx-auto" style="max-width:360px;"></div>
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-16 gsap-reveal">
         <p class="section-tag mb-4">// aegis.protocol</p>
         <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><span class="grad-green">your machine.</span></h2>
-        <p class="myth-quote text-base mb-4" style="color:rgba(245,158,11,.35);">Under the Aegis of Zeus, nothing could pass uninvited.</p>
         <p class="text-sm font-light max-w-lg mx-auto" style="color:var(--t2);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 gsap-stagger">
@@ -964,18 +995,45 @@
   <!-- WAITLIST -->
   <section id="waitlist" class="py-28 border-t grid-bg" style="border-color:var(--border);">
     <div class="max-w-xl mx-auto px-6 text-center gsap-reveal">
-      <div class="w-14 h-14 rounded-xl mx-auto mb-8 flex items-center justify-center" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);">
-        <svg width="24" height="24" viewBox="0 0 28 28" fill="none" style="color:#4ade80;">
-          <circle cx="14" cy="14" r="4" fill="currentColor" opacity=".8"/>
-          <circle cx="5" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
-          <circle cx="23" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
-          <circle cx="5" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
-          <circle cx="23" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
-          <line x1="5" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-          <line x1="23" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-          <line x1="5" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-          <line x1="23" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+      <!-- Laurel wreath with graph icon -->
+      <div class="relative mx-auto mb-8" style="width:96px;height:96px;">
+        <!-- Laurel wreath SVG -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
+          <!-- Left branch stem -->
+          <path d="M48,82 C34,74 20,62 14,46 C10,34 13,22 20,16" stroke="#f59e0b" stroke-width="1.4" fill="none" stroke-opacity="0.5"/>
+          <!-- Left leaves -->
+          <ellipse cx="40" cy="74" rx="7" ry="2.8" transform="rotate(-28,40,74)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="30" cy="65" rx="7" ry="2.8" transform="rotate(-46,30,65)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="22" cy="54" rx="6.5" ry="2.5" transform="rotate(-62,22,54)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="16" cy="41" rx="6" ry="2.4" transform="rotate(-75,16,41)" fill="#f59e0b" fill-opacity="0.25"/>
+          <ellipse cx="16" cy="28" rx="5.5" ry="2.2" transform="rotate(-84,16,28)" fill="#f59e0b" fill-opacity="0.22"/>
+          <!-- Right branch stem (mirror) -->
+          <path d="M48,82 C62,74 76,62 82,46 C86,34 83,22 76,16" stroke="#f59e0b" stroke-width="1.4" fill="none" stroke-opacity="0.5"/>
+          <!-- Right leaves -->
+          <ellipse cx="56" cy="74" rx="7" ry="2.8" transform="rotate(28,56,74)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="66" cy="65" rx="7" ry="2.8" transform="rotate(46,66,65)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="74" cy="54" rx="6.5" ry="2.5" transform="rotate(62,74,54)" fill="#f59e0b" fill-opacity="0.3"/>
+          <ellipse cx="80" cy="41" rx="6" ry="2.4" transform="rotate(75,80,41)" fill="#f59e0b" fill-opacity="0.25"/>
+          <ellipse cx="80" cy="28" rx="5.5" ry="2.2" transform="rotate(84,80,28)" fill="#f59e0b" fill-opacity="0.22"/>
+          <!-- Bottom ribbon -->
+          <path d="M40,84 Q48,89 56,84" stroke="#f59e0b" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-opacity="0.5"/>
         </svg>
+        <!-- Center icon -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);">
+            <svg width="22" height="22" viewBox="0 0 28 28" fill="none" style="color:#4ade80;">
+              <circle cx="14" cy="14" r="4" fill="currentColor" opacity=".8"/>
+              <circle cx="5" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <circle cx="23" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <circle cx="5" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <circle cx="23" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <line x1="5" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+              <line x1="23" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+              <line x1="5" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+              <line x1="23" y1="20" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+            </svg>
+          </div>
+        </div>
       </div>
       <p class="section-tag mb-4">// access.request</p>
       <h2 class="hl text-5xl text-white mb-4">Try it free when we launch.</h2>
@@ -1018,7 +1076,6 @@
           <line x1="20" y1="18" x2="12" y2="12" stroke="#f59e0b" stroke-width="1.5" opacity=".35"/>
         </svg>
         <span class="text-xs mono" style="color:var(--t2);">graphify.labs // persistent memory engine</span>
-        <span class="myth text-xs italic ml-3" style="color:rgba(245,158,11,.3);">per Mnemosynen</span>
       </div>
       <div class="flex items-center gap-6 text-xs mono" style="color:var(--t3);">
         <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors">/github</a>
