@@ -895,9 +895,14 @@
           <p class="mono text-xs" style="color:var(--green2);">// graphify watch . — live file watcher</p>
           <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ade80;">no LLM · AST only · free</span>
         </div>
-        <div id="watch-demo" class="space-y-1.5" style="height:120px;overflow:hidden;">
+        <div id="watch-demo" class="space-y-1.5" style="height:132px;overflow:hidden;">
           <div class="watch-line show mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src — press Ctrl+C to stop</div>
           <div class="watch-line show mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Debounce: 3.0s</div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-0" style="color:rgba(34,197,94,.6);"></div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-1" style="color:rgba(220,255,220,.4);"></div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-2" style="color:rgba(74,222,128,.8);"></div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-3" style="color:rgba(74,222,128,.6);"></div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-4" style="color:rgba(34,197,94,.4);"></div>
         </div>
         <div class="flex items-center gap-2 mt-3">
           <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 1s step-end infinite;flex-shrink:0;display:inline-block;"></span>
@@ -1678,7 +1683,7 @@ def create_session(user):
           <circle cx="24" cy="24" r="4.4" fill="#0a1410" stroke="#4ade80" stroke-width="1.6"/>
           <circle cx="24" cy="24" r="1.8" fill="#4ade80"/>
         </svg>
-        <span class="text-xs mono" style="color:var(--t2);">graphify.labs // persistent memory engine</span>
+        <span class="text-xs mono" style="color:var(--t2);">graphifylabs.ai // persistent memory engine</span>
       </div>
       <div class="flex items-center gap-6 text-xs mono" style="color:var(--t3);">
         <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors">/github</a>
@@ -2144,29 +2149,36 @@ def create_session(user):
 
     // ── WATCH-MODE DEMO ANIMATION ──
     (function(){
-      const demo=document.getElementById('watch-demo'); if(!demo) return;
+      const slots=document.querySelectorAll('.wl-slot'); if(!slots.length) return;
       const lines=[
-        {t:'[graphify watch] 2 file(s) changed',c:'rgba(34,197,94,.6)'},
-        {t:'[graphify watch] auth.py · pipeline.go',c:'rgba(220,255,220,.4)'},
+        {t:'[graphify watch] 2 file(s) changed',       c:'rgba(34,197,94,.6)'},
+        {t:'[graphify watch] auth.py · pipeline.go',   c:'rgba(220,255,220,.4)'},
         {t:'[graphify watch] Rebuilt: 1,847 nodes, 4,203 edges',c:'rgba(74,222,128,.8)'},
         {t:'[graphify watch] graph.json + GRAPH_REPORT.md updated',c:'rgba(74,222,128,.6)'},
-        {t:'[graphify watch] Watching ./src — press Ctrl+C to stop',c:'rgba(34,197,94,.4)'},
+        {t:'[graphify watch] Watching ./src — Ctrl+C to stop',c:'rgba(34,197,94,.4)'},
       ];
-      let li=0;
-      const obs=new IntersectionObserver(e=>{ if(!e[0].isIntersecting) return;
-        function addLine(){
-          if(li>=lines.length){li=0;setTimeout(()=>{demo.querySelectorAll('.watch-line.dynamic').forEach(el=>el.remove());addLine();},3000);return;}
-          const d=document.createElement('div');
-          d.className='watch-line dynamic mono text-xs';d.style.color=lines[li].c;d.textContent=lines[li].t;
-          demo.appendChild(d);
-          // scroll container internally — never touches page scroll
-          demo.scrollTop=demo.scrollHeight;
-          setTimeout(()=>d.classList.add('show'),30);
-          li++;setTimeout(addLine,700);
-        }
-        setTimeout(addLine,800);
-      },{threshold:.4});
-      obs.observe(demo);
+      // animate slot[i]: fade out → update text → fade in
+      function animSlot(i,line,delay){
+        setTimeout(()=>{
+          const el=slots[i];
+          el.classList.remove('show');
+          setTimeout(()=>{
+            el.textContent=line.t; el.style.color=line.c;
+            el.classList.add('show');
+          },420);
+        },delay);
+      }
+      function runCycle(){
+        lines.forEach((ln,i)=>animSlot(i,ln,i*750));
+        // repeat after all lines shown + pause
+        setTimeout(runCycle, lines.length*750+2800);
+      }
+      const obs=new IntersectionObserver(e=>{
+        if(!e[0].isIntersecting) return;
+        obs.disconnect(); // fire once only
+        setTimeout(runCycle,600);
+      },{threshold:.3});
+      obs.observe(slots[0]);
     })();
 
     // ── LIVE DIFF PLAYGROUND ──
