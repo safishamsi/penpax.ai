@@ -1682,16 +1682,23 @@ def create_session(user):
       if (!ov) return;
       if (sessionStorage.getItem('ig-seen')) { ov.remove(); return; }
 
-      document.body.style.overflow = 'hidden';
+      // iOS Safari ignores overflow:hidden — use position:fixed instead
+      const _sy = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${_sy}px`;
+      document.body.style.width = '100%';
       let tl;
 
       function endIntro() {
         sessionStorage.setItem('ig-seen','1');
         ov.style.cssText += ';display:none;pointer-events:none;';
-        document.body.style.overflow = '';
+        // restore scroll lock correctly on iOS
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, _sy);
         const svg = document.getElementById('intro-svg');
         if (svg) svg.style.transform = '';
-        // refresh ScrollTrigger now that layout is fully visible
         if (window.ScrollTrigger) ScrollTrigger.refresh();
       }
 
@@ -1699,7 +1706,13 @@ def create_session(user):
         if (tl) tl.kill();
         sessionStorage.setItem('ig-seen','1');
         gsap.to(ov, { opacity:0, duration:.35,
-          onComplete: () => { ov.style.display='none'; document.body.style.overflow=''; }
+          onComplete: () => {
+            ov.style.display='none';
+            document.body.style.position='';
+            document.body.style.top='';
+            document.body.style.width='';
+            window.scrollTo(0, _sy);
+          }
         });
       };
 
