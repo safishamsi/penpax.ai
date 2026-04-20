@@ -232,7 +232,7 @@
 
   <!-- HERO -->
   <section class="relative min-h-screen flex items-center pt-16 overflow-hidden grid-bg">
-    <canvas id="matrix-rain" class="absolute inset-0 w-full h-full" style="opacity:.045;pointer-events:none;"></canvas>
+    <canvas id="matrix-rain" class="absolute inset-0 w-full h-full" style="opacity:.018;pointer-events:none;"></canvas>
     <div class="orb w-[600px] h-[600px]" style="background:rgba(34,197,94,.07);top:-20%;left:-18%;"></div>
     <div class="orb w-[350px] h-[350px]" style="background:rgba(245,158,11,.05);bottom:-12%;right:5%;"></div>
 
@@ -1255,7 +1255,7 @@
       let W, H, drops;
       function resize(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; drops=Array.from({length:Math.floor(W/18)},()=>Math.random()*H/14|0); }
       function draw(){
-        ctx.fillStyle='rgba(4,8,6,0.055)'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='rgba(4,8,6,0.12)'; ctx.fillRect(0,0,W,H);
         ctx.fillStyle='#22c55e'; ctx.font='13px JetBrains Mono,monospace';
         drops.forEach((y,i)=>{
           ctx.fillText(CHARS[Math.random()*CHARS.length|0], i*18, y*14);
