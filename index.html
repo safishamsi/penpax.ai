@@ -23,21 +23,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:      #07091c;
-      --bg2:     #0c1133;
-      --indigo:  #6366f1;
-      --indigo2: #818cf8;
-      --cyan:    #22d3ee;
-      --emerald: #34d399;
-      --amber:   #fbbf24;
-      --orange:  #fb923c;
-      --rose:    #fb7185;
-      --border:  rgba(255,255,255,0.07);
-      --glass:   rgba(255,255,255,0.04);
+      --bg:      #09090f;
+      --bg2:     #0e0e18;
+      --accent:  #6366f1;
+      --accent2: #818cf8;
+      --border:  rgba(255,255,255,0.08);
+      --glass:   rgba(255,255,255,0.035);
+      --t1: rgba(255,255,255,0.92);
+      --t2: rgba(255,255,255,0.52);
+      --t3: rgba(255,255,255,0.26);
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { background: var(--bg); }
-    body { background: var(--bg); color: rgba(255,255,255,0.88); }
+    body { background: var(--bg); color: var(--t1); }
 
     /* noise */
     body::before {
@@ -47,14 +45,11 @@
       opacity: 0.028;
     }
 
-    /* rainbow top strip */
+    /* top accent strip */
     .top-strip {
-      height: 2px;
-      background: linear-gradient(90deg,#6366f1,#22d3ee 30%,#34d399 55%,#fb923c 78%,#6366f1);
-      background-size: 200% 100%;
-      animation: strip 5s linear infinite;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, #6366f1 30%, #818cf8 50%, #6366f1 70%, transparent 100%);
     }
-    @keyframes strip { to { background-position: -200% 0; } }
 
     /* typography */
     .hl {
@@ -64,21 +59,18 @@
       letter-spacing: -0.045em;
     }
     .grad-text {
-      background: linear-gradient(135deg, #c7d2fe 0%, #818cf8 35%, #67e8f9 70%, #a5f3fc 100%);
+      background: linear-gradient(135deg, #e0e7ff 0%, #818cf8 50%, #c7d2fe 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .grad-warm {
-      background: linear-gradient(135deg, #fde68a 0%, #fb923c 50%, #f472b6 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+    .grad-warm { color: rgba(255,255,255,0.88); }
     .section-tag {
       font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--indigo2);
+      text-transform: uppercase; color: var(--accent2);
     }
 
     /* nav */
     .nav {
-      background: rgba(7,9,28,0.72);
+      background: rgba(9,9,15,0.8);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
       border-bottom: 1px solid var(--border);
@@ -102,7 +94,7 @@
       content: '';
       position: absolute; inset: 0;
       border-radius: 20px; padding: 1px;
-      background: linear-gradient(135deg,rgba(99,102,241,0.45),rgba(34,211,238,0.2),rgba(99,102,241,0.1));
+      background: linear-gradient(135deg,rgba(99,102,241,0.35),rgba(99,102,241,0.08));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
     }
@@ -207,24 +199,20 @@
 
     /* dual track */
     .track-card {
-      border-radius: 24px; padding: 36px;
-      transition: transform .3s ease, box-shadow .3s ease;
+      border-radius: 20px; padding: 36px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      transition: transform .3s ease, border-color .3s ease;
     }
-    .track-card:hover { transform: translateY(-4px); }
-    .track-os {
-      background: linear-gradient(135deg,rgba(99,102,241,.1),rgba(34,211,238,.06));
-      border: 1px solid rgba(99,102,241,.25);
-    }
-    .track-enterprise {
-      background: linear-gradient(135deg,rgba(251,191,36,.08),rgba(251,113,133,.06));
-      border: 1px solid rgba(251,191,36,.22);
-    }
+    .track-card:hover { transform: translateY(-3px); border-color: rgba(99,102,241,0.28); }
+    .track-os {}
+    .track-enterprise {}
     .track-feature {
       display: flex; align-items: flex-start; gap: 10px;
-      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+      padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.05);
     }
     .track-feature:last-child { border-bottom: none; }
-    .track-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .track-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; background: rgba(99,102,241,0.7); }
 
     /* how it works */
     .step-num {
@@ -331,9 +319,8 @@
 
   <!-- HERO -->
   <section class="relative min-h-screen flex items-center pt-16 overflow-hidden grid-bg">
-    <div class="orb w-[650px] h-[650px]" style="background:rgba(99,102,241,.14);top:-20%;left:-18%;"></div>
-    <div class="orb w-[450px] h-[450px]" style="background:rgba(34,211,238,.09);bottom:-10%;right:-8%;"></div>
-    <div class="orb w-[280px] h-[280px]" style="background:rgba(251,191,36,.06);top:45%;right:22%;"></div>
+    <div class="orb w-[700px] h-[700px]" style="background:rgba(99,102,241,.09);top:-25%;left:-20%;"></div>
+    <div class="orb w-[400px] h-[400px]" style="background:rgba(99,102,241,.05);bottom:-12%;right:-10%;"></div>
 
     <div class="relative max-w-6xl mx-auto px-6 py-24 w-full">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
@@ -400,23 +387,23 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="flex flex-wrap justify-center divide-x" style="divide-color:rgba(255,255,255,.06);">
         <div class="stats-strip-item">
-          <span class="stats-strip-num grad-text" data-count="30000">0</span>
+          <span class="stats-strip-num" style="color:rgba(255,255,255,.88);" data-count="30000">0</span>
           <span class="stats-strip-label">GitHub Stars</span>
         </div>
         <div class="stats-strip-item">
-          <span class="stats-strip-num" style="color:#22d3ee;" data-count="215000">0</span>
+          <span class="stats-strip-num" style="color:rgba(255,255,255,.88);" data-count="215000">0</span>
           <span class="stats-strip-label">Downloads</span>
         </div>
         <div class="stats-strip-item">
-          <span class="stats-strip-num" style="color:#fbbf24;">#1</span>
+          <span class="stats-strip-num grad-text">#1</span>
           <span class="stats-strip-label">MemoryBench 2025</span>
         </div>
         <div class="stats-strip-item">
-          <span class="stats-strip-num" style="color:#34d399;" data-count="20">0</span>
+          <span class="stats-strip-num" style="color:rgba(255,255,255,.88);" data-count="20">0</span>
           <span class="stats-strip-label">Languages Supported</span>
         </div>
         <div class="stats-strip-item">
-          <span class="stats-strip-num" style="color:#f472b6;" data-count="1500">0</span>
+          <span class="stats-strip-num" style="color:rgba(255,255,255,.88);" data-count="1500">0</span>
           <span class="stats-strip-label">On Waitlist</span>
         </div>
       </div>
@@ -449,50 +436,50 @@
         <!-- OS track -->
         <div class="track-card track-os fi fi-d1">
           <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.22);">
               <svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
             </div>
             <div>
               <p class="font-semibold text-white">Open Source</p>
-              <p class="text-xs" style="color:rgba(255,255,255,.35);">MIT License &mdash; free forever</p>
+              <p class="text-xs" style="color:var(--t3);">MIT License &mdash; free forever</p>
             </div>
           </div>
-          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.4);color:#34d399;border:1px solid rgba(52,211,153,.15);">
+          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.35);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.08);">
             pip install graphifyy &amp;&amp; graphify .
           </div>
           <div class="space-y-0">
-            <div class="track-feature"><div class="track-dot" style="background:#818cf8;"></div><div><p class="text-sm text-white">AST extraction across 20 languages</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Python, JS, Go, Rust, Java and more</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#22d3ee;"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Markdown, PDF, HTML, MDX, images via vision</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#34d399;"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">HTML export, community clustering, god-nodes</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#818cf8;"></div><div><p class="text-sm text-white">30,000 ⭐ on GitHub</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">215,000+ downloads, active community</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">AST extraction across 20 languages</p><p class="text-xs mt-0.5" style="color:var(--t3);">Python, JS, Go, Rust, Java and more</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mt-0.5" style="color:var(--t3);">Markdown, PDF, HTML, MDX, images via vision</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mt-0.5" style="color:var(--t3);">HTML export, community clustering, god-nodes</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">30,000 ⭐ on GitHub</p><p class="text-xs mt-0.5" style="color:var(--t3);">215,000+ downloads, active community</p></div></div>
           </div>
           <div class="mt-6">
-            <a href="https://github.com/safishamsi/graphify" class="text-sm font-medium" style="color:#818cf8;">View on GitHub &rarr;</a>
+            <a href="https://github.com/safishamsi/graphify" class="text-sm font-medium hover:text-white transition-colors" style="color:rgba(255,255,255,.45);">View on GitHub &rarr;</a>
           </div>
         </div>
 
         <!-- Enterprise track -->
         <div class="track-card track-enterprise fi fi-d2">
           <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);">
-              <svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.22);">
+              <svg width="18" height="18" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <div>
               <p class="font-semibold text-white">Enterprise</p>
-              <p class="text-xs" style="color:rgba(255,255,255,.35);">Coming soon &mdash; join waitlist</p>
+              <p class="text-xs" style="color:var(--t3);">Coming soon &mdash; join waitlist</p>
             </div>
           </div>
-          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.4);color:#fbbf24;border:1px solid rgba(251,191,36,.15);">
+          <div class="font-mono text-xs mb-6 px-4 py-3 rounded-xl" style="background:rgba(0,0,0,.35);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.08);">
             graphify enterprise --air-gapped --team
           </div>
           <div class="space-y-0">
-            <div class="track-feature"><div class="track-dot" style="background:#fbbf24;"></div><div><p class="text-sm text-white">Air-gapped deployment</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Runs entirely on-prem, zero external calls</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#fb923c;"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Shared graph across your org, role-based access</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#f472b6;"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">SOC 2 ready, 99.9% uptime SLA</p></div></div>
-            <div class="track-feature"><div class="track-dot" style="background:#fbbf24;"></div><div><p class="text-sm text-white">Priority support</p><p class="text-xs mt-0.5" style="color:rgba(255,255,255,.35);">Dedicated Slack, onboarding &amp; custom integrations</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">Air-gapped deployment</p><p class="text-xs mt-0.5" style="color:var(--t3);">Runs entirely on-prem, zero external calls</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mt-0.5" style="color:var(--t3);">Shared graph across your org, role-based access</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mt-0.5" style="color:var(--t3);">SOC 2 ready, 99.9% uptime SLA</p></div></div>
+            <div class="track-feature"><div class="track-dot"></div><div><p class="text-sm text-white">Priority support</p><p class="text-xs mt-0.5" style="color:var(--t3);">Dedicated Slack, onboarding &amp; custom integrations</p></div></div>
           </div>
           <div class="mt-6">
-            <a href="mailto:safishamsi98@gmail.com" class="text-sm font-medium" style="color:#fbbf24;">Talk to us about enterprise &rarr;</a>
+            <a href="mailto:safishamsi98@gmail.com" class="text-sm font-medium hover:text-white transition-colors" style="color:rgba(255,255,255,.45);">Talk to us about enterprise &rarr;</a>
           </div>
         </div>
 
@@ -515,13 +502,13 @@
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Code repos, PDFs, Markdown docs, research papers, images, meeting transcripts. Any artifact of your working life, continuously captured.</p>
         </div>
         <div class="relative fi fi-d2">
-          <div class="step-num" style="background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);color:#22d3ee;">02</div>
+          <div class="step-num" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);color:#818cf8;">02</div>
           <div class="hidden md:block step-connector"></div>
           <h3 class="text-lg font-medium text-white mb-3">Graph is built</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Every entity becomes a node. Every relationship &mdash; function calls, citations, shared concepts, temporal co-occurrence &mdash; becomes an edge. Leiden clustering finds communities automatically.</p>
         </div>
         <div class="fi fi-d3">
-          <div class="step-num" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.22);color:#fbbf24;">03</div>
+          <div class="step-num" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);color:#818cf8;">03</div>
           <h3 class="text-lg font-medium text-white mb-3">Query anything</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">"What connects this meeting to that codebase?" "What did I read about pricing last month?" Answers in seconds, with sources, paths, and confidence scores.</p>
         </div>
@@ -546,25 +533,25 @@
         </div>
 
         <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d1">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#22d3ee;"><path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5H11l-3 3v-3H4.5A1.5 1.5 0 013 12.5v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M7 7.5h6M7 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><path d="M3 4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5v8a1.5 1.5 0 01-1.5 1.5H11l-3 3v-3H4.5A1.5 1.5 0 013 12.5v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M7 7.5h6M7 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
           <h3 class="font-medium text-white mb-2">Meetings</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Automatic transcription and extraction. Decisions, action items, concepts &mdash; all connected to your wider context.</p>
         </div>
 
         <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d2">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#34d399;"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><rect x="2" y="2" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l3 3-3 3M11 13h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h3 class="font-medium text-white mb-2">Code &amp; AST</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">AST-level extraction across 20 languages. Functions, classes, call graphs &mdash; your codebase becomes part of the graph.</p>
         </div>
 
         <div class="glass rounded-2xl p-7 transition-all duration-300 fi">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#fb923c;"><path d="M4 2h9l4 4v12a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M13 2v4h4M7 9h6M7 12h6M7 15h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><path d="M4 2h9l4 4v12a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M13 2v4h4M7 9h6M7 12h6M7 15h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
           <h3 class="font-medium text-white mb-2">Docs &amp; papers</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">PDFs, Markdown, HTML, MDX, Word docs. Papers you have read, specs you have written &mdash; all in the graph.</p>
         </div>
 
         <div class="glass rounded-2xl p-7 transition-all duration-300 fi fi-d1">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#f472b6;"><rect x="2" y="3" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="2" stroke="currentColor" stroke-width="1"/><path d="M2 14l4-3 3 2.5 3-3 6 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="color:#818cf8;"><rect x="2" y="3" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="2" stroke="currentColor" stroke-width="1"/><path d="M2 14l4-3 3 2.5 3-3 6 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h3 class="font-medium text-white mb-2">Images &amp; diagrams</h3>
           <p class="text-sm font-light leading-relaxed" style="color:rgba(255,255,255,.38);">Whiteboards, screenshots, architecture diagrams. Vision extraction connects images regardless of language.</p>
         </div>
@@ -890,38 +877,38 @@
         <p class="text-base font-light max-w-lg mx-auto" style="color:rgba(255,255,255,.45);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 fi">
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(52,211,153,.14);"><svg width="26" height="26" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div><p class="text-base font-semibold text-white mb-1">On-device only</p><p class="text-sm" style="color:rgba(255,255,255,.45);">Runs entirely on your hardware. Nothing leaves.</p></div>
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:var(--glass);border:1px solid var(--border);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.18);"><svg width="26" height="26" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">On-device only</p><p class="text-sm" style="color:var(--t2);">Runs entirely on your hardware. Nothing leaves.</p></div>
         </div>
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.2);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(34,211,238,.14);"><svg width="26" height="26" fill="none" stroke="#22d3ee" stroke-width="1.8" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
-          <div><p class="text-base font-semibold text-white mb-1">No cloud</p><p class="text-sm" style="color:rgba(255,255,255,.45);">No servers, no sync, no third-party exposure.</p></div>
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:var(--glass);border:1px solid var(--border);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.18);"><svg width="26" height="26" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">No cloud</p><p class="text-sm" style="color:var(--t2);">No servers, no sync, no third-party exposure.</p></div>
         </div>
-        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(99,102,241,.14);"><svg width="26" height="26" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><p class="text-base font-semibold text-white mb-1">Never trained on</p><p class="text-sm" style="color:rgba(255,255,255,.45);">Your data is yours. We never touch it.</p></div>
+        <div class="flex flex-col items-center text-center gap-4 p-8 rounded-2xl" style="background:var(--glass);border:1px solid var(--border);">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.18);"><svg width="26" height="26" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><p class="text-base font-semibold text-white mb-1">Never trained on</p><p class="text-sm" style="color:var(--t2);">Your data is yours. We never touch it.</p></div>
         </div>
       </div>
       <div class="grid md:grid-cols-2 gap-5 fi">
-        <div class="p-8 rounded-2xl" style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);">
-          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(52,211,153,.14);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><h3 class="text-base font-semibold text-white">What stays on your machine</h3></div>
+        <div class="p-8 rounded-2xl" style="background:var(--glass);border:1px solid var(--border);">
+          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(99,102,241,.1);"><svg width="16" height="16" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><h3 class="text-base font-semibold text-white">What stays on your machine</h3></div>
           <ul class="space-y-3">
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">All your captured data</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Your knowledge graph</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Browser history &amp; meeting transcripts</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Query results and insights</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm font-medium">Everything. Always.</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t1);"><svg width="15" height="15" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">All your captured data</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t1);"><svg width="15" height="15" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Your knowledge graph</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t1);"><svg width="15" height="15" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Browser history &amp; meeting transcripts</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t1);"><svg width="15" height="15" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm">Query results and insights</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t1);"><svg width="15" height="15" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg><span class="text-sm font-medium">Everything. Always.</span></li>
           </ul>
         </div>
-        <div class="p-8 rounded-2xl" style="background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);">
-          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(251,113,133,.14);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><h3 class="text-base font-semibold text-white">What we never do</h3></div>
+        <div class="p-8 rounded-2xl" style="background:var(--glass);border:1px solid var(--border);">
+          <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(99,102,241,.1);"><svg width="16" height="16" fill="none" stroke="#818cf8" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><h3 class="text-base font-semibold text-white">What we never do</h3></div>
           <ul class="space-y-3">
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Store your data on our servers</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Train models on your content</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Sell or share your information</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Require internet to function</span></li>
-            <li class="flex items-center gap-3" style="color:rgba(255,255,255,.82);"><svg width="16" height="16" fill="none" stroke="#fb7185" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm font-medium">Phone home. Ever.</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t2);"><svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Store your data on our servers</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t2);"><svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Train models on your content</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t2);"><svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Sell or share your information</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t2);"><svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm">Require internet to function</span></li>
+            <li class="flex items-center gap-3" style="color:var(--t2);"><svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" viewBox="0 0 24 24" class="flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="text-sm font-medium">Phone home. Ever.</span></li>
           </ul>
         </div>
       </div>
@@ -1072,7 +1059,7 @@
         [1,18],[13,19],[0,20],[11,21],[3,22],[14,23],
       ];
 
-      const COLORS = ['#818cf8','#22d3ee','#34d399','#fb923c','#f472b6'];
+      const COLORS = ['#818cf8','#a5b4fc','#6366f1','#c7d2fe','#818cf8'];
       let pulses = [];
       const activation = new Float32Array(NP.length);
       let raf;
