@@ -159,6 +159,19 @@
     /* decode text */
     .decode-text{font-family:'JetBrains Mono',monospace}
 
+    /* SVG graph animations */
+    @keyframes node-appear{from{opacity:0;transform:scale(0.4)}to{opacity:1;transform:scale(1)}}
+    @keyframes draw-edge{to{stroke-dashoffset:0}}
+    @keyframes hub-breathe{0%,100%{r:22;fill-opacity:.12}50%{r:28;fill-opacity:.05}}
+    @keyframes hub-dot{0%,100%{r:8}50%{r:10}}
+    @keyframes grow-graph{0%,30%{opacity:0;transform:scale(.85)}35%,90%{opacity:1;transform:scale(1)}95%,100%{opacity:0;transform:scale(.85)}}
+    .svg-node{transform-box:fill-box;transform-origin:center}
+
+    /* grow section */
+    .grow-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:28px 24px;transition:border-color .25s}
+    .grow-card:hover{border-color:rgba(34,197,94,.28)}
+    .grow-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.1em;margin-bottom:12px;color:var(--green2)}
+
     /* scrollbar */
     ::-webkit-scrollbar{width:5px}
     ::-webkit-scrollbar-track{background:var(--bg)}
@@ -226,7 +239,7 @@
           </h1>
 
           <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
-            The open-source knowledge graph engine. Feed it code, docs, papers, meetings, images — it decodes the connections. Query anything. Runs on your machine. Forever.
+            The knowledge graph engine for large corpora and enterprise codebases. Feed it everything once — every change grows the graph incrementally. No rebuilds. On-device or cloud.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-3 mb-10">
@@ -247,17 +260,145 @@
           </div>
         </div>
 
-        <!-- brain -->
-        <div class="brain-wrap gsap-reveal">
-          <div class="brain-ring"></div>
-          <div class="brain-ring2"></div>
-          <canvas id="brain-canvas"></canvas>
-          <span class="brain-label" style="top:10%;left:16%;animation-delay:.3s;">meeting.mp4</span>
-          <span class="brain-label" style="top:8%;right:14%;animation-delay:1.4s;">auth.py</span>
-          <span class="brain-label" style="bottom:17%;left:9%;animation-delay:.8s;">RFC-14.pdf</span>
-          <span class="brain-label" style="bottom:13%;right:11%;animation-delay:2s;">Q3-board-call</span>
-          <span class="brain-label" style="top:47%;left:3%;animation-delay:2.3s;">browser.history</span>
-          <span class="brain-label" style="top:43%;right:1%;animation-delay:1s;">competitor.pdf</span>
+        <!-- hero graph SVG -->
+        <div class="gsap-reveal" style="width:100%;max-width:520px;margin:0 auto;">
+          <svg viewBox="0 0 540 490" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+            <defs>
+              <filter id="fg" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="fa" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="fsm" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <radialGradient id="hub-bg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+              </radialGradient>
+              <!-- pulse paths -->
+              <path id="pe-ha" d="M265,238 L118,124"/>
+              <path id="pe-hb" d="M265,238 L85,214"/>
+              <path id="pe-hc" d="M265,238 L136,298"/>
+              <path id="pe-hd" d="M265,238 L392,112"/>
+              <path id="pe-he" d="M265,238 L438,214"/>
+              <path id="pe-hf" d="M265,238 L385,308"/>
+              <path id="pe-hg" d="M265,238 L204,394"/>
+              <path id="pe-hh" d="M265,238 L328,394"/>
+            </defs>
+
+            <!-- ambient hub glow -->
+            <circle cx="265" cy="238" r="88" fill="url(#hub-bg)"/>
+
+            <!-- EDGES: hub → code cluster -->
+            <line x1="265" y1="238" x2="118" y2="124" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2" style="stroke-dasharray:260;stroke-dashoffset:260;animation:draw-edge 1.1s ease .3s forwards"/>
+            <line x1="265" y1="238" x2="85" y2="214" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2" style="stroke-dasharray:195;stroke-dashoffset:195;animation:draw-edge 1.1s ease .45s forwards"/>
+            <line x1="265" y1="238" x2="136" y2="298" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2" style="stroke-dasharray:175;stroke-dashoffset:175;animation:draw-edge 1.1s ease .6s forwards"/>
+
+            <!-- EDGES: hub → doc cluster -->
+            <line x1="265" y1="238" x2="392" y2="112" stroke="#22c55e" stroke-width="1" stroke-opacity="0.14" style="stroke-dasharray:270;stroke-dashoffset:270;animation:draw-edge 1.1s ease .5s forwards"/>
+            <line x1="265" y1="238" x2="438" y2="214" stroke="#22c55e" stroke-width="1" stroke-opacity="0.14" style="stroke-dasharray:178;stroke-dashoffset:178;animation:draw-edge 1.1s ease .65s forwards"/>
+            <line x1="265" y1="238" x2="385" y2="308" stroke="#22c55e" stroke-width="1" stroke-opacity="0.14" style="stroke-dasharray:186;stroke-dashoffset:186;animation:draw-edge 1.1s ease .8s forwards"/>
+
+            <!-- EDGES: hub → insights (amber) -->
+            <line x1="265" y1="238" x2="204" y2="394" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.22" style="stroke-dasharray:195;stroke-dashoffset:195;animation:draw-edge 1.1s ease .9s forwards"/>
+            <line x1="265" y1="238" x2="328" y2="394" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.22" style="stroke-dasharray:195;stroke-dashoffset:195;animation:draw-edge 1.1s ease 1.0s forwards"/>
+
+            <!-- intra-cluster edges -->
+            <line x1="118" y1="124" x2="85" y2="214" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:105;stroke-dashoffset:105;animation:draw-edge 1s ease 1.1s forwards"/>
+            <line x1="85" y1="214" x2="136" y2="298" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:100;stroke-dashoffset:100;animation:draw-edge 1s ease 1.2s forwards"/>
+            <line x1="392" y1="112" x2="438" y2="214" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:118;stroke-dashoffset:118;animation:draw-edge 1s ease 1.15s forwards"/>
+            <line x1="438" y1="214" x2="385" y2="308" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:112;stroke-dashoffset:112;animation:draw-edge 1s ease 1.25s forwards"/>
+            <line x1="204" y1="394" x2="328" y2="394" stroke="#f59e0b" stroke-width=".75" stroke-opacity="0.12" style="stroke-dasharray:124;stroke-dashoffset:124;animation:draw-edge 1s ease 1.3s forwards"/>
+
+            <!-- cross-cluster dashed (surprising connection) -->
+            <line x1="118" y1="124" x2="392" y2="112" stroke="#4ade80" stroke-width=".75" stroke-opacity="0.07" stroke-dasharray="6 7" style="animation:draw-edge 2s ease 1.5s forwards;stroke-dashoffset:300"/>
+
+            <!-- peripheral edges -->
+            <line x1="50" y1="158" x2="118" y2="124" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:78;stroke-dashoffset:78;animation:draw-edge 1s ease 1.6s forwards"/>
+            <line x1="478" y1="158" x2="392" y2="112" stroke="#22c55e" stroke-width=".75" stroke-opacity="0.1" style="stroke-dasharray:92;stroke-dashoffset:92;animation:draw-edge 1s ease 1.6s forwards"/>
+
+            <!-- PULSE DOTS -->
+            <circle r="2.5" fill="#4ade80" filter="url(#fsm)"><animateMotion dur="2.9s" repeatCount="indefinite" begin="2s"><mpath href="#pe-ha"/></animateMotion></circle>
+            <circle r="2" fill="#4ade80" filter="url(#fsm)" opacity=".8"><animateMotion dur="2.3s" repeatCount="indefinite" begin="2.7s"><mpath href="#pe-hd"/></animateMotion></circle>
+            <circle r="2" fill="#f59e0b" filter="url(#fsm)"><animateMotion dur="2.6s" repeatCount="indefinite" begin="2.3s"><mpath href="#pe-hg"/></animateMotion></circle>
+            <circle r="2" fill="#4ade80" filter="url(#fsm)" opacity=".65"><animateMotion dur="3.2s" repeatCount="indefinite" begin="3.1s"><mpath href="#pe-he"/></animateMotion></circle>
+            <circle r="2" fill="#f59e0b" filter="url(#fsm)" opacity=".75"><animateMotion dur="2.8s" repeatCount="indefinite" begin="3.6s"><mpath href="#pe-hh"/></animateMotion></circle>
+            <circle r="1.5" fill="#4ade80" filter="url(#fsm)" opacity=".55"><animateMotion dur="2.5s" repeatCount="indefinite" begin="4.2s"><mpath href="#pe-hb"/></animateMotion></circle>
+            <circle r="2" fill="#4ade80" filter="url(#fsm)" opacity=".7"><animateMotion dur="3.4s" repeatCount="indefinite" begin="5s"><mpath href="#pe-hc"/></animateMotion></circle>
+
+            <!-- HUB NODE -->
+            <circle cx="265" cy="238" r="44" fill="#f59e0b" fill-opacity="0.04"><animate attributeName="r" values="44;58;44" dur="4s" repeatCount="indefinite"/><animate attributeName="fill-opacity" values="0.04;0.01;0.04" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="265" cy="238" r="22" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"><animate attributeName="r" values="22;27;22" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="265" cy="238" r="9" fill="#f59e0b" fill-opacity="0.95" filter="url(#fa)"/>
+            <circle cx="265" cy="238" r="4.5" fill="#fde68a"/>
+            <text x="265" y="258" font-family="JetBrains Mono,monospace" font-size="8" fill="#fbbf24" fill-opacity="0" text-anchor="middle" letter-spacing="1" style="animation:node-appear .5s ease 1.1s forwards">GRAPHIFY</text>
+
+            <!-- CODE NODES (green) -->
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease .85s forwards">
+              <circle cx="118" cy="124" r="8" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.5"/>
+              <circle cx="118" cy="124" r="4.5" fill="#22c55e" filter="url(#fg)"/>
+            </g>
+            <text x="118" y="110" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.3s forwards">auth.py</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.0s forwards">
+              <circle cx="85" cy="214" r="8" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.5"/>
+              <circle cx="85" cy="214" r="4.5" fill="#22c55e" filter="url(#fg)"/>
+            </g>
+            <text x="55" y="228" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.45s forwards">pipeline.go</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.15s forwards">
+              <circle cx="136" cy="298" r="7" fill="#22c55e" fill-opacity="0.09" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/>
+              <circle cx="136" cy="298" r="4" fill="#22c55e" filter="url(#fg)"/>
+            </g>
+            <text x="136" y="314" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.6s forwards">router.ts</text>
+
+            <!-- DOC NODES (lighter green) -->
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease .9s forwards">
+              <circle cx="392" cy="112" r="8" fill="#22c55e" fill-opacity="0.09" stroke="#4ade80" stroke-width="1" stroke-opacity="0.4"/>
+              <circle cx="392" cy="112" r="4.5" fill="#4ade80" fill-opacity="0.75" filter="url(#fg)"/>
+            </g>
+            <text x="392" y="98" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.35s forwards">RFC-14.pdf</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.05s forwards">
+              <circle cx="438" cy="214" r="8" fill="#22c55e" fill-opacity="0.09" stroke="#4ade80" stroke-width="1" stroke-opacity="0.4"/>
+              <circle cx="438" cy="214" r="4.5" fill="#4ade80" fill-opacity="0.75" filter="url(#fg)"/>
+            </g>
+            <text x="468" y="206" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="start" style="animation:node-appear .5s ease 1.5s forwards">Q3-board</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.2s forwards">
+              <circle cx="385" cy="308" r="7" fill="#22c55e" fill-opacity="0.07" stroke="#4ade80" stroke-width="1" stroke-opacity="0.3"/>
+              <circle cx="385" cy="308" r="4" fill="#4ade80" fill-opacity="0.65"/>
+            </g>
+            <text x="385" y="324" font-family="JetBrains Mono,monospace" font-size="9" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.65s forwards">spec.md</text>
+
+            <!-- INSIGHT NODES (amber) -->
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.45s forwards">
+              <circle cx="204" cy="394" r="8" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"/>
+              <circle cx="204" cy="394" r="4.5" fill="#f59e0b" fill-opacity="0.9"/>
+            </g>
+            <text x="204" y="410" font-family="JetBrains Mono,monospace" font-size="9" fill="#fbbf24" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 1.9s forwards">auth-pattern</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.55s forwards">
+              <circle cx="328" cy="394" r="8" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"/>
+              <circle cx="328" cy="394" r="4.5" fill="#f59e0b" fill-opacity="0.9"/>
+            </g>
+            <text x="328" y="410" font-family="JetBrains Mono,monospace" font-size="9" fill="#fbbf24" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 2.0s forwards">perf-issue</text>
+
+            <!-- PERIPHERAL NODES -->
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.7s forwards">
+              <circle cx="50" cy="158" r="5" fill="#22c55e" fill-opacity="0.07" stroke="#22c55e" stroke-width="1" stroke-opacity="0.22"/>
+              <circle cx="50" cy="158" r="2.8" fill="#22c55e" fill-opacity="0.5"/>
+            </g>
+            <text x="50" y="144" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 2.1s forwards">browser</text>
+
+            <g class="svg-node" style="opacity:0;animation:node-appear .45s ease 1.75s forwards">
+              <circle cx="478" cy="158" r="5" fill="#22c55e" fill-opacity="0.07" stroke="#22c55e" stroke-width="1" stroke-opacity="0.22"/>
+              <circle cx="478" cy="158" r="2.8" fill="#22c55e" fill-opacity="0.5"/>
+            </g>
+            <text x="478" y="144" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80" fill-opacity="0" text-anchor="middle" style="animation:node-appear .5s ease 2.15s forwards">slack</text>
+          </svg>
         </div>
 
       </div>
@@ -301,6 +442,130 @@
     <div class="rotor-div-line"></div>
   </div>
 
+  <!-- BUILD ONCE GROW -->
+  <section class="py-28 border-t" style="border-color:var(--border);">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16 gsap-reveal">
+        <p class="section-tag mb-4">// incremental.intelligence</p>
+        <h2 class="hl text-5xl text-white mb-5">Build once.<br/><span class="grad-green">Grow forever.</span></h2>
+        <p class="text-sm font-light max-w-xl mx-auto" style="color:var(--t2);line-height:1.75;">Unlike RAG pipelines that re-embed everything on every change, Graphify maintains a living graph. When a file changes, only affected nodes and edges update. The rest of your corpus stays intact — even at millions of files.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-14 gsap-stagger">
+        <div class="grow-card">
+          <p class="grow-num">// day.one</p>
+          <h3 class="text-sm font-semibold text-white mb-3">Initial corpus build</h3>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">Point Graphify at any directory. AST extraction, semantic analysis, Leiden clustering. Your entire codebase or document corpus becomes a traversable graph in one pass.</p>
+          <div class="mt-5">
+            <svg viewBox="0 0 200 90" fill="none" style="width:100%;opacity:.8;">
+              <circle cx="100" cy="45" r="8" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e" stroke-width="1" stroke-opacity="0.5"/><circle cx="100" cy="45" r="4" fill="#22c55e"/>
+              <circle cx="48" cy="28" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="48" cy="28" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="152" cy="28" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="152" cy="28" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="48" cy="62" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="48" cy="62" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="152" cy="62" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="152" cy="62" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <line x1="100" y1="45" x2="48" y2="28" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="152" y2="28" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="48" y2="62" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="152" y2="62" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <text x="100" y="83" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80" fill-opacity="0.4" text-anchor="middle">5 nodes · 4 edges</text>
+            </svg>
+          </div>
+        </div>
+        <div class="grow-card">
+          <p class="grow-num">// week.one</p>
+          <h3 class="text-sm font-semibold text-white mb-3">Incremental updates</h3>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">A file changes. Graphify detects it, re-extracts only the affected subgraph, and patches the live graph. No full rebuild. The rest of your knowledge stays connected.</p>
+          <div class="mt-5">
+            <svg viewBox="0 0 200 90" fill="none" style="width:100%;opacity:.8;">
+              <circle cx="100" cy="45" r="8" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e" stroke-width="1" stroke-opacity="0.5"/><circle cx="100" cy="45" r="4" fill="#22c55e"/>
+              <circle cx="48" cy="28" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="48" cy="28" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="152" cy="28" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="152" cy="28" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="48" cy="62" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="48" cy="62" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <circle cx="152" cy="62" r="5" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-width="1" stroke-opacity="0.4"/><circle cx="152" cy="62" r="2.5" fill="#22c55e" fill-opacity="0.7"/>
+              <!-- new nodes, glowing amber/green -->
+              <circle cx="18" cy="45" r="6" fill="#4ade80" fill-opacity="0.18" stroke="#4ade80" stroke-width="1.5" stroke-opacity="0.8"><animate attributeName="stroke-opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/></circle>
+              <circle cx="18" cy="45" r="3" fill="#4ade80"/>
+              <circle cx="182" cy="45" r="6" fill="#4ade80" fill-opacity="0.18" stroke="#4ade80" stroke-width="1.5" stroke-opacity="0.8"><animate attributeName="stroke-opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite" begin=".5s"/></circle>
+              <circle cx="182" cy="45" r="3" fill="#4ade80"/>
+              <line x1="100" y1="45" x2="48" y2="28" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="152" y2="28" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="48" y2="62" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="100" y1="45" x2="152" y2="62" stroke="#22c55e" stroke-width="1" stroke-opacity="0.2"/>
+              <line x1="48" y1="28" x2="18" y2="45" stroke="#4ade80" stroke-width="1" stroke-opacity="0.4"/>
+              <line x1="152" y1="28" x2="182" y2="45" stroke="#4ade80" stroke-width="1" stroke-opacity="0.4"/>
+              <text x="100" y="83" font-family="JetBrains Mono,monospace" font-size="8" fill="#4ade80" fill-opacity="0.4" text-anchor="middle">+2 nodes patched in</text>
+            </svg>
+          </div>
+        </div>
+        <div class="grow-card">
+          <p class="grow-num">// month.one</p>
+          <h3 class="text-sm font-semibold text-white mb-3">Enterprise-scale corpus</h3>
+          <p class="text-xs font-light leading-relaxed" style="color:var(--t2);">After weeks of continuous growth, your graph spans millions of edges across codebases, documents, and meetings. Query traversal is instant. Nothing was ever rebuilt from scratch.</p>
+          <div class="mt-5">
+            <svg viewBox="0 0 200 90" fill="none" style="width:100%;opacity:.8;">
+              <!-- dense network -->
+              <g opacity="0.15" stroke="#22c55e" stroke-width="0.75">
+                <line x1="100" y1="45" x2="30" y2="20"/><line x1="100" y1="45" x2="60" y2="15"/><line x1="100" y1="45" x2="140" y2="15"/><line x1="100" y1="45" x2="170" y2="20"/>
+                <line x1="100" y1="45" x2="20" y2="45"/><line x1="100" y1="45" x2="180" y2="45"/>
+                <line x1="100" y1="45" x2="30" y2="70"/><line x1="100" y1="45" x2="60" y2="75"/><line x1="100" y1="45" x2="140" y2="75"/><line x1="100" y1="45" x2="170" y2="70"/>
+                <line x1="30" y1="20" x2="60" y2="15"/><line x1="140" y1="15" x2="170" y2="20"/>
+                <line x1="30" y1="70" x2="60" y2="75"/><line x1="140" y1="75" x2="170" y2="70"/>
+                <line x1="20" y1="45" x2="30" y2="20"/><line x1="20" y1="45" x2="30" y2="70"/>
+                <line x1="180" y1="45" x2="170" y2="20"/><line x1="180" y1="45" x2="170" y2="70"/>
+              </g>
+              <!-- nodes -->
+              <circle cx="100" cy="45" r="6" fill="#f59e0b" fill-opacity="0.9"/><circle cx="100" cy="45" r="10" fill="#f59e0b" fill-opacity="0.1" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.4"/>
+              <circle cx="30" cy="20" r="3" fill="#22c55e" fill-opacity="0.8"/><circle cx="60" cy="15" r="3" fill="#22c55e" fill-opacity="0.8"/><circle cx="140" cy="15" r="3" fill="#4ade80" fill-opacity="0.8"/><circle cx="170" cy="20" r="3" fill="#4ade80" fill-opacity="0.8"/>
+              <circle cx="20" cy="45" r="3" fill="#22c55e" fill-opacity="0.8"/><circle cx="180" cy="45" r="3" fill="#22c55e" fill-opacity="0.8"/>
+              <circle cx="30" cy="70" r="3" fill="#f59e0b" fill-opacity="0.7"/><circle cx="60" cy="75" r="3" fill="#f59e0b" fill-opacity="0.7"/><circle cx="140" cy="75" r="3" fill="#22c55e" fill-opacity="0.8"/><circle cx="170" cy="70" r="3" fill="#4ade80" fill-opacity="0.8"/>
+              <text x="100" y="83" font-family="JetBrains Mono,monospace" font-size="8" fill="#fbbf24" fill-opacity="0.5" text-anchor="middle">enterprise corpus</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- incremental vs rebuild comparison -->
+      <div class="gsap-reveal code-border p-6 md:p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <p class="mono text-xs mb-4" style="color:var(--t3);">// others: full rebuild on change</p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.1);">
+                <span class="mono text-xs" style="color:rgba(239,68,68,.6);">▸</span>
+                <span class="mono text-xs" style="color:rgba(220,255,220,.35);">re-embed 500k documents... 4h 12m</span>
+              </div>
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.1);">
+                <span class="mono text-xs" style="color:rgba(239,68,68,.6);">▸</span>
+                <span class="mono text-xs" style="color:rgba(220,255,220,.35);">rebuild vector index... 2h 8m</span>
+              </div>
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.1);">
+                <span class="mono text-xs" style="color:rgba(239,68,68,.6);">▸</span>
+                <span class="mono text-xs" style="color:rgba(220,255,220,.35);">re-cluster communities... stale context</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="mono text-xs mb-4" style="color:var(--green2);">// graphify: incremental patch</p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);">
+                <span class="mono text-xs" style="color:var(--green2);">✓</span>
+                <span class="mono text-xs" style="color:var(--t2);">detect changed files... 3 files</span>
+              </div>
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);">
+                <span class="mono text-xs" style="color:var(--green2);">✓</span>
+                <span class="mono text-xs" style="color:var(--t2);">patch affected nodes only... 0.8s</span>
+              </div>
+              <div class="flex items-center gap-3 px-4 py-2.5 rounded-md" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);">
+                <span class="mono text-xs" style="color:var(--green2);">✓</span>
+                <span class="mono text-xs" style="color:var(--t2);">graph updated. 498,752 nodes intact.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- OS + ENTERPRISE -->
   <section class="py-20 border-t" style="border-color:var(--border);background:rgba(6,13,8,0.5);">
     <div class="max-w-5xl mx-auto px-6">
@@ -343,13 +608,13 @@
             </div>
           </div>
           <div class="mono text-xs mb-6 px-4 py-3 rounded-md" style="background:rgba(0,0,0,.5);color:#fbbf24;border:1px solid rgba(245,158,11,.15);">
-            $ graphify enterprise --air-gapped --team
+            $ graphify enterprise --scale=unlimited --local-or-cloud
           </div>
           <div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Air-gapped deployment</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Fully on-prem, zero external calls</p></div></div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Shared graph, role-based access control</p></div></div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">SOC 2 ready, 99.9% uptime SLA</p></div></div>
-            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Priority support</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Dedicated Slack, onboarding, custom integrations</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Million-file corpus support</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Incremental graph — no rebuilds, no limits</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Local or cloud deployment</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Air-gapped on-prem or managed cloud — your choice</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">Team knowledge graph</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Shared corpus, role-based access, merge strategies</p></div></div>
+            <div class="track-feat"><div class="tdot" style="background:var(--amber);"></div><div><p class="text-sm text-white">SSO, audit logs &amp; SLA</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">SOC 2 ready, 99.9% uptime, dedicated support</p></div></div>
           </div>
           <div class="mt-6"><a href="mailto:safishamsi98@gmail.com" class="mono text-xs hover:text-white transition-colors" style="color:var(--t2);">&gt; contact_enterprise →</a></div>
         </div>
@@ -845,78 +1110,6 @@
       window.addEventListener('resize', resize);
     })();
 
-    // ── BRAIN CANVAS ──
-    (function(){
-      const canvas = document.getElementById('brain-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let W, H;
-      const NP = [
-        [.30,.22],[.20,.32],[.17,.46],[.22,.60],[.32,.56],[.36,.42],[.38,.28],[.28,.35],
-        [.48,.36],[.50,.50],[.49,.62],
-        [.62,.22],[.72,.30],[.78,.44],[.75,.58],[.64,.60],[.58,.46],[.66,.34],
-        [.10,.44],[.88,.44],[.44,.12],[.56,.12],[.32,.80],[.68,.80],
-      ];
-      const CONN = [
-        [0,1],[0,7],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[5,7],[1,5],[2,5],[3,5],
-        [7,8],[5,8],[8,9],[9,10],[4,10],[10,16],[8,11],[9,16],
-        [11,12],[11,17],[12,13],[13,14],[14,15],[15,16],[16,17],[12,17],[13,17],
-        [1,18],[13,19],[0,20],[11,21],[3,22],[14,23],
-      ];
-      const GCOLS = ['#4ade80','#22c55e','#86efac','#4ade80','#22c55e'];
-      const ACOL  = '#f59e0b';
-      let pulses = [];
-      const act = new Float32Array(NP.length);
-      let raf;
-
-      function px(i){ return {x:NP[i][0]*W, y:NP[i][1]*H}; }
-      function resize(){
-        W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight;
-      }
-      function spawn(){
-        pulses.push({ci:Math.floor(Math.random()*CONN.length),t:0,
-          speed:.005+Math.random()*.007,color:GCOLS[Math.floor(Math.random()*GCOLS.length)],rev:Math.random()>.5});
-      }
-      function draw(){
-        ctx.clearRect(0,0,W,H);
-        CONN.forEach(([a,b])=>{
-          const A=px(a),B=px(b);
-          ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);
-          ctx.strokeStyle='rgba(34,197,94,0.1)';ctx.lineWidth=1;ctx.stroke();
-        });
-        pulses=pulses.filter(p=>{
-          p.t+=p.speed;
-          if(p.t>=1){act[p.rev?CONN[p.ci][0]:CONN[p.ci][1]]=1.0;return false;}
-          const[a,b]=CONN[p.ci]; const A=px(a),B=px(b),f=p.rev?1-p.t:p.t;
-          const x=A.x+(B.x-A.x)*f, y=A.y+(B.y-A.y)*f;
-          ctx.shadowBlur=10;ctx.shadowColor=p.color;
-          ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();
-          ctx.shadowBlur=0;return true;
-        });
-        NP.forEach((_,i)=>{
-          act[i]=Math.max(0,act[i]-.016);
-          const{x,y}=px(i); const a=act[i]; const outer=i>=18;
-          const r=(outer?2:4.5)+a*5;
-          if(a>.05){
-            const g=ctx.createRadialGradient(x,y,0,x,y,r*7);
-            g.addColorStop(0,a>.5?`rgba(245,158,11,${a*.3})`:`rgba(34,197,94,${a*.2})`);
-            g.addColorStop(1,'transparent');
-            ctx.beginPath();ctx.arc(x,y,r*7,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-          }
-          const col=a>.5?ACOL:'#22c55e';
-          const alpha=outer?.2+a*.4:.4+a*.5;
-          ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
-          ctx.fillStyle=col+(Math.round(alpha*255).toString(16).padStart(2,'0'));ctx.fill();
-          if(!outer){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle='rgba(34,197,94,.4)';ctx.lineWidth=.7;ctx.stroke();}
-        });
-        if(Math.random()<.07&&pulses.length<18)spawn();
-        raf=requestAnimationFrame(draw);
-      }
-      resize();
-      for(let i=0;i<6;i++)setTimeout(spawn,i*300);
-      draw();
-      window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();draw();});
-    })();
   </script>
 </body>
 </html>
