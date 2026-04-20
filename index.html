@@ -152,9 +152,9 @@
     /* sd dot */
     .sd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
-    /* gsap targets */
-    .gsap-reveal{opacity:0;transform:translateY(40px)}
-    .gsap-stagger > *{opacity:0;transform:translateY(30px)}
+    /* gsap targets - initial state set by JS, not CSS, so content shows if GSAP fails */
+    .gsap-reveal{}
+    .gsap-stagger > *{}
 
     /* decode text */
     .decode-text{font-family:'JetBrains Mono',monospace}
@@ -746,20 +746,24 @@
   </footer>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
-
     // Hash clear
     if (window.location.hash){history.replaceState(null,'',window.location.pathname);window.scrollTo(0,0)}
 
-    // GSAP reveal on scroll
-    document.querySelectorAll('.gsap-reveal').forEach(el => {
-      gsap.from(el, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
-        y:50,opacity:0,duration:.9,ease:'power3.out'});
-    });
-    document.querySelectorAll('.gsap-stagger').forEach(el => {
-      gsap.from(el.children, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
-        y:35,opacity:0,duration:.75,stagger:.12,ease:'power2.out'});
-    });
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+      // Set initial hidden state via JS (not CSS) so content is visible if GSAP fails
+      gsap.set('.gsap-reveal', {opacity:0, y:40});
+      gsap.set('.gsap-stagger > *', {opacity:0, y:30});
+
+      document.querySelectorAll('.gsap-reveal').forEach(el => {
+        gsap.to(el, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
+          y:0,opacity:1,duration:.9,ease:'power3.out'});
+      });
+      document.querySelectorAll('.gsap-stagger').forEach(el => {
+        gsap.to(el.children, {scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
+          y:0,opacity:1,duration:.75,stagger:.12,ease:'power2.out'});
+      });
+    } catch(e) { console.warn('GSAP unavailable, showing all sections', e); }
 
     // Decode text effect
     const DECODE_CHARS = 'ΨΩΣ∇λπ∀∃ΔΦΘ01▓░▄▀█';
