@@ -1687,8 +1687,11 @@ def create_session(user):
 
       function endIntro() {
         sessionStorage.setItem('ig-seen','1');
-        ov.style.display = 'none';
+        ov.style.cssText += ';display:none;pointer-events:none;';
         document.body.style.overflow = '';
+        // reset SVG transform so it can't bleed into page compositing
+        const svg = document.getElementById('intro-svg');
+        if (svg) svg.style.transform = '';
       }
 
       window.skipIntro = function() {
@@ -2259,12 +2262,13 @@ def create_session(user):
         document.body.appendChild(svg);
         svg.animate([{opacity:1,transform:'scale(0.4)'},{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(1.1)'}],{duration:520,easing:'ease-out',fill:'forwards'}).onfinish=()=>svg.remove();
       }
-      document.addEventListener('click',e=>{ if(!e.target.closest('a,button,input')) burst(e.clientX,e.clientY); });
+      const _noburst = 'a,button,input,textarea,select,label,[contenteditable]';
+      document.addEventListener('click',e=>{ if(!e.target.closest(_noburst)) burst(e.clientX,e.clientY); });
       let _tx=0,_ty=0;
       document.addEventListener('touchstart',e=>{ _tx=e.touches[0].clientX; _ty=e.touches[0].clientY; },{passive:true});
       document.addEventListener('touchend',e=>{
         const t=e.changedTouches[0];
-        if(!t||e.target.closest('a,button,input')) return;
+        if(!t||e.target.closest(_noburst)) return;
         if(Math.abs(t.clientX-_tx)<10&&Math.abs(t.clientY-_ty)<10) burst(t.clientX,t.clientY);
       },{passive:true});
     })();
