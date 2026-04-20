@@ -273,6 +273,19 @@
     /* cmp packet pulse */
     @keyframes cmp-dot-move{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
 
+    /* comparison table — responsive columns */
+    @media(max-width:540px){
+      #cmp-table>div[style*="grid-template-columns"]{
+        grid-template-columns:1fr 48px 68px!important;
+      }
+      #cmp-table>div[style*="grid-template-columns"]>div:first-child{
+        padding-left:14px!important;padding-right:6px!important;
+      }
+      #cmp-table>div[style*="grid-template-columns"] span[style*="font-size:11px"]{
+        font-size:10px!important;
+      }
+    }
+
     /* ── INTRO OVERLAY ── */
     #intro-overlay{position:fixed;inset:0;z-index:100000;background:#010302;display:flex;align-items:center;justify-content:center;overflow:hidden;}
     #intro-svg{width:min(92vw,640px);height:auto;position:relative;z-index:2;overflow:visible;will-change:transform;}
@@ -1439,7 +1452,7 @@ def create_session(user):
       </div>
 
       <div class="overflow-x-auto" style="border-radius:16px;border:1px solid rgba(34,197,94,.15);">
-      <div id="cmp-table" style="min-width:360px;background:rgba(4,10,6,.95);overflow:clip;">
+      <div id="cmp-table" style="min-width:0;width:100%;background:rgba(4,10,6,.95);overflow:clip;">
 
         <!-- Header row -->
         <div style="display:grid;grid-template-columns:1fr 100px 120px;background:rgba(34,197,94,.04);border-bottom:1px solid rgba(34,197,94,.15);">
