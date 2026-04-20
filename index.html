@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Penpax -- Your digital twin, on your machine</title>
-  <meta name="description" content="A knowledge graph of your entire working life. Browser history, meetings, files, code, emails -- connected, queryable, private. Runs entirely on your device." />
+  <title>Graphify — Any input. One graph. Every answer.</title>
+  <meta name="description" content="A knowledge graph of your entire working life. Browser history, meetings, files, code, emails — connected, queryable, private. Runs entirely on your device. #1 on MemoryBench." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -69,9 +69,48 @@
     .display-headline {
       font-family: 'Fraunces', Georgia, serif;
       font-weight: 400;
-      line-height: 0.92;
-      letter-spacing: -0.03em;
+      line-height: 0.87;
+      letter-spacing: -0.045em;
     }
+
+    /* MemoryBench badge */
+    .memory-bench-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08));
+      border: 1px solid rgba(251,191,36,0.35);
+      color: #fbbf24;
+    }
+    .memory-bench-badge .trophy { font-size: 14px; }
+
+    /* Ghost outline button */
+    .ghost-btn {
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.55);
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+    .ghost-btn:hover {
+      border-color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.85);
+      transform: translateY(-1px);
+    }
+
+    /* Stats bar */
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+    .stat-pill strong { color: rgba(255,255,255,0.7); font-weight: 500; }
 
     .gradient-text {
       background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 35%, #67e8f9 70%, #a5f3fc 100%);
@@ -284,7 +323,7 @@
           <line x1="4" y1="18" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.5"/>
           <line x1="20" y1="18" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.5"/>
         </svg>
-        <span class="font-display text-2xl gradient-text" style="font-weight:400;letter-spacing:-0.04em;">Penpax</span>
+        <span class="font-display text-2xl gradient-text" style="font-weight:400;letter-spacing:-0.04em;">Graphify</span>
       </div>
       <div class="hidden md:flex items-center gap-8 text-sm text-gray-500">
         <a href="#how" class="hover:text-white transition-colors duration-200">How it works</a>
@@ -292,7 +331,7 @@
         <a href="#privacy" class="hover:text-white transition-colors duration-200">Privacy</a>
       </div>
       <a href="#waitlist" class="cta-btn text-sm text-white px-5 py-2.5 rounded-xl font-medium">
-        Join waitlist
+        Start Building
       </a>
     </div>
   </nav>
@@ -313,32 +352,44 @@
 
         <!-- Copy -->
         <div>
-          <div class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full mb-10"
-            style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;">
-            <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#7c3aed;"></span>
-            Free trial launching soon &mdash; 1,500+ on the list
+          <div class="flex flex-wrap items-center gap-3 mb-10">
+            <div class="memory-bench-badge">
+              <span class="trophy">🏆</span>
+              #1 MemoryBench &mdash; beats all commercial tools
+            </div>
+            <div class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full"
+              style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#7c3aed;"></span>
+              1,500+ on the list
+            </div>
           </div>
 
-          <h1 class="display-headline text-[64px] md:text-[76px] text-white mb-8">
-            Your entire<br/>
-            working life,<br/>
-            <em class="gradient-text not-italic">understood.</em>
+          <h1 class="display-headline text-[64px] md:text-[78px] text-white mb-8">
+            Any input.<br/>
+            One graph.<br/>
+            <em class="gradient-text not-italic">Every answer.</em>
           </h1>
 
-          <p class="text-lg text-gray-400 mb-10 leading-relaxed max-w-md font-light">
-            A knowledge graph of everything you do. Browser history, meetings, files, code -- connected and queryable. Running entirely on your machine.
+          <p class="text-lg text-gray-400 mb-10 max-w-md font-light" style="line-height:1.65;">
+            A knowledge graph of everything you do. Browser history, meetings, files, code &mdash; connected and queryable. Running entirely on your machine.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-3">
+          <div class="flex flex-col sm:flex-row gap-3 mb-8">
             <a href="#waitlist" class="cta-btn text-white px-8 py-4 rounded-2xl font-medium text-center text-sm">
-              Get early access &mdash; free
+              Start Building &rarr;
             </a>
-            <a href="#how" class="secondary-btn text-gray-400 hover:text-white px-8 py-4 rounded-2xl font-medium text-center text-sm">
-              See how it works
+            <a href="mailto:safishamsi98@gmail.com" class="ghost-btn px-8 py-4 rounded-2xl font-medium text-center text-sm">
+              Talk to Founder
             </a>
           </div>
 
-          <p class="mt-8 text-xs" style="color:rgba(255,255,255,0.5);">On-device &middot; No cloud &middot; No training on your data &middot; Free trial coming soon</p>
+          <div class="flex flex-wrap items-center gap-5">
+            <span class="stat-pill">⭐ <strong>30,000</strong> GitHub stars</span>
+            <span class="stat-pill" style="color:rgba(255,255,255,0.15);">·</span>
+            <span class="stat-pill">⬇ <strong>215,000+</strong> downloads</span>
+            <span class="stat-pill" style="color:rgba(255,255,255,0.15);">·</span>
+            <span class="stat-pill">🔒 <strong>On-device</strong>, no cloud</span>
+          </div>
         </div>
 
         <!-- Mockup -->
@@ -348,7 +399,7 @@
             <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
             <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
             <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
-            <span class="ml-3 text-xs font-mono" style="color:rgba(255,255,255,0.2);">your digital twin</span>
+            <span class="ml-3 text-xs font-mono" style="color:rgba(255,255,255,0.2);">graphify — knowledge graph</span>
           </div>
 
           <div class="flex" style="height:430px;">
@@ -616,7 +667,7 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-20 fade-in">
         <p class="section-label mb-4">How it works</p>
-        <h2 class="display-headline text-5xl text-white">Three steps to your digital twin</h2>
+        <h2 class="display-headline text-5xl text-white">Three steps to your knowledge graph</h2>
       </div>
 
       <div class="grid md:grid-cols-3 gap-10">
@@ -740,7 +791,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Founders, executives, board members, managers</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Penpax connects all of it into a living graph so you always know what led to what -- and why.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your decisions span hundreds of conversations, reports, and board calls. By the time a strategy is revisited, the context that shaped it has scattered across emails, Notion pages, and faded memories. Graphify connects all of it into a living graph so you always know what led to what — and why.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5">
                   <div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#7c3aed;"></div>
@@ -782,7 +833,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Marketers, designers, writers, content leads</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Good creative work rarely happens in a vacuum. A brief connects to a reference deck, a Figma comment connects to a client email, a rejected concept quietly reappears in the final version. Penpax gives you the thread between ideas you didn't know were related.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Good creative work rarely happens in a vacuum. A brief connects to a reference deck, a Figma comment connects to a client email, a rejected concept quietly reappears in the final version. Graphify gives you the thread between ideas you didn't know were related.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#06b6d4;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Trace which brief led to which concept iteration</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#06b6d4;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Find the reference image that inspired a campaign direction</p></div>
@@ -815,7 +866,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Sales, consultants, account managers, advisors</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Walking into a renewal or upsell without the full picture is a risk. Penpax maps every touchpoint so you always know where things stand -- before you open the meeting.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Every client relationship lives across dozens of calls, emails, proposals, and follow-ups. Walking into a renewal or upsell without the full picture is a risk. Graphify maps every touchpoint so you always know where things stand — before you open the meeting.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f59e0b;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Recall every promise made across a multi-month deal</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f59e0b;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Surface objections raised on past calls before the next one</p></div>
@@ -848,7 +899,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Solicitors, barristers, compliance officers, auditors</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Cases and matters span years of correspondence, precedents, filings, and instructions. Finding what influenced a clause -- or what a client was told three months ago -- shouldn't require a manual document trawl. Penpax builds the graph across all of it, privately on your machine.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Cases and matters span years of correspondence, precedents, filings, and instructions. Finding what influenced a clause -- or what a client was told three months ago -- shouldn't require a manual document trawl. Graphify builds the graph across all of it, privately on your machine.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f43f5e;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Trace a contract clause back to the email that prompted it</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#f43f5e;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Surface related precedents across matters without manual search</p></div>
@@ -881,7 +932,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Doctors, therapists, clinicians, researchers</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Patient care involves connecting observations across appointments, test results, referrals, and research notes. Penpax builds that picture locally -- no patient data uploaded, no cloud dependency -- so you can surface patterns without compromising confidentiality.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Patient care involves connecting observations across appointments, test results, referrals, and research notes. Graphify builds that picture locally — no patient data uploaded, no cloud dependency — so you can surface patterns without compromising confidentiality.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect symptoms across multiple appointments over time</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#34d399;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Link research notes to relevant cases without manual tagging</p></div>
@@ -914,7 +965,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Developers, engineers, product managers, architects</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Six months after a decision, the Slack thread is buried and the RFC is stale. Penpax connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them -- without asking someone who might have left.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Six months after a decision, the Slack thread is buried and the RFC is stale. Graphify connects your code, docs, meetings, and browser research so you can trace architectural choices back to the conversation that shaped them — without asking someone who might have left.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Understand why a library was chosen six months ago</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#818cf8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect a bug to the spec change that introduced it</p></div>
@@ -947,7 +998,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Researchers, academics, analysts, students</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">The most useful insight is often the one connecting two sources you read three months apart. Penpax builds a living map of your reading -- papers, notes, articles, annotations -- so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">The most useful insight is often the one connecting two sources you read three months apart. Graphify builds a living map of your reading — papers, notes, articles, annotations — so you can see how your thinking connects, and what questions the graph is uniquely positioned to answer.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Find conceptual links across papers read months apart</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#fbbf24;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">See which sources cluster around a research question</p></div>
@@ -980,7 +1031,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Analysts, officers, policy advisors, planners</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Air-gapped by design. Penpax processes everything locally -- no cloud, no telemetry, no external API calls during analysis. Build structured intelligence graphs from documents, briefings, and signals without anything leaving the machine.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Air-gapped by design. Graphify processes everything locally — no cloud, no telemetry, no external API calls during analysis. Build structured intelligence graphs from documents, briefings, and signals without anything leaving the machine.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Build entity graphs from documents without network exposure</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#94a3b8;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect signals and sources across classified briefings</p></div>
@@ -1013,7 +1064,7 @@
                   <p class="text-xs" style="color:rgba(255,255,255,0.3);">Individuals, household managers, caretakers</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your life generates more information than any tool tracks. Medical appointments, financial decisions, school correspondence, care plans -- scattered across apps, browsers, and paper. Penpax connects all of it into one private, searchable graph on your device.</p>
+              <p class="text-sm leading-relaxed mb-6" style="color:rgba(255,255,255,0.55);">Your life generates more information than any tool tracks. Medical appointments, financial decisions, school correspondence, care plans -- scattered across apps, browsers, and paper. Graphify connects all of it into one private, searchable graph on your device.</p>
               <div class="space-y-2.5">
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#a78bfa;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Track medical history, prescriptions, and appointment notes</p></div>
                 <div class="flex items-start gap-2.5"><div class="w-1 h-1 rounded-full mt-2 flex-shrink-0" style="background:#a78bfa;"></div><p class="text-xs" style="color:rgba(255,255,255,0.4);">Connect financial decisions, warranties, and contracts over time</p></div>
@@ -1051,7 +1102,7 @@
             <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
               <th class="text-left py-4 px-7 font-normal w-1/2" style="color:rgba(255,255,255,0.2);"></th>
               <th class="py-4 px-5 text-center font-normal" style="color:rgba(255,255,255,0.3);">Others</th>
-              <th class="py-4 px-5 text-center font-medium gradient-text">Penpax</th>
+              <th class="py-4 px-5 text-center font-medium gradient-text">Graphify</th>
             </tr>
           </thead>
           <tbody>
@@ -1101,7 +1152,7 @@
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-16 fade-in">
         <p class="section-label mb-4">Privacy</p>
-        <h2 class="display-headline text-5xl text-white mb-5">Your twin lives on<br/><em>your machine.</em></h2>
+        <h2 class="display-headline text-5xl text-white mb-5">Your graph lives on<br/><em>your machine.</em></h2>
         <p class="text-base font-light max-w-lg mx-auto" style="color:rgba(255,255,255,0.55);">We do not see your data. We cannot. It never leaves your device.</p>
       </div>
 
@@ -1234,7 +1285,7 @@
       </div>
 
       <form action="https://formspree.io/f/xqegoayo" method="POST" class="flex flex-col sm:flex-row gap-3" onsubmit="handleSubmit(event)">
-        <input type="hidden" name="_subject" value="New Penpax waitlist signup" />
+        <input type="hidden" name="_subject" value="New Graphify waitlist signup" />
         <input
           type="email"
           name="email"
@@ -1266,7 +1317,7 @@
           <line x1="4" y1="18" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" opacity="0.35"/>
           <line x1="20" y1="18" x2="12" y2="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.35"/>
         </svg>
-        <span class="text-xs" style="color:rgba(255,255,255,0.55);">Penpax &mdash; Your digital twin, on your machine.</span>
+        <span class="text-xs" style="color:rgba(255,255,255,0.55);">Graphify Labs &mdash; Your knowledge graph, on your machine.</span>
       </div>
       <span class="text-xs" style="color:rgba(255,255,255,0.45);">Built on <a href="https://github.com/safishamsi/graphify" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.45);">graphify</a></span>
     </div>
