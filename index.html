@@ -1358,28 +1358,19 @@
       if(!res.ok) msg.textContent='[ ERROR ] Please try again.';
     }
 
-    // ── FEATURE 4: GRAPH TICKER BACKGROUND (replaces matrix rain) ──
+    // ── MATRIX RAIN ──
     (function(){
       const c=document.getElementById('matrix-rain'); if(!c) return;
       const ctx=c.getContext('2d');
-      const TOKENS=['auth.py→login()','RFC-14↔gRPC','meeting_oct3→cap=15','pipeline.go→deploy','Q3-board→pricing','spec.md→v2.1','dataset→cluster','agent.ts→tool','review→merged','notes→insight','browser→graph','commit→node','call→decision','paper→concept','idea→edge'];
-      let W,H,cols=[];
-      function resize(){
-        W=c.width=c.offsetWidth; H=c.height=c.offsetHeight;
-        const n=Math.max(4,Math.floor(W/180));
-        cols=Array.from({length:n},(_,i)=>({ x:Math.round(W/(n+1))*(i+1), y:-Math.random()*H, speed:0.3+Math.random()*0.4, token:TOKENS[Math.floor(Math.random()*TOKENS.length)], alpha:0.15+Math.random()*0.2 }));
-      }
+      const CHARS='アイウエオカキクケコΨΩΣ∇λπ∀∃01ΔΦ10110100∂∫µ';
+      let W,H,drops;
+      function resize(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; drops=Array.from({length:Math.floor(W/18)},()=>Math.random()*H/14|0); }
       function draw(){
-        ctx.clearRect(0,0,W,H);
-        ctx.font='10px JetBrains Mono,monospace';
-        cols.forEach(col=>{
-          ctx.fillStyle=`rgba(34,197,94,${col.alpha})`;
-          ctx.fillText(col.token, col.x-ctx.measureText(col.token).width/2, col.y);
-          col.y+=col.speed;
-          if(col.y>H+30){ col.y=-40; col.token=TOKENS[Math.floor(Math.random()*TOKENS.length)]; col.alpha=0.1+Math.random()*0.2; }
-        });
+        ctx.fillStyle='rgba(4,8,6,0.12)'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='#22c55e'; ctx.font='13px JetBrains Mono,monospace';
+        drops.forEach((y,i)=>{ ctx.fillText(CHARS[Math.random()*CHARS.length|0],i*18,y*14); if(y*14>H&&Math.random()>.975)drops[i]=0; else drops[i]++; });
       }
-      resize(); setInterval(draw,50); window.addEventListener('resize',resize);
+      resize(); setInterval(draw,55); window.addEventListener('resize',resize);
     })();
 
     // ── FEATURE 1: TERMINAL QUERY TICKER ──
