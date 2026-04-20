@@ -232,6 +232,44 @@
     /* node flash */
     @keyframes node-flash{0%,100%{fill-opacity:1}40%{fill-opacity:0;filter:drop-shadow(0 0 8px #4ade80)}}
 
+    /* floating install card */
+    #install-card{position:fixed;top:72px;right:16px;z-index:9000;background:rgba(4,8,6,0.96);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:10px 14px;pointer-events:auto;opacity:0;transform:translateY(-8px);transition:opacity .4s,transform .4s;max-width:260px;}
+    #install-card.visible{opacity:1;transform:translateY(0);}
+    #install-card .ic-cmd{font-family:'JetBrains Mono',monospace;font-size:10px;color:#4ade80;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:5px;padding:6px 10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:background .2s;}
+    #install-card .ic-cmd:hover{background:rgba(34,197,94,.13);}
+    @media(max-width:639px){#install-card{display:none;}}
+
+    /* god-node leaderboard */
+    .gn-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(34,197,94,.06);}
+    .gn-row:last-child{border-bottom:none;}
+    .gn-bar-wrap{flex:1;height:4px;background:rgba(34,197,94,.1);border-radius:2px;overflow:hidden;}
+    .gn-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,#22c55e,#4ade80);transition:width 1s ease;}
+
+    /* watch-mode demo */
+    .watch-line{opacity:0;transform:translateX(-6px);transition:opacity .35s,transform .35s;}
+    .watch-line.show{opacity:1;transform:none;}
+    @keyframes watch-cursor{0%,100%{opacity:1}50%{opacity:0}}
+
+    /* diff playground */
+    .diff-input{width:100%;background:rgba(0,0,0,.5);border:1px solid rgba(34,197,94,.18);border-radius:8px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#4ade80;resize:none;outline:none;transition:border-color .2s;}
+    .diff-input:focus{border-color:rgba(34,197,94,.4);}
+
+    /* before/after timer */
+    .ba-col{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .ba-timer{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;letter-spacing:-.02em;}
+    @keyframes count-down{0%{content:'21 days'}25%{content:'14 days'}50%{content:'7 days'}75%{content:'3 days'}100%{content:'3 weeks'}}
+
+    /* surprising connection */
+    .surp-card{background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:18px 22px;}
+    @keyframes surp-fade{0%,100%{opacity:0;transform:translateY(6px)}8%,92%{opacity:1;transform:none}}
+
+    /* trust row */
+    .trust-item{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(74,222,128,.6);white-space:nowrap;}
+
+    /* radar chart */
+    .radar-spoke{transition:opacity .3s;}
+    .radar-spoke:hover{opacity:.8;}
+
     /* cmp packet pulse */
     @keyframes cmp-dot-move{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
   </style>
@@ -279,6 +317,17 @@
     </div>
   </nav>
 
+  <!-- Floating install card -->
+  <div id="install-card">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(34,197,94,.4);letter-spacing:.1em;margin-bottom:6px;">// quick.install</div>
+    <div class="ic-cmd" onclick="copyInstall(this)" title="Click to copy">
+      <span>pip install graphify &amp;&amp; graphify .</span>
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="5" y="1" width="10" height="10" rx="2" stroke="rgba(74,222,128,.5)" stroke-width="1.5"/><rect x="1" y="5" width="10" height="10" rx="2" stroke="rgba(74,222,128,.5)" stroke-width="1.5" fill="rgba(4,8,6,.9)"/></svg>
+    </div>
+    <div id="install-copied" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#4ade80;margin-top:5px;opacity:0;transition:opacity .3s;">✓ copied</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(34,197,94,.3);margin-top:5px;">pypi v2.1.0 · MIT · 230k installs</div>
+  </div>
+
   <!-- Scroll-driven graph accretion (desktop only) -->
   <div id="scroll-graph-wrap">
     <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(34,197,94,.3);margin-bottom:4px;text-align:center;letter-spacing:.08em;">// graph.growing</div>
@@ -321,6 +370,10 @@
             <div class="badge-bench" style="background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.3);color:rgba(74,222,128,.75);">
               <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2.5" fill="#4ade80"/><line x1="6" y1="6" x2="2" y2="2" stroke="#4ade80" stroke-width="1"/><line x1="6" y1="6" x2="10" y2="3" stroke="#4ade80" stroke-width="1"/><line x1="6" y1="6" x2="10" y2="9" stroke="#4ade80" stroke-width="1"/><line x1="6" y1="6" x2="3" y2="10" stroke="#4ade80" stroke-width="1"/></svg>
               persistent memory engine
+            </div>
+            <div class="badge-bench" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.28);color:rgba(251,191,36,.75);">
+              <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="#f59e0b" stroke-width="1" fill="none"/><circle cx="6" cy="6" r="2" fill="#f59e0b" fill-opacity=".7"/></svg>
+              digital twin of your knowledge
             </div>
           </div>
 
@@ -541,6 +594,49 @@
   <!-- Greek key accent below stats -->
   <div class="greek-key"></div>
 
+  <!-- LANGUAGE RADAR -->
+  <section class="py-10 border-t" style="border-color:var(--border);background:rgba(6,13,8,0.35);">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-8 items-center gsap-reveal">
+        <div>
+          <p class="section-tag mb-3">// ingest.surface</p>
+          <h3 class="hl text-3xl text-white mb-4">20 languages.<br/><span class="grad-green">Every format.</span></h3>
+          <p class="text-sm font-light leading-relaxed mb-4" style="color:var(--t2);">AST-level extraction across the full polyglot stack. Docs, papers, images, and meetings. One corpus, one graph.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Python</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">TypeScript</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Go</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Rust</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Java</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">C/C++</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Ruby</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Swift</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);color:rgba(74,222,128,.7);">Kotlin</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">PDF</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">Markdown</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">Images</span>
+            <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">+ 8 more</span>
+          </div>
+        </div>
+        <!-- Radar chart SVG -->
+        <div style="max-width:260px;margin:0 auto;">
+          <svg id="radar-svg" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+            <!-- grid rings -->
+            <circle cx="130" cy="130" r="100" stroke="rgba(34,197,94,.08)" stroke-width="1"/>
+            <circle cx="130" cy="130" r="75" stroke="rgba(34,197,94,.06)" stroke-width="1"/>
+            <circle cx="130" cy="130" r="50" stroke="rgba(34,197,94,.05)" stroke-width="1"/>
+            <circle cx="130" cy="130" r="25" stroke="rgba(34,197,94,.04)" stroke-width="1"/>
+            <!-- spokes & filled polygon built by JS -->
+            <polygon id="radar-fill" points="" fill="rgba(34,197,94,.12)" stroke="#22c55e" stroke-width="1.2" stroke-opacity=".6"/>
+            <!-- amber overlay for docs -->
+            <polygon id="radar-docs" points="" fill="rgba(245,158,11,.08)" stroke="#f59e0b" stroke-width="1" stroke-opacity=".5"/>
+            <!-- labels injected by JS -->
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- WHAT IS -->
   <section class="py-14 border-t" style="border-color:var(--border);">
     <div class="max-w-4xl mx-auto px-6 text-center gsap-reveal">
@@ -679,6 +775,22 @@
           </div>
         </div>
       </div>
+
+      <!-- Watch-mode demo -->
+      <div class="mt-8 gsap-reveal code-border p-6">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+          <p class="mono text-xs" style="color:var(--green2);">// graphify watch . — live file watcher</p>
+          <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ade80;">no LLM · AST only · free</span>
+        </div>
+        <div id="watch-demo" class="space-y-1.5" style="min-height:96px;">
+          <div class="watch-line mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src — press Ctrl+C to stop</div>
+          <div class="watch-line mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Debounce: 3.0s</div>
+        </div>
+        <div class="flex items-center gap-2 mt-3">
+          <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 1s step-end infinite;flex-shrink:0;display:inline-block;"></span>
+          <span class="mono text-xs" style="color:rgba(34,197,94,.35);">watching<span style="animation:watch-cursor 1s step-end infinite;">_</span></span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -806,6 +918,38 @@
     </div>
   </section>
 
+  <!-- LIVE DIFF PLAYGROUND -->
+  <section class="py-12 border-t" style="border-color:var(--border);background:rgba(6,13,8,0.45);">
+    <div class="max-w-5xl mx-auto px-6 gsap-reveal">
+      <div class="text-center mb-8">
+        <p class="section-tag mb-3">// live.graph_diff</p>
+        <h3 class="hl text-3xl text-white mb-3">Paste code.<br/><span class="grad-green">Watch the graph mutate.</span></h3>
+        <p class="text-sm font-light" style="color:var(--t2);">Type or edit a function below — Graphify extracts nodes and edges in real time.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 items-start">
+        <div>
+          <p class="mono text-xs mb-2" style="color:var(--t3);">// paste_your_code</p>
+          <textarea id="diff-input" class="diff-input" rows="10" spellcheck="false">def authenticate(user, token):
+    validate_token(token)
+    session = create_session(user)
+    log_access(user, session)
+    return session
+
+def validate_token(token):
+    return db.query(Token, token)
+
+def create_session(user):
+    return Session(user_id=user.id)</textarea>
+        </div>
+        <div>
+          <p class="mono text-xs mb-2" style="color:var(--green2);">// extracted.graph</p>
+          <svg id="diff-svg" viewBox="0 0 300 240" fill="none" style="width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(34,197,94,.12);border-radius:8px;height:220px;"></svg>
+          <div id="diff-stats" class="mono text-xs mt-2" style="color:rgba(34,197,94,.4);">0 nodes · 0 edges</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
   <section id="features" class="py-14 border-t" style="border-color:var(--border);">
     <div class="max-w-6xl mx-auto px-6">
@@ -869,6 +1013,87 @@
 
       </div>
       </div><!-- end feat-grid-wrap -->
+    </div>
+  </section>
+
+  <!-- GOD-NODE LEADERBOARD -->
+  <section class="py-12 border-t" style="border-color:var(--border);background:rgba(6,13,8,0.4);">
+    <div class="max-w-5xl mx-auto px-6 gsap-reveal">
+      <div class="grid md:grid-cols-2 gap-10 items-start">
+        <div>
+          <p class="section-tag mb-3">// leiden.god_nodes</p>
+          <h3 class="hl text-3xl text-white mb-3">The nodes that hold <span class="grad-amber">everything together.</span></h3>
+          <p class="text-sm font-light leading-relaxed mb-2" style="color:var(--t2);">Graphify surfaces your highest betweenness-centrality nodes — the ones that connect the most communities. If one breaks, here is the blast radius.</p>
+          <p class="mono text-xs mt-4" style="color:rgba(34,197,94,.35);">// fastapi OSS repo · 3,241 nodes · 8,904 edges</p>
+        </div>
+        <div>
+          <div id="gn-list">
+            <div class="gn-row">
+              <span class="mono text-xs" style="color:rgba(34,197,94,.35);width:18px;">01</span>
+              <span class="mono text-xs" style="color:#4ade80;flex:1;">routing/router.py</span>
+              <div class="gn-bar-wrap"><div class="gn-bar" style="width:0%" data-w="96%"></div></div>
+              <span class="mono text-xs" style="color:rgba(245,158,11,.7);width:40px;text-align:right;">812 files</span>
+            </div>
+            <div class="gn-row">
+              <span class="mono text-xs" style="color:rgba(34,197,94,.35);width:18px;">02</span>
+              <span class="mono text-xs" style="color:#4ade80;flex:1;">dependencies/__init__.py</span>
+              <div class="gn-bar-wrap"><div class="gn-bar" style="width:0%" data-w="78%"></div></div>
+              <span class="mono text-xs" style="color:rgba(245,158,11,.7);width:40px;text-align:right;">654 files</span>
+            </div>
+            <div class="gn-row">
+              <span class="mono text-xs" style="color:rgba(34,197,94,.35);width:18px;">03</span>
+              <span class="mono text-xs" style="color:#4ade80;flex:1;">types/params.py</span>
+              <div class="gn-bar-wrap"><div class="gn-bar" style="width:0%" data-w="61%"></div></div>
+              <span class="mono text-xs" style="color:rgba(245,158,11,.7);width:40px;text-align:right;">511 files</span>
+            </div>
+            <div class="gn-row">
+              <span class="mono text-xs" style="color:rgba(34,197,94,.35);width:18px;">04</span>
+              <span class="mono text-xs" style="color:#4ade80;flex:1;">exceptions.py</span>
+              <div class="gn-bar-wrap"><div class="gn-bar" style="width:0%" data-w="44%"></div></div>
+              <span class="mono text-xs" style="color:rgba(245,158,11,.7);width:40px;text-align:right;">369 files</span>
+            </div>
+            <div class="gn-row">
+              <span class="mono text-xs" style="color:rgba(34,197,94,.35);width:18px;">05</span>
+              <span class="mono text-xs" style="color:#4ade80;flex:1;">middleware/base.py</span>
+              <div class="gn-bar-wrap"><div class="gn-bar" style="width:0%" data-w="31%"></div></div>
+              <span class="mono text-xs" style="color:rgba(245,158,11,.7);width:40px;text-align:right;">260 files</span>
+            </div>
+          </div>
+          <p class="mono text-xs mt-4" style="color:rgba(34,197,94,.25);">// blast radius = files that import this node, directly or transitively</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE/AFTER ONBOARDING -->
+  <section class="py-12 border-t" style="border-color:var(--border);">
+    <div class="max-w-4xl mx-auto px-6 gsap-reveal">
+      <div class="text-center mb-8">
+        <p class="section-tag mb-3">// onboarding.delta</p>
+        <h3 class="hl text-3xl text-white">New engineer. Day one.<br/><span class="grad-green">Without vs with Graphify.</span></h3>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="ba-col" style="border-color:rgba(239,68,68,.15);background:rgba(239,68,68,.03);">
+          <p class="mono text-xs mb-3" style="color:rgba(239,68,68,.5);">// without.graphify</p>
+          <div class="ba-timer mb-2" style="color:rgba(239,68,68,.7);" id="ba-timer-before">3 weeks</div>
+          <p class="text-sm font-light" style="color:var(--t2);">Reading docs, pinging colleagues, grepping code, still missing context.</p>
+          <div class="mt-4 space-y-1">
+            <div class="mono text-xs" style="color:rgba(239,68,68,.4);">✕ "why was this written this way?"</div>
+            <div class="mono text-xs" style="color:rgba(239,68,68,.4);">✕ "who owns this module?"</div>
+            <div class="mono text-xs" style="color:rgba(239,68,68,.4);">✕ "what breaks if I change this?"</div>
+          </div>
+        </div>
+        <div class="ba-col" style="border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.03);">
+          <p class="mono text-xs mb-3" style="color:var(--green2);">// with.graphify + /graphify in Claude Code</p>
+          <div class="ba-timer mb-2 grad-green" id="ba-timer-after">4 min</div>
+          <p class="text-sm font-light" style="color:var(--t2);">Run <code class="mono" style="color:#4ade80;">/graphify</code> in Claude Code. Graph built. Ask anything.</p>
+          <div class="mt-4 space-y-1">
+            <div class="mono text-xs" style="color:rgba(74,222,128,.6);">✓ full codebase graph in one pass</div>
+            <div class="mono text-xs" style="color:rgba(74,222,128,.6);">✓ query decisions, not just code</div>
+            <div class="mono text-xs" style="color:rgba(74,222,128,.6);">✓ god-nodes show blast radius instantly</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1200,6 +1425,14 @@
         <p class="section-tag mb-4">// aegis.protocol</p>
         <h2 class="hl text-5xl text-white mb-5">Your graph lives on<br/><span class="grad-green">your machine.</span></h2>
         <p class="text-sm font-light max-w-lg mx-auto" style="color:var(--t2);">We do not see your data. We cannot. It never leaves your device.</p>
+        <!-- Enterprise trust row -->
+        <div class="flex flex-wrap justify-center gap-4 mt-6">
+          <div class="trust-item"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.5 3 3.5.5-2.5 2.5.5 3.5L6 9l-3 1.5.5-3.5L1 4.5 4.5 4z" stroke="#4ade80" stroke-width="1" fill="rgba(34,197,94,.15)"/></svg>Air-gapped</div>
+          <div class="trust-item"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="6" rx="1.5" stroke="#4ade80" stroke-width="1"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="#4ade80" stroke-width="1"/></svg>SOC2-ready</div>
+          <div class="trust-item"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#4ade80" stroke-width="1"/><path d="M4 6l1.5 1.5L8 4" stroke="#4ade80" stroke-width="1" stroke-linecap="round"/></svg>Zero telemetry</div>
+          <div class="trust-item"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="#4ade80" stroke-width="1"/><path d="M4 6h4M6 4v4" stroke="#4ade80" stroke-width="1" stroke-linecap="round"/></svg>On-prem Neo4j/Postgres</div>
+          <div class="trust-item"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#4ade80" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><a href="https://github.com/safishamsi/graphify" target="_blank" style="color:inherit;text-decoration:none;">verify in source →</a></div>
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 gsap-stagger">
         <div class="flex flex-col items-center text-center gap-4 p-7 rounded-xl" style="background:var(--glass);border:1px solid var(--border);">
@@ -1213,6 +1446,27 @@
         <div class="flex flex-col items-center text-center gap-4 p-7 rounded-xl" style="background:var(--glass);border:1px solid var(--border);">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);"><svg width="22" height="22" fill="none" stroke="#4ade80" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div><p class="text-sm font-semibold text-white mb-1">Never trained on</p><p class="text-xs mono" style="color:var(--t2);">Your data is yours. We never touch it.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SURPRISING CONNECTION OF THE WEEK -->
+  <section class="py-10 border-t" style="border-color:var(--border);background:rgba(6,13,8,0.3);">
+    <div class="max-w-3xl mx-auto px-6 gsap-reveal">
+      <div class="surp-card">
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
+          <span class="mono text-xs" style="color:rgba(245,158,11,.5);">// surprising_connection.this_week</span>
+          <span class="mono text-xs px-2 py-0.5 rounded" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:rgba(251,191,36,.7);">leiden.cross_cluster</span>
+        </div>
+        <div id="surp-display" style="min-height:56px;">
+          <p class="mono text-sm mb-2" id="surp-edge" style="color:#fbbf24;"></p>
+          <p class="text-xs font-light" id="surp-desc" style="color:var(--t2);line-height:1.6;"></p>
+        </div>
+        <div class="flex gap-1.5 mt-4">
+          <span id="surp-d0" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.6);transition:background .3s;"></span>
+          <span id="surp-d1" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
+          <span id="surp-d2" class="w-1.5 h-1.5 rounded-full" style="background:rgba(245,158,11,.2);transition:background .3s;"></span>
         </div>
       </div>
     </div>
@@ -1614,6 +1868,188 @@
       card.addEventListener('mouseenter',()=>{ timer=setTimeout(drawEgg,4000); });
       card.addEventListener('mouseleave',()=>{ clearTimeout(timer); });
       card.addEventListener('click',drawEgg);
+    })();
+
+    // ── FLOATING INSTALL CARD ──
+    (function(){
+      const card=document.getElementById('install-card');
+      const hero=document.querySelector('section');
+      if(!card||!hero) return;
+      const obs=new IntersectionObserver(e=>{ card.classList.toggle('visible',!e[0].isIntersecting); },{threshold:.1});
+      obs.observe(hero);
+    })();
+    function copyInstall(el){
+      navigator.clipboard.writeText('pip install graphify && graphify .').catch(()=>{});
+      const c=document.getElementById('install-copied');
+      if(c){ c.style.opacity='1'; setTimeout(()=>c.style.opacity='0',1800); }
+    }
+
+    // ── LANGUAGE RADAR ──
+    (function(){
+      const svg=document.getElementById('radar-svg'); if(!svg) return;
+      const NS='http://www.w3.org/2000/svg';
+      const cx=130,cy=130,R=100;
+      const langs=[
+        {n:'Python',v:.98},{n:'JS/TS',v:.95},{n:'Go',v:.92},{n:'Rust',v:.88},{n:'Java',v:.85},
+        {n:'C/C++',v:.80},{n:'Ruby',v:.75},{n:'Swift',v:.72},{n:'Kotlin',v:.70},{n:'PHP',v:.65},
+        {n:'C#',v:.62},{n:'Scala',v:.58},{n:'R',v:.55},{n:'Elixir',v:.5}
+      ];
+      const docFormats=[
+        {n:'PDF',v:.95},{n:'MD',v:.98},{n:'HTML',v:.9},{n:'Images',v:.85},{n:'Meetings',v:.8},{n:'MDX',v:.92}
+      ];
+      const allSpokes=[...langs,...docFormats];
+      const total=allSpokes.length;
+      const codePoints=[], docPoints=[];
+      allSpokes.forEach((s,i)=>{
+        const angle=(Math.PI*2/total)*i - Math.PI/2;
+        const r=s.v*R;
+        const x=(cx+Math.cos(angle)*r).toFixed(1);
+        const y=(cy+Math.sin(angle)*r).toFixed(1);
+        if(i<langs.length) codePoints.push(`${x},${y}`);
+        else docPoints.push(`${x},${y}`);
+        const lx=(cx+Math.cos(angle)*(R+14)).toFixed(1);
+        const ly=(cy+Math.sin(angle)*(R+14)).toFixed(1);
+        const t=document.createElementNS(NS,'text');
+        t.setAttribute('x',lx);t.setAttribute('y',ly);
+        t.setAttribute('font-family','JetBrains Mono,monospace');t.setAttribute('font-size','7');
+        t.setAttribute('fill',i<langs.length?'rgba(74,222,128,.5)':'rgba(251,191,36,.45)');
+        t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','middle');
+        t.textContent=s.n;
+        svg.appendChild(t);
+        const line=document.createElementNS(NS,'line');
+        line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+        line.setAttribute('x2',cx+Math.cos(angle)*R);line.setAttribute('y2',cy+Math.sin(angle)*R);
+        line.setAttribute('stroke',i<langs.length?'rgba(34,197,94,.1)':'rgba(245,158,11,.08)');line.setAttribute('stroke-width','1');
+        svg.insertBefore(line,svg.firstChild);
+      });
+      document.getElementById('radar-fill').setAttribute('points',codePoints.join(' '));
+      document.getElementById('radar-docs').setAttribute('points',[...docPoints,...codePoints.slice(-2)].join(' '));
+    })();
+
+    // ── GOD-NODE BAR ANIMATION ──
+    (function(){
+      const list=document.getElementById('gn-list'); if(!list) return;
+      const obs=new IntersectionObserver(e=>{ if(!e[0].isIntersecting) return; obs.disconnect();
+        list.querySelectorAll('.gn-bar').forEach((b,i)=>{
+          setTimeout(()=>b.style.width=b.dataset.w,100+i*120);
+        });
+      },{threshold:.4});
+      obs.observe(list);
+    })();
+
+    // ── WATCH-MODE DEMO ANIMATION ──
+    (function(){
+      const demo=document.getElementById('watch-demo'); if(!demo) return;
+      const lines=[
+        {t:'[graphify watch] 2 file(s) changed',c:'rgba(34,197,94,.6)'},
+        {t:'[graphify watch] auth.py · pipeline.go',c:'rgba(220,255,220,.4)'},
+        {t:'[graphify watch] Rebuilt: 1,847 nodes, 4,203 edges',c:'rgba(74,222,128,.8)'},
+        {t:'[graphify watch] graph.json + GRAPH_REPORT.md updated',c:'rgba(74,222,128,.6)'},
+        {t:'[graphify watch] Watching ./src — press Ctrl+C to stop',c:'rgba(34,197,94,.4)'},
+      ];
+      let li=0;
+      const obs=new IntersectionObserver(e=>{ if(!e[0].isIntersecting) return;
+        function addLine(){
+          if(li>=lines.length){li=0;setTimeout(()=>{demo.querySelectorAll('.watch-line.dynamic').forEach(el=>el.remove());addLine();},3000);return;}
+          const d=document.createElement('div');
+          d.className='watch-line dynamic mono text-xs';d.style.color=lines[li].c;d.textContent=lines[li].t;
+          demo.appendChild(d);setTimeout(()=>d.classList.add('show'),30);
+          li++;setTimeout(addLine,700);
+        }
+        setTimeout(addLine,800);
+      },{threshold:.4});
+      obs.observe(demo);
+    })();
+
+    // ── LIVE DIFF PLAYGROUND ──
+    (function(){
+      const input=document.getElementById('diff-input');
+      const svgEl=document.getElementById('diff-svg');
+      const stats=document.getElementById('diff-stats');
+      if(!input||!svgEl) return;
+      const NS='http://www.w3.org/2000/svg';
+      function parseFunctions(code){
+        const nodes=[],edges=[];
+        const fnRe=/(?:def|function|func|fn)\s+(\w+)\s*\(/g;
+        const callRe=/(\w+)\s*\(/g;
+        let m;
+        while((m=fnRe.exec(code))!==null) nodes.push(m[1]);
+        const unique=[...new Set(nodes)];
+        unique.forEach((fn,i)=>{
+          const fnStart=code.indexOf('def '+fn)||code.indexOf('function '+fn)||0;
+          const fnBody=code.slice(fnStart,fnStart+200);
+          let c; callRe.lastIndex=0;
+          while((c=callRe.exec(fnBody))!==null){
+            if(c[1]!==fn&&unique.includes(c[1])&&!edges.find(e=>e[0]===fn&&e[1]===c[1])) edges.push([fn,c[1]]);
+          }
+        });
+        return {nodes:unique,edges};
+      }
+      function render(){
+        const {nodes,edges}=parseFunctions(input.value);
+        svgEl.innerHTML='';
+        if(!nodes.length){stats.textContent='0 nodes · 0 edges';return;}
+        const W=300,H=240,cx=W/2,cy=H/2,r=Math.min(W,H)/2-40;
+        const pos={};
+        nodes.forEach((n,i)=>{
+          const a=(Math.PI*2/nodes.length)*i-Math.PI/2;
+          pos[n]={x:cx+Math.cos(a)*(nodes.length>1?r:0),y:cy+Math.sin(a)*(nodes.length>1?r:0)};
+        });
+        edges.forEach(([a,b])=>{
+          if(!pos[a]||!pos[b]) return;
+          const line=document.createElementNS(NS,'line');
+          line.setAttribute('x1',pos[a].x);line.setAttribute('y1',pos[a].y);
+          line.setAttribute('x2',pos[b].x);line.setAttribute('y2',pos[b].y);
+          line.setAttribute('stroke','#22c55e');line.setAttribute('stroke-width','1');line.setAttribute('stroke-opacity','.35');
+          svgEl.appendChild(line);
+        });
+        nodes.forEach(n=>{
+          const p=pos[n],deg=edges.filter(([a,b])=>a===n||b===n).length;
+          const isHub=deg===Math.max(...nodes.map(x=>edges.filter(([a,b])=>a===x||b===x).length));
+          const c=document.createElementNS(NS,'circle');
+          c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r',isHub?7:5);
+          c.setAttribute('fill',isHub?'#f59e0b':'#22c55e');c.setAttribute('fill-opacity',isHub?.9:.75);
+          svgEl.appendChild(c);
+          const t=document.createElementNS(NS,'text');
+          t.setAttribute('x',p.x);t.setAttribute('y',p.y-10);
+          t.setAttribute('font-family','JetBrains Mono,monospace');t.setAttribute('font-size','8');
+          t.setAttribute('fill',isHub?'#fbbf24':'#4ade80');t.setAttribute('fill-opacity','.8');t.setAttribute('text-anchor','middle');
+          t.textContent=n+'()';
+          svgEl.appendChild(t);
+        });
+        stats.textContent=nodes.length+' nodes · '+edges.length+' edges'+(nodes.length>0?' · hub: '+nodes.reduce((a,b)=>edges.filter(([x,y])=>x===b||y===b).length>edges.filter(([x,y])=>x===a||y===a).length?b:a)+'()':'');
+      }
+      let debounce;
+      input.addEventListener('input',()=>{ clearTimeout(debounce);debounce=setTimeout(render,200); });
+      render();
+    })();
+
+    // ── SURPRISING CONNECTION ROTATOR ──
+    (function(){
+      const edge=document.getElementById('surp-edge');
+      const desc=document.getElementById('surp-desc');
+      if(!edge||!desc) return;
+      const connections=[
+        {e:'auth.py ↔ billing/invoice.ts',d:'Authentication logic references billing directly — suggests a hidden dependency that breaks when the billing team refactors. Graphify caught it before code review.'},
+        {e:'README.md → routing/router.py',d:'Documentation references a function that was renamed 6 months ago. Still in prod. Graphify surfaced the stale link across the doc-code boundary.'},
+        {e:'meeting_oct3.txt → pipeline.go',d:'A team call mentioned "latency issue" — Graphify linked it to the exact function that was bottlenecking, 3 weeks before the bug report.'}
+      ];
+      let ci=0;
+      function show(i){
+        edge.style.opacity='0';desc.style.opacity='0';
+        setTimeout(()=>{
+          edge.textContent=connections[i].e;
+          desc.textContent=connections[i].d;
+          edge.style.transition='opacity .5s';desc.style.transition='opacity .5s';
+          edge.style.opacity='1';desc.style.opacity='1';
+          [0,1,2].forEach(j=>{
+            const d=document.getElementById('surp-d'+j);
+            if(d) d.style.background=j===i?'rgba(245,158,11,.7)':'rgba(245,158,11,.2)';
+          });
+        },300);
+      }
+      show(0);
+      setInterval(()=>{ ci=(ci+1)%connections.length; show(ci); },5000);
     })();
 
     // ── CLICK/TAP GRAPH BURST ──
