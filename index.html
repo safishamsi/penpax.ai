@@ -48,7 +48,7 @@
     .top-strip{height:1px;background:linear-gradient(90deg,transparent,#22c55e 35%,#f59e0b 50%,#22c55e 65%,transparent)}
 
     /* nav */
-    .nav{background:rgba(4,8,6,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav{background:rgba(4,8,6,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);isolation:isolate}
 
     /* typography */
     .hl{font-family:'Bricolage Grotesque','Inter',sans-serif;font-weight:600;line-height:0.9;letter-spacing:-0.045em}
@@ -201,10 +201,10 @@
   </style>
 </head>
 <body>
-  <div class="top-strip fixed top-0 inset-x-0 z-[60]"></div>
+  <div class="top-strip fixed top-0 inset-x-0 z-[201]"></div>
 
   <!-- NAV -->
-  <nav class="nav fixed top-[1px] inset-x-0 z-50">
+  <nav class="nav fixed top-[1px] inset-x-0 z-[200]">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
