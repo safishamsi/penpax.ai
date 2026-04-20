@@ -224,7 +224,7 @@
     #feat-overlay{position:absolute;inset:0;pointer-events:none;z-index:10;overflow:visible;}
 
     /* scroll corner graph */
-    #scroll-graph-wrap{position:fixed;bottom:16px;right:12px;width:80px;z-index:50;pointer-events:none;opacity:0;transition:opacity .8s;}
+    #scroll-graph-wrap{position:fixed;bottom:16px;right:12px;width:86px;z-index:50;pointer-events:none;opacity:0;transition:opacity .8s;background:rgba(4,8,6,0.88);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:8px 6px 5px;}
     #scroll-graph-wrap.visible{opacity:1;}
     @media(min-width:640px){#scroll-graph-wrap{width:110px;bottom:24px;right:24px;}}
 
@@ -281,7 +281,7 @@
   <!-- Scroll-driven graph accretion (desktop only) -->
   <div id="scroll-graph-wrap">
     <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(34,197,94,.3);margin-bottom:4px;text-align:center;letter-spacing:.08em;">// graph.growing</div>
-    <svg id="scroll-graph-svg" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:110px;height:110px;">
+    <svg id="scroll-graph-svg" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
       <!-- hub always present -->
       <circle cx="55" cy="55" r="7" fill="#f59e0b" fill-opacity=".15" stroke="#f59e0b" stroke-width="1.2"/>
       <circle cx="55" cy="55" r="3.5" fill="#fbbf24"/>
@@ -1498,38 +1498,41 @@
       if(!wrap||!svg) return;
       const NS='http://www.w3.org/2000/svg';
       const SATELLITE_NODES=[
-        {cx:55,cy:20,color:'#22c55e',label:'code'},{cx:90,cy:38,color:'#22c55e',label:'docs'},
-        {cx:85,cy:78,color:'#4ade80',label:'graph'},{cx:30,cy:82,color:'#f59e0b',label:'insights'},
-        {cx:15,cy:45,color:'#22c55e',label:'browser'},{cx:28,cy:18,color:'#4ade80',label:'meetings'},
-        {cx:98,cy:60,color:'#f59e0b',label:'decisions'}
+        {cx:55,cy:14,color:'#22c55e'},{cx:88,cy:34,color:'#22c55e'},
+        {cx:88,cy:76,color:'#4ade80'},{cx:55,cy:96,color:'#f59e0b'},
+        {cx:22,cy:76,color:'#22c55e'},{cx:22,cy:34,color:'#4ade80'},
+        {cx:96,cy:55,color:'#f59e0b'}
       ];
-      let nodeCount=1, added=0;
+      let nodeCount=1, added=0, lastSection=null;
       function addNode(){
         if(added>=SATELLITE_NODES.length) return;
-        const n=SATELLITE_NODES[added++];
-        nodeCount++;
+        const n=SATELLITE_NODES[added++]; nodeCount++;
         const line=document.createElementNS(NS,'line');
-        line.setAttribute('x1',55);line.setAttribute('y1',55);line.setAttribute('x2',n.cx);line.setAttribute('y2',n.cy);
-        line.setAttribute('stroke',n.color);line.setAttribute('stroke-width','0.8');line.setAttribute('stroke-opacity','0.4');
+        line.setAttribute('x1',55);line.setAttribute('y1',55);
+        line.setAttribute('x2',n.cx);line.setAttribute('y2',n.cy);
+        line.setAttribute('stroke',n.color);line.setAttribute('stroke-width','1');line.setAttribute('stroke-opacity','0.45');
+        line.style.transition='stroke-opacity .5s';
         const g=document.createElementNS(NS,'g');
         const c1=document.createElementNS(NS,'circle');
-        c1.setAttribute('cx',n.cx);c1.setAttribute('cy',n.cy);c1.setAttribute('r','4');
-        c1.setAttribute('fill',n.color);c1.setAttribute('fill-opacity','0.15');
-        c1.setAttribute('stroke',n.color);c1.setAttribute('stroke-width','0.8');
+        c1.setAttribute('cx',n.cx);c1.setAttribute('cy',n.cy);c1.setAttribute('r','5');
+        c1.setAttribute('fill',n.color);c1.setAttribute('fill-opacity','0.12');
+        c1.setAttribute('stroke',n.color);c1.setAttribute('stroke-width','1');
         const c2=document.createElementNS(NS,'circle');
-        c2.setAttribute('cx',n.cx);c2.setAttribute('cy',n.cy);c2.setAttribute('r','2');
+        c2.setAttribute('cx',n.cx);c2.setAttribute('cy',n.cy);c2.setAttribute('r','2.5');
         c2.setAttribute('fill',n.color);
         g.appendChild(c1);g.appendChild(c2);
-        svg.insertBefore(line, svg.firstChild);
+        svg.insertBefore(line,svg.firstChild);
         svg.appendChild(g);
         if(countEl) countEl.textContent=nodeCount+' node'+(nodeCount>1?'s':'');
       }
       const sections=document.querySelectorAll('section');
       const sObs=new IntersectionObserver(entries=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ addNode(); } });
-      },{threshold:.4});
+        entries.forEach(e=>{
+          if(e.isIntersecting && e.target!==lastSection){ lastSection=e.target; addNode(); }
+        });
+      },{threshold:.1});
       sections.forEach(s=>sObs.observe(s));
-      window.addEventListener('scroll',()=>{ wrap.classList.toggle('visible',window.scrollY>300); },{passive:true});
+      window.addEventListener('scroll',()=>{ wrap.classList.toggle('visible',window.scrollY>200); },{passive:true});
     })();
 
     // ── FEATURE 8: TRACEBACK TOGGLE ──
