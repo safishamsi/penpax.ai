@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,7 +27,7 @@
       --t3:      rgba(220,255,220,0.22);
     }
     *,*::before,*::after{box-sizing:border-box}
-    html{background:var(--bg);scroll-behavior:smooth}
+    html{background:var(--bg)}
     body{background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;overflow-x:hidden}
 
     /* noise */
@@ -1689,9 +1689,10 @@ def create_session(user):
         sessionStorage.setItem('ig-seen','1');
         ov.style.cssText += ';display:none;pointer-events:none;';
         document.body.style.overflow = '';
-        // reset SVG transform so it can't bleed into page compositing
         const svg = document.getElementById('intro-svg');
         if (svg) svg.style.transform = '';
+        // refresh ScrollTrigger now that layout is fully visible
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
       }
 
       window.skipIntro = function() {
@@ -1774,7 +1775,6 @@ def create_session(user):
         gsap.to(el.children, { scrollTrigger:{trigger:el, start:'top 96%', toggleActions:'play none none none', once:true}, y:0, opacity:1, duration:.7, stagger:.1, ease:'power2.out' });
       });
       window.addEventListener('load', () => { ScrollTrigger.refresh(); });
-      setTimeout(() => { ScrollTrigger.refresh(); }, 400);
     } catch(e) { console.warn('GSAP unavailable', e); showAll(); }
 
     // ── DECODE HERO TEXT ──
