@@ -341,7 +341,10 @@
         <a href="#usecases" class="hover:text-white transition-colors">/deployment</a>
         <a href="#privacy" class="hover:text-white transition-colors">/security</a>
       </div>
-      <a href="#waitlist" class="btn-primary text-white text-sm px-5 py-2.5 rounded-md font-medium mono">$ init --access</a>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded" style="background:rgba(240,101,47,0.1);border:1px solid rgba(240,101,47,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:#f0652f;letter-spacing:.04em;">▲ YC S26</span>
+        <a href="#waitlist" class="btn-primary text-white text-sm px-5 py-2.5 rounded-md font-medium mono">$ init --access</a>
+      </div>
     </div>
   </nav>
 
@@ -425,9 +428,9 @@
           </div>
 
           <div class="flex flex-wrap gap-5 mb-8">
-            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);" class="live-gh-stars">38k+</span> github.stars</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);" class="live-gh-stars">56k+</span> github.stars</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
-            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">550k+</span> downloads</span>
+            <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">1.1M+</span> downloads</span>
             <span style="color:rgba(34,197,94,.15);">·</span>
             <span class="mono text-xs" style="color:var(--t3);"><span style="color:rgba(34,197,94,.4);">▸</span> <span style="color:var(--t2);">on-device</span> only</span>
           </div>
@@ -605,9 +608,9 @@
   <div class="stats-strip gsap-reveal">
     <div class="max-w-5xl mx-auto px-6">
       <div class="flex flex-wrap justify-center" style="divide-color:rgba(34,197,94,.08);">
-        <div class="stat-item"><span class="stat-num grad-green" id="stat-gh-stars" data-count="38000">0</span><span class="stat-lbl">// github.stars</span></div>
+        <div class="stat-item"><span class="stat-num grad-green" id="stat-gh-stars" data-count="56000">0</span><span class="stat-lbl">// github.stars</span></div>
         <div class="stat-item" style="border-left:1px solid rgba(34,197,94,.08);border-right:1px solid rgba(34,197,94,.08);">
-          <span class="stat-num" style="color:var(--t1);" data-count="550000">0</span><span class="stat-lbl">// total.downloads</span></div>
+          <span class="stat-num" style="color:var(--t1);" data-count="1100000">0</span><span class="stat-lbl">// total.downloads</span></div>
         <div class="stat-item" style="border-right:1px solid rgba(34,197,94,.08);">
           <span class="stat-num grad-amber" id="node-ticker">∞</span>
           <span class="stat-lbl" id="node-ticker-lbl">// incremental.growth</span>
@@ -615,7 +618,7 @@
         </div>
         <div class="stat-item" style="border-right:1px solid rgba(34,197,94,.08);">
           <span class="stat-num" style="color:var(--t1);" data-count="20">0</span><span class="stat-lbl">// languages.parsed</span></div>
-        <div class="stat-item"><span class="stat-num" style="color:var(--t1);" data-count="2500">0</span><span class="stat-lbl">// waitlist.queue</span></div>
+        <div class="stat-item"><span class="stat-num" style="color:var(--t1);" data-count="2600">0</span><span class="stat-lbl">// waitlist.queue</span></div>
       </div>
     </div>
   </div>
@@ -881,7 +884,7 @@
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">AST extraction, 20 languages</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Python, JS, Go, Rust, Java and more</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Docs, papers &amp; images</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Markdown, PDF, HTML, MDX, vision</p></div></div>
             <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white">Interactive graph visualization</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">HTML export, Leiden clustering, god-nodes</p></div></div>
-            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white"><span class="live-gh-stars">38k+</span> stars on GitHub · 550k+ downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
+            <div class="track-feat"><div class="tdot"></div><div><p class="text-sm text-white"><span class="live-gh-stars">56k+</span> stars on GitHub · 1.1M+ downloads</p><p class="text-xs mono mt-0.5" style="color:var(--t3);">Active community &amp; Claude Code skill</p></div></div>
           </div>
           <div class="mt-6"><a href="https://github.com/safishamsi/graphify" class="mono text-xs hover:text-white transition-colors" style="color:var(--t2);">&gt; view_on_github →</a></div>
         </div>
@@ -1518,6 +1521,67 @@ def create_session(user):
   </section>
 
   <!-- WAITLIST -->
+  <!-- SOCIAL PROOF -->
+  <section class="py-16 border-t" style="border-color:var(--border);">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="section-tag text-center mb-10">// trusted.by</p>
+
+      <!-- Logos row -->
+      <div class="flex flex-wrap items-center justify-center gap-8 mb-14">
+        <!-- YC -->
+        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(240,101,47,0.07);border:1px solid rgba(240,101,47,0.2);">
+          <span style="font-size:18px;font-weight:700;color:#f0652f;font-family:'Bricolage Grotesque',sans-serif;">Y</span>
+          <span class="mono text-xs" style="color:rgba(240,101,47,0.8);">Combinator S26</span>
+        </div>
+        <!-- Rootly AI Labs -->
+        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#22c55e" stroke-width="1.2" opacity=".6"/><circle cx="7" cy="7" r="2.5" fill="#22c55e" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:rgba(74,222,128,.7);">Rootly AI Labs</span>
+        </div>
+        <!-- Fortune 500 -->
+        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.2l-3.4 2.5 1.3 4L7 9l-3.6 2.5 1.3-4L1.3 5H5.5z" fill="#f59e0b" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:rgba(251,191,36,.8);">21 Fortune 500 on waitlist</span>
+        </div>
+      </div>
+
+      <!-- Press + testimonial cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        <div class="glass rounded-xl p-6">
+          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// press.coverage</p>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"One of the fastest-growing open-source AI tooling projects — 56k stars with zero marketing spend."</p>
+          <p class="mono text-xs" style="color:var(--t3);">— Medium · dev.to · multiple outlets</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// rootly_ai_labs</p>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"Graphify gave our AI agents persistent memory of the codebase. It's the missing infrastructure layer we didn't know we needed."</p>
+          <p class="mono text-xs" style="color:var(--t3);">— Rootly AI Labs, in production</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// community</p>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"Finally, an AI coding tool that remembers what it built yesterday. This changes how I work with large codebases entirely."</p>
+          <p class="mono text-xs" style="color:var(--t3);">— from the GitHub community</p>
+        </div>
+      </div>
+
+      <!-- YouTube / media strip -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="8" rx="2" stroke="#4ade80" stroke-width="1" opacity=".5"/><polygon points="5,4.5 8,6 5,7.5" fill="#4ade80" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:var(--t3);">YouTube tutorials &amp; walkthroughs</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 9l2-5 2 3 2-2 2 4" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round" opacity=".6" fill="none"/></svg>
+          <span class="mono text-xs" style="color:var(--t3);">Dozens of Medium &amp; dev.to articles</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.1);">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#4ade80" stroke-width="1" opacity=".5"/><path d="M4 6h4M6 4v4" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:var(--t3);">1,100+ GitHub discussions &amp; PRs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="waitlist" class="py-14 border-t grid-bg" style="border-color:var(--border);">
     <div class="max-w-xl mx-auto px-6 text-center gsap-reveal">
       <!-- Laurel wreath with graph icon -->
@@ -1575,7 +1639,7 @@ def create_session(user):
 
       <!-- Enterprise path -->
       <div class="flex items-center justify-center gap-2 mb-5">
-        <p class="text-xs mono" style="color:var(--t2);"><span style="color:rgba(74,222,128,.8);">2,500+</span> in enterprise queue</p>
+        <p class="text-xs mono" style="color:var(--t2);"><span style="color:rgba(74,222,128,.8);">2,600+</span> in enterprise queue · <span style="color:#fbbf24;">21 Fortune 500</span></p>
       </div>
       <form action="https://formspree.io/f/xqegoayo" method="POST" class="flex flex-col sm:flex-row gap-3" onsubmit="handleSubmit(event)">
         <input type="hidden" name="_subject" value="New Graphify waitlist signup" />
@@ -1699,11 +1763,55 @@ def create_session(user):
     }
 
     // ── FORM ──
+    (function(){
+      const KEY='graphify_waitlist_email';
+      const stored=localStorage.getItem(KEY);
+      if(stored){
+        const form=document.querySelector('form[action*="formspree"]');
+        const msg=document.getElementById('form-msg');
+        if(form){
+          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ ALREADY QUEUED ] <span style="color:var(--t2);">'+stored+'</span> — you\'re on the list. We\'ll reach out soon.</p>';
+        }
+        if(msg){ msg.classList.remove('hidden'); msg.textContent=''; }
+      }
+    })();
+
     async function handleSubmit(e) {
       e.preventDefault();
-      const res=await fetch('https://formspree.io/f/xqegoayo',{method:'POST',body:new FormData(e.target),headers:{'Accept':'application/json'}});
-      const msg=document.getElementById('form-msg'); msg.classList.remove('hidden');
-      if(!res.ok) msg.textContent='[ ERROR ] Please try again.';
+      const form=e.target;
+      const emailInput=form.querySelector('input[type="email"]');
+      const email=emailInput?emailInput.value.trim():'';
+      const KEY='graphify_waitlist_email';
+
+      // Dedup: already submitted from this browser
+      if(localStorage.getItem(KEY)){
+        const msg=document.getElementById('form-msg');
+        msg.classList.remove('hidden');
+        msg.textContent='[ ALREADY QUEUED ] You\'re already on the waitlist!';
+        return;
+      }
+
+      const btn=form.querySelector('button[type="submit"]');
+      if(btn){ btn.disabled=true; btn.textContent='$ submitting...'; }
+
+      try{
+        const res=await fetch('https://formspree.io/f/xqegoayo',{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+        const msg=document.getElementById('form-msg');
+        msg.classList.remove('hidden');
+        if(res.ok){
+          localStorage.setItem(KEY,email);
+          msg.textContent='[ ACCESS GRANTED ] Enterprise access coming your way — we\'ll be in touch.';
+          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ QUEUED ] <span style="color:var(--t2);">'+email+'</span> — you\'re on the list.</p>';
+        } else {
+          msg.textContent='[ ERROR ] Please try again.';
+          if(btn){ btn.disabled=false; btn.textContent='$ get_enterprise_access'; }
+        }
+      }catch(err){
+        const msg=document.getElementById('form-msg');
+        msg.classList.remove('hidden');
+        msg.textContent='[ ERROR ] Network error, please try again.';
+        if(btn){ btn.disabled=false; btn.textContent='$ get_enterprise_access'; }
+      }
     }
 
     // ── MATRIX RAIN ──
