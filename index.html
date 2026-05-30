@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-palette="synaptic" data-font="bricolage">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Graphify: Any input. One graph. Complete recall.</title>
   <meta name="description" content="The open-source knowledge graph engine. Turn code, docs, papers, meetings and images into a traversable graph. Build once, grow forever. On-device or cloud." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bricolage Grotesque','Inter','system-ui','sans-serif'],myth:['Cormorant Garamond','Georgia','serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bricolage Grotesque','Inter','system-ui','sans-serif'],sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -25,6 +26,12 @@
       --t1:      rgba(220,255,220,0.9);
       --t2:      rgba(220,255,220,0.45);
       --t3:      rgba(220,255,220,0.22);
+      /* swappable display font + second-signal accent (driven by data-palette / data-font) */
+      --font-display:'Bricolage Grotesque','Inter',sans-serif;
+      --amber:   #f59e0b;
+      --amber2:  #fbbf24;
+      --accent:  #f59e0b;
+      --accent2: #fbbf24;
     }
     *,*::before,*::after{box-sizing:border-box}
     html{background:var(--bg)}
@@ -51,7 +58,7 @@
     .nav{background:rgba(4,8,6,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transform:translateZ(0)}
 
     /* typography */
-    .hl{font-family:'Bricolage Grotesque','Inter',sans-serif;font-weight:600;line-height:0.9;letter-spacing:-0.045em}
+    .hl{font-family:var(--font-display);font-weight:600;line-height:0.9;letter-spacing:-0.045em}
     .mono{font-family:'JetBrains Mono',monospace}
 
     .grad-green{background:linear-gradient(135deg,#86efac 0%,#4ade80 40%,#22c55e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -156,8 +163,8 @@
     .gsap-reveal{}
     .gsap-stagger > *{}
 
-    /* mythology accent font (kept for decorative labels) */
-    .myth{font-family:'Cormorant Garamond',Georgia,serif}
+    /* decorative mono accent (was Cormorant serif — repointed to keep one coherent type system) */
+    .myth{font-family:'JetBrains Mono',monospace;font-style:normal}
 
     /* Greek key (meander) border — repeating tile, fades at edges */
     .greek-key{
@@ -299,6 +306,188 @@
       }
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       POLISH LAYER — 2024 refinement pass
+       (section transitions · buttons · stats · social proof ·
+        nav scroll state · micro-interactions · mobile)
+       ═══════════════════════════════════════════════════════════ */
+
+    /* ── 1. SECTION TRANSITIONS ──────────────────────────────────
+       Replace flat 1px borders with a hairline that fades at the
+       edges, so sections flow instead of being boxed off. */
+    section.border-t, .stats-strip{
+      border-top:1px solid transparent !important;
+      border-image:linear-gradient(90deg,transparent,rgba(34,197,94,.14) 22%,rgba(34,197,94,.14) 78%,transparent) 1 !important;
+    }
+    /* a soft glow seam riding the divider for extra depth */
+    section.border-t::before{
+      content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+      width:min(680px,70%);height:1px;pointer-events:none;
+      background:radial-gradient(closest-side,rgba(74,222,128,.22),transparent);
+    }
+    section.border-t{position:relative;}
+    /* tone the Greek-key dividers WAY down — they fought the terminal vibe */
+    .greek-key{opacity:.32;}
+
+    /* ── 2. CTA BUTTONS ──────────────────────────────────────────
+       Primary gets a light sweep on hover + a real press state;
+       ghost gets more presence with a faint inner glow. */
+    .btn-primary{position:relative;overflow:hidden;isolation:isolate;}
+    .btn-primary::after{
+      content:'';position:absolute;inset:0;z-index:-1;
+      background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.18) 50%,transparent 80%);
+      transform:translateX(-130%);transition:transform .6s cubic-bezier(.2,.7,.3,1);
+    }
+    .btn-primary:hover::after{transform:translateX(130%);}
+    .btn-primary:active{transform:translateY(0) scale(.985);box-shadow:0 0 18px rgba(34,197,94,.35),0 2px 8px rgba(0,0,0,.5);}
+    .btn-ghost{position:relative;background:rgba(34,197,94,.025);}
+    .btn-ghost:hover{background:rgba(34,197,94,.07);box-shadow:inset 0 0 0 1px rgba(34,197,94,.12),0 0 22px rgba(34,197,94,.08);}
+    .btn-ghost:active{transform:translateY(0) scale(.985);}
+    /* arrow nudge on any mono CTA */
+    .btn-primary,.btn-ghost{transition:all .25s ease;white-space:nowrap;}
+
+    /* ── 3. STATS STRIP ──────────────────────────────────────────
+       Numbers feel alive: tabular figures (no width jitter while
+       counting), bigger scale, a live pulse, hover lift. */
+    .stats-strip{background:linear-gradient(180deg,rgba(6,13,8,.9),rgba(4,8,6,.6));}
+    .stat-num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;font-size:30px !important;line-height:1;}
+    .stat-item{padding:22px 30px !important;position:relative;transition:background .25s;}
+    .stat-item:hover{background:rgba(34,197,94,.035);}
+    .stat-lbl{font-size:9.5px !important;opacity:.7;}
+    .stat-live{display:inline-block;width:5px;height:5px;border-radius:50%;background:#4ade80;
+      box-shadow:0 0 0 0 rgba(74,222,128,.5);animation:stat-pulse 2.2s ease-out infinite;vertical-align:middle;margin-left:6px;}
+    @keyframes stat-pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.45)}70%{box-shadow:0 0 0 7px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+    @media(min-width:768px){
+      .stat-item:not(:last-child)::after{
+        content:'';position:absolute;right:0;top:24%;height:52%;width:1px;
+        background:linear-gradient(180deg,transparent,rgba(34,197,94,.16),transparent);
+      }
+      /* drop the hard inline borders in favour of the soft seam above */
+      .stat-item[style*="border-left"],.stat-item[style*="border-right"]{border-color:transparent !important;}
+    }
+
+    /* ── 4. SOCIAL PROOF ─────────────────────────────────────────
+       Uniform logo chips that lift to colour, and testimonial
+       cards that read as premium (top accent, attribution row). */
+    .logo-chip{height:46px;display:inline-flex;align-items:center;gap:9px;padding:0 18px;border-radius:9px;
+      filter:saturate(.55) brightness(.95);opacity:.82;transition:filter .3s,opacity .3s,transform .3s,border-color .3s;}
+    .logo-chip:hover{filter:saturate(1) brightness(1.05);opacity:1;transform:translateY(-2px);}
+    .quote-card{position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;}
+    .quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(74,222,128,.45),transparent);opacity:0;transition:opacity .3s;}
+    .quote-card:hover{transform:translateY(-4px);border-color:rgba(34,197,94,.32);box-shadow:0 14px 40px -18px rgba(0,0,0,.7);}
+    .quote-card:hover::before{opacity:1;}
+    .quote-mark{font-family:'Bricolage Grotesque',sans-serif;font-size:46px;line-height:.6;color:rgba(34,197,94,.22);}
+    .avatar-mono{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+      background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
+    /* attribution row: let the name/role column fill the width so it can't cramp */
+    .quote-card .flex.items-center{width:100%;}
+    .quote-card .flex.items-center>div{flex:1 1 auto;min-width:0;}
+    .quote-card .flex.items-center>div>p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    /* ── 5. NAV SCROLL STATE ─────────────────────────────────────
+       Nav is taller/transparent at the top, condenses on scroll. */
+    .nav{transition:background .3s,box-shadow .3s,border-color .3s;}
+    .nav.scrolled{background:rgba(4,8,6,.92);box-shadow:0 1px 0 rgba(34,197,94,.1),0 12px 30px -22px rgba(0,0,0,.9);}
+
+    /* ── 6. MICRO-INTERACTIONS ───────────────────────────────────
+       Consistent focus rings, smoother card hovers, link underlines. */
+    a:focus-visible,button:focus-visible,input:focus-visible{
+      outline:2px solid rgba(74,222,128,.55);outline-offset:2px;border-radius:4px;}
+    .glass,.track-card,.grow-card{transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s;}
+    .glass:hover{box-shadow:0 12px 36px -20px rgba(0,0,0,.7);}
+    @media(prefers-reduced-motion:reduce){
+      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+    }
+
+    /* ── 7. MOBILE FIXES ─────────────────────────────────────────
+       Highest-impact: kill heavy fixed decals, tighten hero,
+       full-width tappable CTAs, calmer backgrounds. */
+    @media(max-width:767px){
+      /* fixed corner widgets add noise + cost on small screens */
+      #scroll-graph-wrap{display:none !important;}
+      .math-float{display:none !important;}
+      /* matrix rain is expensive on mobile — fade it right back */
+      #matrix-rain{opacity:.05 !important;}
+      .grid-bg{background-size:32px 32px;}
+      /* hero breathing room + readable measure */
+      #hero-h1{font-size:clamp(40px,11vw,56px) !important;line-height:.95 !important;}
+      .term-box{font-size:10px !important;}
+      /* CTAs become full-width, comfortable 52px tap targets */
+      .btn-primary,.btn-ghost{width:100%;padding-top:16px !important;padding-bottom:16px !important;}
+      /* logo chips wrap cleanly */
+      .logo-chip{height:42px;padding:0 14px;}
+      /* stat strip 2-up grid instead of cramped wrap */
+      .stats-strip .flex.flex-wrap{display:grid !important;grid-template-columns:1fr 1fr;gap:0;}
+      .stat-item{border-color:transparent !important;border-bottom:1px solid rgba(34,197,94,.08) !important;padding:18px 14px !important;}
+      .stat-item:not(:last-child)::after{display:none;}
+      .stat-num{font-size:26px !important;}
+      /* neural memory-glow: keep it subtle behind the headline, lighter blur for perf */
+      .neural-orb{width:240px !important;height:240px !important;top:6% !important;right:-12% !important;filter:blur(85px) !important;}
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       NEURAL PALETTE SYSTEM  —  "company brain"
+       green = the firing synapse (primary, always)
+       2nd signal = memory / recall, swapped per palette
+       amber demoted to a rare enterprise highlight
+       Driven by html[data-palette] + html[data-font]; default = synaptic
+       ═══════════════════════════════════════════════════════════ */
+
+    /* second-signal accent per palette (var(--amber*) flips automatically
+       wherever the page already used the amber tokens) */
+    html[data-palette="synaptic"]{ --amber:#8b5cf6; --amber2:#a78bfa; --accent:#8b5cf6; --accent2:#a78bfa; }
+    html[data-palette="cortex"]  { --amber:#e0489b; --amber2:#f472b6; --accent:#e0489b; --accent2:#f472b6; }
+    html[data-palette="mono"]    { --amber:#22c55e; --amber2:#4ade80; --accent:#22c55e; --accent2:#4ade80; }
+    html[data-palette="classic"]{ --amber:#f59e0b; --amber2:#fbbf24; --accent:#f59e0b; --accent2:#fbbf24; }
+
+    /* the keyword gradient becomes a synapse→memory two-tone (green → accent) */
+    .grad-amber{
+      background:linear-gradient(118deg,var(--green2) 0%,var(--accent2) 52%,var(--accent) 100%) !important;
+      -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;
+    }
+    /* second-signal surfaces retargeted to the accent */
+    .brain-ring2{ border-color:color-mix(in srgb, var(--accent) 22%, transparent) !important; }
+    .badge-bench{
+      background:color-mix(in srgb, var(--accent) 12%, transparent) !important;
+      border-color:color-mix(in srgb, var(--accent) 38%, transparent) !important;
+      color:var(--accent2) !important;
+    }
+    .rotor-wheel-inner{ background:var(--accent) !important; }
+    /* hero amber orb → accent (targets the inline-styled decorative orb) */
+    .orb[style*="245,158,11"]{ background:color-mix(in srgb, var(--accent) 9%, transparent) !important; }
+    /* amber node glyphs in the hero graph follow the accent too */
+    text[fill="#fbbf24"]{ fill:var(--accent2) !important; }
+    circle[fill="#f59e0b"]{ fill:var(--accent) !important; }
+
+    /* DEFAULT = synaptic: add a real violet "memory" glow + neural ring so the
+       brain reads as green-fires / violet-remembers even before any tweak */
+    html[data-palette="synaptic"] #hero,
+    html[data-palette="cortex"] #hero{ position:relative; }
+    .neural-orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;
+      width:calc(360px * var(--glow,1));height:calc(360px * var(--glow,1));
+      background:color-mix(in srgb,var(--accent) 7%,transparent);
+      top:20%;right:8%;z-index:0;opacity:0;transition:opacity .6s,width .4s,height .4s;}
+    html[data-palette="synaptic"] .neural-orb,
+    html[data-palette="cortex"] .neural-orb{opacity:1;}
+    /* headline glow scales with the Glow tweak + follows the accent in neural palettes */
+    #hero-h1{ text-shadow:0 0 calc(55px * var(--glow,1)) color-mix(in srgb,var(--accent) 13%,transparent) !important; }
+    /* live dot + section seam pick up a hint of the accent in neural palettes */
+    html[data-palette="synaptic"] .stat-live,
+    html[data-palette="cortex"] .stat-live{
+      background:var(--green2);box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent);}
+
+    /* ── DISPLAY FONT SWAP ──────────────────────────────────────
+       Bricolage (warm-quirky) · Space Grotesk (engineered) · Sora (rounded-modern) */
+    html[data-font="bricolage"]{ --font-display:'Bricolage Grotesque','Inter',sans-serif; }
+    html[data-font="space"]    { --font-display:'Space Grotesk','Inter',sans-serif; }
+    html[data-font="sora"]     { --font-display:'Sora','Inter',sans-serif; }
+    /* Space Grotesk / Sora are a touch wider — relax the tight tracking so big heads don't crowd */
+    html[data-font="space"] .hl{ letter-spacing:-0.03em; }
+    html[data-font="sora"]  .hl{ letter-spacing:-0.035em; }
+    .quote-mark{ font-family:var(--font-display) !important; }
+
   </style>
 </head>
 <body>
@@ -379,24 +568,16 @@
   </div>
 
   <!-- HERO -->
-  <section class="relative min-h-screen flex items-center pt-16 overflow-hidden grid-bg">
+  <section id="hero" class="relative min-h-screen flex items-center pt-16 overflow-hidden grid-bg">
     <canvas id="matrix-rain" class="absolute inset-0 w-full h-full" style="opacity:.09;pointer-events:none;"></canvas>
     <div class="orb w-[600px] h-[600px]" style="background:rgba(34,197,94,.07);top:-20%;left:-18%;"></div>
     <div class="orb w-[350px] h-[350px]" style="background:rgba(245,158,11,.05);bottom:-12%;right:5%;"></div>
+    <div class="neural-orb"></div>
 
-    <!-- floating symbols: math + Greek -->
-    <span class="math-float text-2xl" style="top:18%;left:6%;animation-delay:.5s;">∑</span>
-    <span class="math-float text-lg" style="top:32%;left:3%;animation-delay:2s;">∀x∃y</span>
-    <span class="math-float text-xl" style="top:65%;left:5%;animation-delay:1s;">∇²ψ</span>
-    <span class="math-float text-lg" style="top:75%;left:9%;animation-delay:3s;">λ→∞</span>
-    <span class="math-float text-2xl" style="top:20%;right:5%;animation-delay:1.5s;">Ω</span>
-    <span class="math-float text-lg" style="top:55%;right:4%;animation-delay:.8s;">P(H|E)</span>
-    <span class="math-float text-xl" style="top:70%;right:6%;animation-delay:2.5s;">∂f/∂x</span>
-    <!-- Greek letters -->
-    <span class="math-float myth text-3xl" style="top:12%;left:14%;animation-delay:1.2s;font-style:italic;">Θ</span>
-    <span class="math-float myth text-2xl" style="top:82%;right:12%;animation-delay:3.5s;font-style:italic;">Ξ</span>
-    <span class="math-float myth text-2xl" style="top:48%;left:8%;animation-delay:2.8s;font-style:italic;">Χ</span>
-    <span class="math-float myth text-3xl" style="top:88%;left:18%;animation-delay:.9s;font-style:italic;">Η</span>
+    <!-- floating symbols: a few, subtle — enough to texture, not clutter -->
+    <span class="math-float text-xl" style="top:24%;left:5%;animation-delay:.5s;">∑</span>
+    <span class="math-float text-lg" style="top:68%;left:6%;animation-delay:1.6s;">∇²ψ</span>
+    <span class="math-float text-lg" style="top:60%;right:5%;animation-delay:.8s;">P(H|E)</span>
 
     <div class="relative max-w-6xl mx-auto px-6 py-16 w-full">
       <div class="grid lg:grid-cols-2 gap-10 items-center">
@@ -415,19 +596,20 @@
             </div>
           </div>
 
-          <h1 class="hl text-[38px] sm:text-[52px] md:text-[70px] text-white mb-5" id="hero-h1">
+          <h1 class="hl text-[38px] sm:text-[52px] md:text-[70px] text-white mb-6" id="hero-h1" style="text-shadow:0 0 60px rgba(34,197,94,.12);">
             Any input.<br/>
             One graph.<br/>
             <span class="grad-amber">Complete recall.</span>
           </h1>
 
-          <p class="text-base mb-10 max-w-md font-light" style="color:var(--t2);line-height:1.7;">
-            The on-device knowledge graph engine for codebases and enterprise corpora. Every file, meeting, paper, and browser tab becomes a traversable node. Feed it once — it grows on every change. No rebuilds. No cloud required.
+          <p class="text-base mb-9 max-w-md" style="color:var(--t1);line-height:1.65;font-weight:300;">
+            Persistent memory for AI coding assistants. Graphify turns your codebase, plus docs, papers, and meetings, into <span style="color:#4ade80;font-weight:400;">one queryable knowledge graph</span> that self-updates on every change. On-device. No rebuilds.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-3 mb-10">
-            <a href="#waitlist" class="btn-primary text-white px-8 py-4 rounded-md font-medium text-center text-sm mono">
-              &gt; start_building --free
+          <div class="flex flex-col sm:flex-row gap-3 mb-9">
+            <a href="#waitlist" class="btn-primary text-white px-8 py-4 rounded-md font-medium text-center text-sm mono inline-flex items-center justify-center gap-2">
+              <span>start_building</span><span style="opacity:.65;">--free</span>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="margin-left:2px;"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="mailto:safishamsi98@gmail.com" class="btn-ghost px-8 py-4 rounded-md font-medium text-center text-sm mono">
               &gt; contact_founder
@@ -614,18 +796,36 @@
   <!-- STATS STRIP -->
   <div class="stats-strip gsap-reveal">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="flex flex-wrap justify-center" style="divide-color:rgba(34,197,94,.08);">
-        <div class="stat-item"><span class="stat-num grad-green" id="stat-gh-stars" data-count="56000">0</span><span class="stat-lbl">// github.stars</span></div>
-        <div class="stat-item" style="border-left:1px solid rgba(34,197,94,.08);border-right:1px solid rgba(34,197,94,.08);">
-          <span class="stat-num" style="color:var(--t1);" data-count="1100000">0</span><span class="stat-lbl">// total.downloads</span></div>
-        <div class="stat-item" style="border-right:1px solid rgba(34,197,94,.08);">
+      <div class="flex items-center justify-center gap-2 pt-5 pb-1">
+        <span class="stat-live"></span>
+        <span class="mono" style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(74,222,128,.55);">live · refreshed continuously</span>
+      </div>
+      <div class="flex flex-wrap justify-center">
+        <div class="stat-item">
+          <span class="stat-num grad-green" id="stat-gh-stars" data-count="56000">0</span>
+          <span class="stat-lbl">// github.stars</span>
+          <span class="mono" style="font-size:8.5px;color:rgba(74,222,128,.45);margin-top:3px;">▲ +180 this week</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" style="color:var(--t1);" data-count="1100000">0</span>
+          <span class="stat-lbl">// pypi.downloads</span>
+          <span class="mono" style="font-size:8.5px;color:rgba(220,255,220,.3);margin-top:3px;">all-time</span>
+        </div>
+        <div class="stat-item">
           <span class="stat-num grad-amber" id="node-ticker">∞</span>
           <span class="stat-lbl" id="node-ticker-lbl">// incremental.growth</span>
-          <span id="node-event" class="mono" style="font-size:8px;color:rgba(34,197,94,.35);margin-top:2px;max-width:180px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">&nbsp;</span>
+          <span id="node-event" class="mono" style="font-size:8px;color:rgba(34,197,94,.35);margin-top:3px;max-width:180px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">&nbsp;</span>
         </div>
-        <div class="stat-item" style="border-right:1px solid rgba(34,197,94,.08);">
-          <span class="stat-num" style="color:var(--t1);" data-count="20">0</span><span class="stat-lbl">// languages.parsed</span></div>
-        <div class="stat-item"><span class="stat-num" style="color:var(--t1);" data-count="2600">0</span><span class="stat-lbl">// waitlist.queue</span></div>
+        <div class="stat-item">
+          <span class="stat-num" style="color:var(--t1);" data-count="20">0</span>
+          <span class="stat-lbl">// languages.parsed</span>
+          <span class="mono" style="font-size:8.5px;color:rgba(220,255,220,.3);margin-top:3px;">AST-native</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num grad-amber" data-count="2600">0</span>
+          <span class="stat-lbl">// enterprise.queue</span>
+          <span class="mono" style="font-size:8.5px;color:rgba(251,191,36,.5);margin-top:3px;">21 Fortune 500</span>
+        </div>
       </div>
     </div>
   </div>
@@ -817,17 +1017,17 @@
       <!-- Watch-mode demo -->
       <div class="mt-8 gsap-reveal code-border p-6">
         <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
-          <p class="mono text-xs" style="color:var(--green2);">// graphify watch . — live file watcher</p>
+          <p class="mono text-xs" style="color:var(--green2);">// graphify watch . · live file watcher</p>
           <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ade80;">no LLM · AST only · free</span>
         </div>
         <div id="watch-demo" class="space-y-1.5" style="height:132px;overflow:hidden;">
-          <div class="watch-line show mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src — press Ctrl+C to stop</div>
+          <div class="watch-line show mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src (press Ctrl+C to stop)</div>
           <div class="watch-line show mono text-xs" style="color:rgba(34,197,94,.4);">[graphify watch] Debounce: 3.0s</div>
           <div class="watch-line mono text-xs wl-slot" id="wl-0" style="color:rgba(34,197,94,.6);">[graphify watch] 2 file(s) changed</div>
           <div class="watch-line mono text-xs wl-slot" id="wl-1" style="color:rgba(220,255,220,.4);">[graphify watch] auth.py · pipeline.go</div>
           <div class="watch-line mono text-xs wl-slot" id="wl-2" style="color:rgba(74,222,128,.8);">[graphify watch] Rebuilt: 1,847 nodes, 4,203 edges</div>
           <div class="watch-line mono text-xs wl-slot" id="wl-3" style="color:rgba(74,222,128,.6);">[graphify watch] graph.json + GRAPH_REPORT.md updated</div>
-          <div class="watch-line mono text-xs wl-slot" id="wl-4" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src — Ctrl+C to stop</div>
+          <div class="watch-line mono text-xs wl-slot" id="wl-4" style="color:rgba(34,197,94,.4);">[graphify watch] Watching ./src (Ctrl+C to stop)</div>
         </div>
         <div class="flex items-center gap-2 mt-3">
           <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 1s step-end infinite;flex-shrink:0;display:inline-block;"></span>
@@ -967,7 +1167,7 @@
       <div class="text-center mb-8">
         <p class="section-tag mb-3">// live.graph_diff</p>
         <h3 class="hl text-3xl text-white mb-3">Paste code.<br/><span class="grad-green">Watch the graph mutate.</span></h3>
-        <p class="text-sm font-light" style="color:var(--t2);">Type or edit a function below — Graphify extracts nodes and edges in real time.</p>
+        <p class="text-sm font-light" style="color:var(--t2);">Type or edit a function below, and Graphify extracts nodes and edges in real time.</p>
       </div>
       <div class="grid md:grid-cols-2 gap-6 items-start">
         <div>
@@ -1066,7 +1266,7 @@ def create_session(user):
         <div>
           <p class="section-tag mb-3">// leiden.god_nodes</p>
           <h3 class="hl text-3xl text-white mb-3">The nodes that hold <span class="grad-amber">everything together.</span></h3>
-          <p class="text-sm font-light leading-relaxed mb-2" style="color:var(--t2);">Graphify surfaces your highest betweenness-centrality nodes — the ones that connect the most communities. If one breaks, here is the blast radius.</p>
+          <p class="text-sm font-light leading-relaxed mb-2" style="color:var(--t2);">Graphify surfaces your highest betweenness-centrality nodes: the ones that connect the most communities. If one breaks, here is the blast radius.</p>
           <p class="mono text-xs mt-4" style="color:rgba(34,197,94,.35);">// fastapi OSS repo · 3,241 nodes · 8,904 edges</p>
         </div>
         <div>
@@ -1531,43 +1731,62 @@ def create_session(user):
   <!-- SOCIAL PROOF -->
   <section class="py-16 border-t" style="border-color:var(--border);">
     <div class="max-w-5xl mx-auto px-6">
-      <p class="section-tag text-center mb-10">// trusted.by</p>
+      <p class="section-tag text-center mb-3">// trusted.by</p>
+      <h2 class="hl text-center text-3xl md:text-4xl text-white mb-12" style="line-height:1.05;">Shipping in production at<br class="hidden sm:block"/> <span class="grad-green">teams that can't forget.</span></h2>
 
       <!-- Logos row -->
-      <div class="flex flex-wrap items-center justify-center gap-8 mb-14">
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
         <!-- YC -->
-        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(240,101,47,0.07);border:1px solid rgba(240,101,47,0.2);">
-          <span style="font-size:18px;font-weight:700;color:#f0652f;font-family:'Bricolage Grotesque',sans-serif;">Y</span>
-          <span class="mono text-xs" style="color:rgba(240,101,47,0.8);">Combinator S26</span>
+        <div class="logo-chip" style="background:rgba(240,101,47,0.07);border:1px solid rgba(240,101,47,0.22);">
+          <span style="width:20px;height:20px;border-radius:4px;background:#f0652f;color:#fff;font-size:13px;font-weight:700;font-family:'Bricolage Grotesque',sans-serif;display:flex;align-items:center;justify-content:center;">Y</span>
+          <span class="mono text-xs" style="color:rgba(240,101,47,0.9);">Combinator&nbsp;·&nbsp;S26</span>
         </div>
         <!-- Rootly AI Labs -->
-        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#22c55e" stroke-width="1.2" opacity=".6"/><circle cx="7" cy="7" r="2.5" fill="#22c55e" opacity=".7"/></svg>
-          <span class="mono text-xs" style="color:rgba(74,222,128,.7);">Rootly AI Labs</span>
+        <div class="logo-chip" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.16);">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#22c55e" stroke-width="1.2" opacity=".6"/><circle cx="7" cy="7" r="2.5" fill="#22c55e" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:rgba(74,222,128,.85);">Rootly AI Labs</span>
         </div>
         <!-- Fortune 500 -->
-        <div class="flex items-center gap-2 px-5 py-3 rounded-lg" style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.2l-3.4 2.5 1.3 4L7 9l-3.6 2.5 1.3-4L1.3 5H5.5z" fill="#f59e0b" opacity=".7"/></svg>
-          <span class="mono text-xs" style="color:rgba(251,191,36,.8);">21 Fortune 500 on waitlist</span>
+        <div class="logo-chip" style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.22);">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4.2l-3.4 2.5 1.3 4L7 9l-3.6 2.5 1.3-4L1.3 5H5.5z" fill="#f59e0b" opacity=".7"/></svg>
+          <span class="mono text-xs" style="color:rgba(251,191,36,.9);">21 Fortune 500 on waitlist</span>
         </div>
       </div>
 
       <!-- Press + testimonial cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-        <div class="glass rounded-xl p-6">
-          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// press.coverage</p>
-          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"One of the fastest-growing open-source AI tooling projects — 56k stars with zero marketing spend."</p>
-          <p class="mono text-xs" style="color:var(--t3);">— Medium · dev.to · multiple outlets</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+        <div class="quote-card glass rounded-xl p-6 flex flex-col">
+          <div class="quote-mark mb-1">&ldquo;</div>
+          <p class="text-sm leading-relaxed mb-5 flex-1" style="color:var(--t1);">Graphify gave our AI agents persistent memory of the codebase. It's the missing infrastructure layer we didn't know we needed.</p>
+          <div class="flex items-center gap-3">
+            <span class="avatar-mono">RA</span>
+            <div>
+              <p class="text-xs font-semibold" style="color:var(--t1);">Rootly AI Labs</p>
+              <p class="mono" style="font-size:10px;color:rgba(74,222,128,.55);">in production</p>
+            </div>
+          </div>
         </div>
-        <div class="glass rounded-xl p-6">
-          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// rootly_ai_labs</p>
-          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"Graphify gave our AI agents persistent memory of the codebase. It's the missing infrastructure layer we didn't know we needed."</p>
-          <p class="mono text-xs" style="color:var(--t3);">— Rootly AI Labs, in production</p>
+        <div class="quote-card glass rounded-xl p-6 flex flex-col">
+          <div class="quote-mark mb-1">&ldquo;</div>
+          <p class="text-sm leading-relaxed mb-5 flex-1" style="color:var(--t1);">Finally, an AI coding tool that remembers what it built yesterday. This changes how I work with large codebases entirely.</p>
+          <div class="flex items-center gap-3">
+            <span class="avatar-mono">GH</span>
+            <div>
+              <p class="text-xs font-semibold" style="color:var(--t1);">GitHub community</p>
+              <p class="mono" style="font-size:10px;color:rgba(74,222,128,.55);">★ contributor</p>
+            </div>
+          </div>
         </div>
-        <div class="glass rounded-xl p-6">
-          <p class="mono text-xs mb-3" style="color:rgba(74,222,128,.5);">// community</p>
-          <p class="text-sm leading-relaxed mb-4" style="color:var(--t2);">"Finally, an AI coding tool that remembers what it built yesterday. This changes how I work with large codebases entirely."</p>
-          <p class="mono text-xs" style="color:var(--t3);">— from the GitHub community</p>
+        <div class="quote-card glass rounded-xl p-6 flex flex-col">
+          <div class="quote-mark mb-1">&ldquo;</div>
+          <p class="text-sm leading-relaxed mb-5 flex-1" style="color:var(--t1);">One of the fastest-growing open-source AI tooling projects, with 56k stars and zero marketing spend.</p>
+          <div class="flex items-center gap-3">
+            <span class="avatar-mono" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.28);color:#fbbf24;">M</span>
+            <div>
+              <p class="text-xs font-semibold" style="color:var(--t1);">Press coverage</p>
+              <p class="mono" style="font-size:10px;color:rgba(251,191,36,.5);">Medium · dev.to</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1633,7 +1852,7 @@ def create_session(user):
       </div>
       <p class="section-tag mb-4">// access.request</p>
       <h2 class="hl text-5xl text-white mb-3">The OSS is live.<br/><span class="grad-green">Start building now.</span></h2>
-      <p class="text-sm font-light mb-8 max-w-sm mx-auto" style="color:var(--t2);line-height:1.7;">Open-source and free forever. Drop your email for <span style="color:rgba(74,222,128,.8);">enterprise access</span> — cloud deployment, SSO, audit logs, and million-file corpus support.</p>
+      <p class="text-sm font-light mb-8 max-w-sm mx-auto" style="color:var(--t2);line-height:1.7;">Open-source and free forever. Drop your email for <span style="color:rgba(74,222,128,.8);">enterprise access</span>: cloud deployment, SSO, audit logs, and million-file corpus support.</p>
 
       <!-- OSS path -->
       <div class="mb-6 code-border p-4 text-left max-w-sm mx-auto">
@@ -1707,6 +1926,15 @@ def create_session(user):
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
+    // ── NAV: condense on scroll ──
+    (function(){
+      const nav=document.querySelector('.nav');
+      if(!nav) return;
+      const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>24);
+      onScroll();
+      window.addEventListener('scroll',onScroll,{passive:true});
+    })();
+
     function showAll() {
       document.querySelectorAll('.gsap-reveal').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
       document.querySelectorAll('.gsap-stagger > *').forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
@@ -1728,15 +1956,40 @@ def create_session(user):
     // ── DECODE HERO TEXT ──
     const DECODE_CHARS = 'ΨΩΣ∇λπ∀∃ΔΦΘ01▓░▄▀█';
     function decodeText(el, text, delay=0) {
-      const total=900, fps=16, frames=total/fps; let f=0;
-      setTimeout(()=>{ const iv=setInterval(()=>{ const p=f/frames; el.textContent=text.split('').map((c,i)=>{ if(c===' '||c==='\n')return c; if(i/text.length<p*1.4)return c; return DECODE_CHARS[Math.floor(Math.random()*DECODE_CHARS.length)]; }).join(''); f++; if(f>=frames){el.textContent=text;clearInterval(iv);} },fps); },delay);
+      const original = el.innerHTML;            // preserve <br> + gradient span
+      const chars = text.split('');
+      const duration = 900;
+      function run(){
+        el.style.whiteSpace = 'pre-line';       // render \n during the scramble
+        const start = performance.now();
+        function frame(now){
+          const p = Math.min((now - start) / duration, 1);
+          el.textContent = chars.map((c,i)=>{
+            if(c===' '||c==='\n') return c;
+            if(i/chars.length < p*1.4) return c;
+            return DECODE_CHARS[Math.floor(Math.random()*DECODE_CHARS.length)];
+          }).join('');
+          if(p < 1){ requestAnimationFrame(frame); }
+          else { el.style.whiteSpace=''; el.innerHTML = original; }
+        }
+        requestAnimationFrame(frame);
+      }
+      delay ? setTimeout(run, delay) : run();
     }
     decodeText(document.getElementById('hero-h1'), document.getElementById('hero-h1').innerText, 200);
 
     // ── STATS COUNTER ──
     function animCount(el) {
-      const target=parseInt(el.dataset.count,10), dur=2000, fps=16, frames=dur/fps; let f=0;
-      const iv=setInterval(()=>{ f++; const ease=1-Math.pow(1-f/frames,3); const v=Math.round(target*ease); el.textContent=target>=10000?Math.round(v/1000)+'k+':target>=1000?v.toLocaleString()+'+':v+'+'; if(f>=frames){el.textContent=target>=10000?Math.round(target/1000)+'k+':target>=1000?target.toLocaleString()+'+':target+'+';clearInterval(iv);} },fps);
+      const target=parseInt(el.dataset.count,10), dur=1800;
+      const fmt=v=>v>=1000000?(v/1000000).toFixed(1).replace(/\.0$/,'')+'M+':v>=10000?Math.round(v/1000)+'k+':v>=1000?v.toLocaleString()+'+':v+'+';
+      const start=performance.now();
+      function frame(now){
+        const p=Math.min((now-start)/dur,1);
+        const ease=1-Math.pow(1-p,3);
+        el.textContent=fmt(Math.round(target*ease));
+        if(p<1){ requestAnimationFrame(frame); } else { el.textContent=fmt(target); }
+      }
+      requestAnimationFrame(frame);
     }
     const cObs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting&&e.target.dataset.count){animCount(e.target);cObs.unobserve(e.target);} }); },{threshold:.5});
     document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
@@ -1777,7 +2030,7 @@ def create_session(user):
         const form=document.querySelector('form[action*="formspree"]');
         const msg=document.getElementById('form-msg');
         if(form){
-          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ ALREADY QUEUED ] <span style="color:var(--t2);">'+stored+'</span> — you\'re on the list. We\'ll reach out soon.</p>';
+          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ ALREADY QUEUED ] <span style="color:var(--t2);">'+stored+'</span>, you\'re on the list. We\'ll reach out soon.</p>';
         }
         if(msg){ msg.classList.remove('hidden'); msg.textContent=''; }
       }
@@ -1807,8 +2060,8 @@ def create_session(user):
         msg.classList.remove('hidden');
         if(res.ok){
           localStorage.setItem(KEY,email);
-          msg.textContent='[ ACCESS GRANTED ] Enterprise access coming your way — we\'ll be in touch.';
-          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ QUEUED ] <span style="color:var(--t2);">'+email+'</span> — you\'re on the list.</p>';
+          msg.textContent='[ ACCESS GRANTED ] Enterprise access coming your way. We\'ll be in touch.';
+          form.innerHTML='<p class="mono text-sm py-4" style="color:#4ade80;">[ QUEUED ] <span style="color:var(--t2);">'+email+'</span>, you\'re on the list.</p>';
         } else {
           msg.textContent='[ ERROR ] Please try again.';
           if(btn){ btn.disabled=false; btn.textContent='$ get_enterprise_access'; }
@@ -2199,11 +2452,11 @@ def create_session(user):
       const desc=document.getElementById('surp-desc');
       if(!edge||!desc) return;
       const connections=[
-        {e:'auth.py ↔ billing/invoice.ts',d:'Authentication logic references billing directly — a hidden dependency that breaks when the billing team refactors. Graphify caught it before code review.'},
+        {e:'auth.py ↔ billing/invoice.ts',d:'Authentication logic references billing directly, a hidden dependency that breaks when the billing team refactors. Graphify caught it before code review.'},
         {e:'README.md → routing/router.py',d:'Documentation references a function renamed 6 months ago. Still in prod. Graphify surfaced the stale link across the doc-to-code boundary.'},
-        {e:'meeting_oct3.txt → pipeline.go',d:'A team call mentioned "latency issue" — Graphify linked it to the exact bottlenecking function 3 weeks before the bug report was filed.'},
+        {e:'meeting_oct3.txt → pipeline.go',d:'A team call mentioned "latency issue", and Graphify linked it to the exact bottlenecking function 3 weeks before the bug report was filed.'},
         {e:'slack_dm_oct12.json → compliance_policy_v3.pdf',d:'An engineer asked a question in Slack that was already answered in a compliance policy doc from 6 months prior. Graphify connected them instantly.'},
-        {e:'design_brief_q3.pdf → deprecated/v1/api.ts',d:'A new product brief referenced a component in the deprecated v1 API — still passing CI. Graphify traced the dead reference across file type boundaries.'}
+        {e:'design_brief_q3.pdf → deprecated/v1/api.ts',d:'A new product brief referenced a component in the deprecated v1 API, still passing CI. Graphify traced the dead reference across file type boundaries.'}
       ];
       let ci=0,paused=false,timer;
       const surpCard=document.querySelector('.surp-card');
@@ -2268,6 +2521,57 @@ def create_session(user):
       },{passive:true});
     })();
 
+  </script>
+
+  <!-- ── TWEAKS: palette + display font (play with the "company brain" identity) ── -->
+  <div id="tweaks-root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "palette": "synaptic",
+      "font": "sora",
+      "glow": "soft"
+    }/*EDITMODE-END*/;
+
+    function applyTweaks(t){
+      const h = document.documentElement;
+      h.setAttribute('data-palette', t.palette);
+      h.setAttribute('data-font', t.font);
+      h.style.setProperty('--glow', t.glow === 'soft' ? '0.55' : t.glow === 'vivid' ? '1.5' : '1');
+    }
+
+    function TweaksApp(){
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => { applyTweaks(t); }, [t.palette, t.font, t.glow]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Brain palette" />
+          <TweakSelect label="Palette" value={t.palette}
+            options={[
+              { value:'synaptic', label:'Synaptic · green + violet' },
+              { value:'cortex',   label:'Cortex · green + magenta' },
+              { value:'mono',     label:'Monograph · all green' },
+              { value:'classic',  label:'Classic · green + amber' },
+            ]}
+            onChange={(v) => setTweak('palette', v)} />
+          <TweakRadio label="Glow" value={t.glow}
+            options={[{value:'soft',label:'soft'},{value:'medium',label:'medium'},{value:'vivid',label:'vivid'}]}
+            onChange={(v) => setTweak('glow', v)} />
+          <TweakSection label="Display type" />
+          <TweakRadio label="Font" value={t.font}
+            options={[{value:'bricolage',label:'Bricolage'},{value:'space',label:'Space'},{value:'sora',label:'Sora'}]}
+            onChange={(v) => setTweak('font', v)} />
+        </TweaksPanel>
+      );
+    }
+
+    // apply the in-file default immediately so first paint matches the panel
+    applyTweaks(TWEAK_DEFAULTS);
+
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
   </script>
 </body>
 </html>
